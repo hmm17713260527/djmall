@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace:用于隔离SQL全局唯一（采用接口和XML开发时为接口的全路径）
+ -->
+<mapper namespace="com.dj.mall.mapper.auth.role.RoleMapper">
+
+
+    <select id="getRoleResourceByRoleId" resultType="com.dj.mall.entity.auth.resource.Resource">
+
+        SELECT
+            dar.id,
+            dar.resource_name,
+            dar.parent_id,
+            dar.url,
+            dar.resource_code,
+            dar.is_del,
+            dar.type
+        FROM
+            djmall_auth_role_resource darr
+        LEFT JOIN djmall_auth_resource dar ON darr.resource_id = dar.id
+        WHERE
+            darr.role_id = #{roleId}
+
+    </select>
+</mapper>

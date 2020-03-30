@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace:用于隔离SQL全局唯一（采用接口和XML开发时为接口的全路径）
+ -->
+<mapper namespace="com.dj.mall.mapper.auth.user.UserMapper">
+
+
+    <select id="getUserResourceByUserId" resultType="com.dj.mall.entity.auth.resource.Resource">
+
+        SELECT
+            dar.id,
+            dar.resource_name,
+            dar.parent_id,
+            dar.url,
+            dar.resource_code,
+            dar.is_del,
+            dar.type
+        FROM
+            djmall_auth_user_role dur
+        LEFT JOIN djmall_auth_role_resource drr ON dur.role_id = drr.role_id
+        LEFT JOIN djmall_auth_resource dar ON drr.resource_id = dar.id
+        WHERE
+            dur.user_id = #{userId}
+
+    </select>
+    <select id="findUserList" resultType="com.dj.mall.mapper.bo.auth.user.UserBo">
+
+
+        SELECT
+            dau.id,
+            dau.user_name,
+            dau.nick_name,
+            dau.password,
+            dau.phone,
+            dau.email,
+            dau.type,
+            dau.salt,
+            dau.is_del,
+            dau.verify,
+            dau.status,
+            dar.role_name
+        FROM
+            djmall_auth_user dau
+        LEFT JOIN djmall_auth_role dar ON dau.type = dar.id
+        where dau.is_del = 1
+        <if test="user.type != null">
+            and dau.type = #{user.type}
+        </if>
+        <if test="user.status != null">
+            and dau.status = #{user.status}
+        </if>
+        <if test="user.userName != null and user.userName != ''">
+            and (dau.user_name = #{user.userName} or dau.phone = #{user.userName} or dau.email = #{user.userName})
+        </if>
+
+
+
+
+
+
+
+    </select>
+</mapper>
