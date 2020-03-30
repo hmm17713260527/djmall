@@ -8,7 +8,6 @@ import com.dj.mall.api.auth.resource.ResourceApi;
 import com.dj.mall.entity.auth.resource.Resource;
 import com.dj.mall.entity.auth.role.RoleResource;
 import com.dj.mall.mapper.auth.resource.ResourceMapper;
-import com.dj.mall.mapper.auth.role.RoleResourceMapper;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.resource.ResourceDTOReq;
 import com.dj.mall.model.dto.auth.resource.ResourceDTOResp;

@@ -81,7 +81,7 @@ public interface UserApi {
      * @return
      * @throws Exception
      */
-    void addUser(UserDTOReq userDTOReq, Integer roleId) throws Exception;
+    void addUser(UserDTOReq userDTOReq) throws Exception;
 
     /**
      * 邮箱激活

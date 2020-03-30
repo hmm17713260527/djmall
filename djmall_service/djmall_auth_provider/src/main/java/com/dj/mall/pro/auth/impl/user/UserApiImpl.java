@@ -14,7 +14,6 @@ import com.dj.mall.mapper.auth.user.UserMapper;
 import com.dj.mall.mapper.auth.user.UserRoleMapper;
 import com.dj.mall.mapper.bo.auth.user.UserBo;
 import com.dj.mall.model.base.BusinessException;
-import com.dj.mall.model.base.ResultModel;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.resource.ResourceDTOResp;
 import com.dj.mall.model.dto.auth.user.UserDTOReq;
@@ -172,14 +171,14 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
      * @throws Exception
      */
     @Override
-    public void addUser(UserDTOReq userDTOReq, Integer roleId) throws Exception {
+    public void addUser(UserDTOReq userDTOReq) throws Exception {
         User user = DozerUtil.map(userDTOReq, User.class);
         EmailUtil.sendEmail(user.getEmail(), SystemConstant.STRING_EMAIL);
         this.save(user);
 
         UserRole userRole = new UserRole();
         userRole.setUserId(user.getId());
-        userRole.setRoleId(roleId);
+        userRole.setRoleId(user.getType());
         userRole.setIsDel(SystemConstant.IS_DEL);
         userRoleMapper.insert(userRole);
     }

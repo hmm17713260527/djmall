@@ -1,11 +1,8 @@
 package com.dj.mall.admin.web.auth.role;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.dj.mall.admin.vo.auth.role.RoleVOResp;
 import com.dj.mall.api.auth.role.RoleApi;
-import com.dj.mall.model.base.ResultModel;
-import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.role.RoleDTOResp;
 import com.dj.mall.model.util.DozerUtil;
 import org.springframework.stereotype.Controller;

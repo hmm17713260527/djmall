@@ -159,11 +159,7 @@ public class RoleApiImpl extends ServiceImpl<RoleMapper, Role> implements RoleAp
 
             roleResourceList.add(roleResource);
         }
-
         roleResourceService.saveBatch(roleResourceList);
-
-
-
         return null;
     }
 }

@@ -1,14 +1,11 @@
 package com.dj.mall.admin.web.auth.role;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.dj.mall.admin.vo.auth.resource.ZtreeData;
 import com.dj.mall.admin.vo.auth.role.RoleVOReq;
 import com.dj.mall.admin.vo.auth.role.RoleVOResp;
 import com.dj.mall.api.auth.resource.ResourceApi;
 import com.dj.mall.api.auth.role.RoleApi;
-import com.dj.mall.entity.auth.role.RoleResource;
 import com.dj.mall.model.base.ResultModel;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.resource.ResourceDTOResp;

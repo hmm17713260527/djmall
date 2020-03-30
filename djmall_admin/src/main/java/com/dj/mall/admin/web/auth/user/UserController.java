@@ -1,11 +1,9 @@
 package com.dj.mall.admin.web.auth.user;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.dj.mall.admin.vo.auth.user.UserVOReq;
 import com.dj.mall.admin.vo.auth.user.UserVOResp;
 import com.dj.mall.api.auth.user.UserApi;
-import com.dj.mall.entity.auth.user.UserRole;
 import com.dj.mall.model.base.ResultModel;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.user.UserDTOReq;
@@ -117,9 +115,9 @@ public class UserController {
      * @throws Exception
      */
     @PostMapping("add")
-    public ResultModel<Object> addUser(UserVOReq userVOReq, Integer roleId) throws Exception {
+    public ResultModel<Object> addUser(UserVOReq userVOReq) throws Exception {
         UserDTOReq userDTOReq = DozerUtil.map(userVOReq, UserDTOReq.class);
-        userApi.addUser(userDTOReq, roleId);
+        userApi.addUser(userDTOReq);
         return new ResultModel<>().success(SystemConstant.STRING_4);
 
     }

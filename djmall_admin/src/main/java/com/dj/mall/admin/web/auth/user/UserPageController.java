@@ -1,7 +1,6 @@
 package com.dj.mall.admin.web.auth.user;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.dj.mall.admin.vo.auth.user.UserVOResp;
 import com.dj.mall.api.auth.role.RoleApi;
 import com.dj.mall.api.auth.user.UserApi;
