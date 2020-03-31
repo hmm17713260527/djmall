@@ -2,7 +2,9 @@ package com.dj.mall.admin.web.auth.resource;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.dj.mall.api.auth.resource.ResourceApi;
+import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.resource.ResourceDTOResp;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,6 +44,7 @@ public class ResourcePageController {
      * @return
      */
     @RequestMapping("toShow")
+    @RequiresPermissions(value = SystemConstant.RESOURCE_MANAGER)
     public String toShow() {
         return "resource/resource_show";
     }

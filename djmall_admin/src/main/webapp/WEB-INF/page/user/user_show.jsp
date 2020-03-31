@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <html>
 <head>
 <title>Title</title>
@@ -148,10 +149,18 @@
     <input type = "hidden" name = "isDel" value = "1"/><br/>
     <input type = "button" value = "search" onclick = "search()"/><br/>
 
-    <input type="button" value="修改" onclick="toUpdate()"/>
-    <input type="button" value="激活" onclick="tooUpdate()"/>
-    <input type="button" value="删除" onclick="del()"/>
-    <input type="button" value="授权" onclick="toooUpdate()"/>
+    <shiro:hasPermission name="USER_UPDATE">
+        <input type="button" value="修改" onclick="toUpdate()"/>
+    </shiro:hasPermission>
+    <shiro:hasPermission name="USER_UPDATE_STATUS">
+        <input type="button" value="激活" onclick="tooUpdate()"/>
+    </shiro:hasPermission>
+    <shiro:hasPermission name="USER_DEL">
+        <input type="button" value="删除" onclick="del()"/>
+    </shiro:hasPermission>
+    <shiro:hasPermission name="USER_UPDATE_TYPE">
+        <input type="button" value="授权" onclick="toooUpdate()"/>
+    </shiro:hasPermission>
     <table cellpadding='12px' cellspacing='0px' border='1px'  bordercolor='gray' bgcolor='pink'>
         <tr>
             <td>用户id</td>

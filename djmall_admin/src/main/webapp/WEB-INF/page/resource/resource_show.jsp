@@ -141,9 +141,15 @@
 </head>
 <body>
 
-    <input type="button" value="新增" onclick="saveTwo()">
-    <input type="button" value="修改" onclick="updateRes()">
-    <input type="button" value="删除" onclick="deleRes()">
+    <shiro:hasPermission name="RESOURCE_ADD">
+        <input type="button" value="新增" onclick="saveTwo()">
+    </shiro:hasPermission>
+    <shiro:hasPermission name="RESOURCE_UPDATE">
+        <input type="button" value="修改" onclick="updateRes()">
+    </shiro:hasPermission>
+    <shiro:hasPermission name="RESOURCE_DEL">
+        <input type="button" value="删除" onclick="deleRes()">
+    </shiro:hasPermission>
     <div id="tree" class="ztree">
 
 </div>

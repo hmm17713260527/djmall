@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <html>
 <head>
 <title>Title</title>
@@ -80,7 +81,9 @@
 <form id = "fm">
 
     <input type="hidden" name = "isDel" value="1">
-    <input type="button" value="新增" onclick="toAdd()"/>
+    <shiro:hasPermission name="ROLE_ADD">
+        <input type="button" value="新增" onclick="toAdd()"/>
+    </shiro:hasPermission>
     <table cellpadding='12px' cellspacing='0px' border='1px'  bordercolor='gray' bgcolor='pink'>
         <tr>
             <td>编号</td>

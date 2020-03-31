@@ -3,8 +3,10 @@ package com.dj.mall.admin.web.auth.role;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.dj.mall.admin.vo.auth.role.RoleVOResp;
 import com.dj.mall.api.auth.role.RoleApi;
+import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.role.RoleDTOResp;
 import com.dj.mall.model.util.DozerUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -73,6 +75,7 @@ public class RolePageContriller {
      * @return
      */
     @RequestMapping("toShow")
+    @RequiresPermissions(value = SystemConstant.ROLE_MANAGER)
     public String toShow() {
         return "role/role_show";
     }

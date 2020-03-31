@@ -65,14 +65,7 @@ public class ShiroConfiguration {
         filters.put("/auth/user/distinct", "anon");
         filters.put("/auth/user/updateStatusByEmail", "anon");
         filters.put("/auth/user/toActivate/**", "anon");
-
-//        filters.put("/auth/user/toResetPwd", "anon");
-//        filters.put("/auth/user/getCode", "anon");
-//        filters.put("/auth/user/updatePwd", "anon");
-//        filters.put("/auth/user/findPhone", "anon");
-
-//      authc 表示必须认证才可访问
-       // filters.put("/**", "authc");
+        filters.put("/**", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filters);
         return shiroFilterFactoryBean;
     }

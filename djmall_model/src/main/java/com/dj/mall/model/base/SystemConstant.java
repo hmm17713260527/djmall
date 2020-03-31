@@ -72,6 +72,21 @@ public interface SystemConstant {
      */
     Integer NOT_IS_DEL = 2;
 
+    /**
+     * RESOURCE_MANAGER
+     */
+    String RESOURCE_MANAGER = "RESOURCE_MANAGER";
+
+    /**
+     * ROLE_MANAGER
+     */
+    String ROLE_MANAGER = "ROLE_MANAGER";
+
+    /**
+     * USER_MANAGER
+     */
+    String USER_MANAGER = "USER_MANAGER";
+
 
 
 }

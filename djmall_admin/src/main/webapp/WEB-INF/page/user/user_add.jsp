@@ -162,7 +162,7 @@
                         icon: 6,
                         time: 2000
                     }, function(){
-                        parent.window.location.href = "<%=request.getContextPath()%>/auth/user/toLogin";
+                        parent.window.location.href = "<%=request.getContextPath()%>/auth/user/toShow";
                     });
                 }
             )

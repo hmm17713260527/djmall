@@ -9,6 +9,9 @@ import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.user.UserDTOReq;
 import com.dj.mall.model.dto.auth.user.UserDTOResp;
 import com.dj.mall.model.util.DozerUtil;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
@@ -150,9 +153,9 @@ public class UserController {
         UserDTOResp userDTOResp = userApi.login(userName, password);
         session.setAttribute(SystemConstant.USER_SESSION, userDTOResp);
         //shiro登陆
-//        Subject subject = SecurityUtils.getSubject();
-//        UsernamePasswordToken token = new UsernamePasswordToken(userName, password);
-//        subject.login(token);
+        Subject subject = SecurityUtils.getSubject();
+        UsernamePasswordToken token = new UsernamePasswordToken(userName, password);
+        subject.login(token);
         return new ResultModel<>().success(SystemConstant.REQ_YES);
     }
 
