@@ -66,7 +66,7 @@
     <input type="text" name="userName" placeholder="请输入用户名/手机号/邮箱" onblur="inquire(this)" /><br />
     <input type="password" name="password" placeholder="请输入密码" id="password"/><br />
     <a href="<%=request.getContextPath()%>/auth/user/toAdd">还没有账号?点我去注册!</a><br />
-<%--    <a href="<%=request.getContextPath()%>/auth/user/toResetPwd">忘记密码?点我找回!</a><br />--%>
+    <a href="<%=request.getContextPath()%>/auth/user/toResetPwd">忘记密码?点我找回!</a><br />
     <input type="button" value="登录" onclick="login()" /><br />
 </form>
 

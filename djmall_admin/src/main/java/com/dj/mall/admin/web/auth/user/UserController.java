@@ -1,9 +1,12 @@
 package com.dj.mall.admin.web.auth.user;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.dj.mall.admin.vo.auth.user.UserVOReq;
 import com.dj.mall.admin.vo.auth.user.UserVOResp;
 import com.dj.mall.api.auth.user.UserApi;
+import com.dj.mall.entity.auth.user.User;
 import com.dj.mall.model.base.ResultModel;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.user.UserDTOReq;
@@ -16,6 +19,7 @@ import org.apache.shiro.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Calendar;
 import java.util.HashMap;
 
 @RestController
@@ -24,6 +28,42 @@ public class UserController {
 
     @Reference
     private UserApi userApi;
+
+
+    /**
+     * 判断手机号是否存在
+     * @param phone
+     * @return
+     */
+    @GetMapping("findPhone")
+    public ResultModel<Object> findPhone (String phone) throws Exception {
+        ResultModel<Object> resultModel = userApi.findPhone(phone);
+        return resultModel;
+    }
+
+    /**
+     * 修改密码
+     * @param userVOReq
+     * @return
+     * @throws Exception
+     */
+    @PutMapping("updatePwd")
+    public ResultModel<Object> updatePwd(UserVOReq userVOReq) throws Exception {
+        ResultModel<Object> resultModel = userApi.updatePwd(DozerUtil.map(userVOReq, UserDTOReq.class));
+        return resultModel;
+    }
+
+    /**
+     * 获取验证码
+     * @param phone
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("getVerify")
+    public ResultModel<Object> getVerify(String phone) throws Exception {
+        userApi.getVerify(phone);
+        return new ResultModel<>().success(SystemConstant.REQ_YES);
+    }
 
     /**
      * 用户授权

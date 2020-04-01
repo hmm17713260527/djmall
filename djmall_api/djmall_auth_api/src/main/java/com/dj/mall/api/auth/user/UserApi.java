@@ -2,6 +2,7 @@ package com.dj.mall.api.auth.user;
 
 
 import com.dj.mall.model.base.BusinessException;
+import com.dj.mall.model.base.ResultModel;
 import com.dj.mall.model.dto.auth.user.UserDTOReq;
 import com.dj.mall.model.dto.auth.user.UserDTOResp;
 
@@ -9,6 +10,13 @@ import java.util.HashMap;
 
 public interface UserApi {
 
+
+    /**
+     * 通过手机号获取验证码
+     * @param phone
+     * @throws Exception
+     */
+    void getVerify(String phone) throws Exception;
 
     /**
      * 用户授权
@@ -65,7 +73,6 @@ public interface UserApi {
      */
     UserDTOResp findSalt(String userName) throws Exception;
 
-    UserDTOResp findUserByUserNameAndPassword(UserDTOReq userDTOReq) throws Exception;
 
     /**
      * 注册去重
@@ -101,4 +108,19 @@ public interface UserApi {
      */
     UserDTOResp login(String userName, String password) throws Exception, BusinessException;
 
+    /**
+     * 修改密码
+     * @param userDTOReq
+     * @return
+     * @throws Exception
+     */
+    ResultModel<Object> updatePwd(UserDTOReq userDTOReq) throws Exception;
+
+    /**
+     * 判断手机号是否存在
+     * @param phone
+     * @return
+     * @throws Exception
+     */
+    ResultModel<Object> findPhone(String phone) throws Exception;
 }

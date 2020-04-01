@@ -14,12 +14,14 @@ import com.dj.mall.mapper.auth.user.UserMapper;
 import com.dj.mall.mapper.auth.user.UserRoleMapper;
 import com.dj.mall.mapper.bo.auth.user.UserBo;
 import com.dj.mall.model.base.BusinessException;
+import com.dj.mall.model.base.ResultModel;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.resource.ResourceDTOResp;
 import com.dj.mall.model.dto.auth.user.UserDTOReq;
 import com.dj.mall.model.dto.auth.user.UserDTOResp;
 import com.dj.mall.model.util.DozerUtil;
 import com.dj.mall.model.util.EmailUtil;
+import com.dj.mall.model.util.MessageVerifyUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -43,6 +45,24 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
 
     @Autowired
     private RoleMapper roleMapper;
+
+    /**
+     * 通过手机号获取验证码
+     * @param phone
+     * @throws Exception
+     */
+    @Override
+    public void getVerify(String phone) throws Exception {
+
+        String newCode = String.valueOf(MessageVerifyUtils.getNewcode());
+        MessageVerifyUtils.sendSms(phone, newCode);
+
+        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.set("verify", newCode);
+        updateWrapper.eq("phone", phone);
+        this.update(updateWrapper);
+
+    }
 
     @Override
     public void updateUserRole(Integer userId, Integer type) throws Exception {
@@ -125,17 +145,6 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         return DozerUtil.map(this.getOne(wrapper), UserDTOResp.class);
     }
 
-    @Override
-    public UserDTOResp findUserByUserNameAndPassword(UserDTOReq userDTOReq) throws Exception {
-
-        User user = DozerUtil.map(userDTOReq, User.class);
-        QueryWrapper<User> wrapper = new QueryWrapper<User>();
-        wrapper.eq("password", user.getPassword());
-        wrapper.or(i -> i.eq("user_name", user.getUserName())
-                .or().eq("email", user.getUserName())
-                .or().eq("phone", user.getUserName()));
-        return DozerUtil.map(this.getOne(wrapper), UserDTOResp.class);
-    }
 
     /**
      * 注册去重
@@ -160,8 +169,10 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         User user = this.getOne(queryWrapper);
         if (user == null) {
             return true;
+        } else {
+            return false;
         }
-        return false;
+
     }
 
     /**
@@ -224,4 +235,46 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         userDTOResp.setResourceList(DozerUtil.mapList(ResourceList, ResourceDTOResp.class));
         return userDTOResp;
     }
+
+    /**
+     * 修改密码
+     * @param userDTOReq
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public ResultModel<Object> updatePwd(UserDTOReq userDTOReq) throws Exception {
+
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("phone", userDTOReq.getPhone());
+        queryWrapper.eq("verify", userDTOReq.getVerify());
+        User user = this.getOne(queryWrapper);
+
+        if (user == null) {
+            return new ResultModel<Object>().error(SystemConstant.PHONE_LOGIN);
+        }
+
+        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.set("password", userDTOReq.getPassword());
+        updateWrapper.set("salt", userDTOReq.getSalt());
+        updateWrapper.eq("phone", userDTOReq.getPhone());
+        this.update(updateWrapper);
+        return new ResultModel<>().success(SystemConstant.REQ_YES);
+    }
+
+    @Override
+    public ResultModel<Object> findPhone(String phone) throws Exception {
+        QueryWrapper<User> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("phone", phone);
+        queryWrapper.eq("is_del", SystemConstant.IS_DEL);
+        User user = this.getOne(queryWrapper);
+        if (user != null) {
+            return new ResultModel<>().success(SystemConstant.REQ_YES);
+        }
+        return new ResultModel<>().error(SystemConstant.PHONE_REGISTER);
+    }
+
+
+
+
 }

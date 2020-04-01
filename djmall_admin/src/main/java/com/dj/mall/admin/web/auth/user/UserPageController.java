@@ -30,6 +30,19 @@ public class UserPageController {
     private UserApi userApi;
 
     /**
+     * 去重置密码
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("toResetPwd")
+    public String toResetPwd(Model model) throws Exception {
+        String salt = PasswordSecurityUtil.generateSalt();
+        model.addAttribute("salt", salt);
+        return "user/user_rest_pwd";
+    }
+
+    /**
      * 去授权
      * @param id
      * @return

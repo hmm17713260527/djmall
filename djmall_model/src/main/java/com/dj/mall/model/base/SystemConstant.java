@@ -5,6 +5,16 @@ public interface SystemConstant {
 
 
     /**
+     * 手机号不存在，请注册
+     **/
+    String PHONE_REGISTER  = "手机号不存在，请注册";
+
+    /**
+     * "手机号与验证码不匹配!!"
+     */
+    String PHONE_LOGIN = "手机号与验证码不匹配!!";
+
+    /**
      * 用户不存在
      */
     String USER_NOT_Z = "用户不存在";
