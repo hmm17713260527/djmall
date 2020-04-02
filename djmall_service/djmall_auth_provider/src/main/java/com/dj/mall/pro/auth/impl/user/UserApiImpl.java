@@ -1,4 +1,5 @@
 package com.dj.mall.pro.auth.impl.user;
+import	java.util.Date;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -8,8 +9,10 @@ import com.dj.mall.api.auth.user.UserApi;
 import com.dj.mall.entity.auth.resource.Resource;
 import com.dj.mall.entity.auth.role.Role;
 import com.dj.mall.entity.auth.user.User;
+import com.dj.mall.entity.auth.user.UserLoginEndTime;
 import com.dj.mall.entity.auth.user.UserRole;
 import com.dj.mall.mapper.auth.role.RoleMapper;
+import com.dj.mall.mapper.auth.user.UserLoginEndTimeMapper;
 import com.dj.mall.mapper.auth.user.UserMapper;
 import com.dj.mall.mapper.auth.user.UserRoleMapper;
 import com.dj.mall.mapper.bo.auth.user.UserBo;
@@ -45,6 +48,10 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
 
     @Autowired
     private RoleMapper roleMapper;
+
+    @Autowired
+    private UserLoginEndTimeMapper userLoginEndTimeMapper;
+
 
     /**
      * 通过手机号获取验证码
@@ -228,6 +235,13 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         if (!password.equals(user.getPassword())) {
             throw new BusinessException(SystemConstant.IS_DEL_NOT);
         }
+
+        UserLoginEndTime userLoginEndTime = new UserLoginEndTime();
+        userLoginEndTime.setUserId(user.getId());
+        userLoginEndTime.setEndTime(new Date());
+        userLoginEndTime.setIsDel(SystemConstant.IS_DEL);
+        userLoginEndTimeMapper.insert(userLoginEndTime);
+
         UserDTOResp userDTOResp = DozerUtil.map(user, UserDTOResp.class);
 
         List<Resource> ResourceList = getBaseMapper().getUserResourceByUserId(userDTOResp.getUserId());
