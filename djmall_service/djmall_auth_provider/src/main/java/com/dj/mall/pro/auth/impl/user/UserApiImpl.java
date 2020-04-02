@@ -236,11 +236,20 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
             throw new BusinessException(SystemConstant.IS_DEL_NOT);
         }
 
-        UserLoginEndTime userLoginEndTime = new UserLoginEndTime();
-        userLoginEndTime.setUserId(user.getId());
-        userLoginEndTime.setEndTime(new Date());
-        userLoginEndTime.setIsDel(SystemConstant.IS_DEL);
-        userLoginEndTimeMapper.insert(userLoginEndTime);
+        QueryWrapper<UserLoginEndTime> loginTimeQueryWrapper = new QueryWrapper<>();
+        loginTimeQueryWrapper.eq("user_id", user.getId()).eq("is_del", SystemConstant.IS_DEL);
+        UserLoginEndTime userLogin = userLoginEndTimeMapper.selectOne(loginTimeQueryWrapper);
+
+        if (null == userLogin) {
+            UserLoginEndTime userLoginEndTime = new UserLoginEndTime();
+            userLoginEndTime.setUserId(user.getId());
+            userLoginEndTime.setEndTime(new Date());
+            userLoginEndTime.setIsDel(SystemConstant.IS_DEL);
+            userLoginEndTimeMapper.insert(userLoginEndTime);
+        } else {
+            userLogin.setEndTime(new Date());
+            userLoginEndTimeMapper.updateById(userLogin);
+        }
 
         UserDTOResp userDTOResp = DozerUtil.map(user, UserDTOResp.class);
 

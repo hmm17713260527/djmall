@@ -97,6 +97,11 @@ public interface SystemConstant {
      */
     String USER_MANAGER = "USER_MANAGER";
 
+    /**
+     * BASE_DATA_MANAGER
+     */
+    String BASE_DATA_MANAGER = "BASE_DATA_MANAGER";
+
 
 
 }
