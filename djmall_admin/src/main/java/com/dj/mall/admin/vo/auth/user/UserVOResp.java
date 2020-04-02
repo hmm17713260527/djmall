@@ -62,7 +62,7 @@ public class UserVOResp implements Serializable {
     private String salt;
 
     /**
-     * 1激活，2未激活
+     * 10激活，11未激活
      */
     private Integer status;
 

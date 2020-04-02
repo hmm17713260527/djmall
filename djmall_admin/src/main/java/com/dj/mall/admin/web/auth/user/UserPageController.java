@@ -1,10 +1,13 @@
 package com.dj.mall.admin.web.auth.user;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.dj.mall.admin.vo.auth.base.BaseDataVOResp;
 import com.dj.mall.admin.vo.auth.user.UserVOResp;
+import com.dj.mall.api.auth.base_data.BaseDataApi;
 import com.dj.mall.api.auth.role.RoleApi;
 import com.dj.mall.api.auth.user.UserApi;
 import com.dj.mall.model.base.SystemConstant;
+import com.dj.mall.model.dto.auth.base.BaseDataDTOResp;
 import com.dj.mall.model.dto.auth.role.RoleDTOResp;
 import com.dj.mall.model.dto.auth.user.UserDTOResp;
 import com.dj.mall.model.util.DozerUtil;
@@ -28,6 +31,9 @@ public class UserPageController {
 
     @Reference
     private UserApi userApi;
+
+    @Reference
+    private BaseDataApi baseDataApi;
 
     /**
      * 去重置密码
@@ -77,11 +83,16 @@ public class UserPageController {
 
     /**
      * 去展示
+     * @param model
      * @return
+     * @throws Exception
      */
     @RequestMapping("toShow")
     @RequiresPermissions(value = SystemConstant.USER_MANAGER)
-    public String toShow() {
+    public String toShow(Model model) throws Exception {
+
+        List<BaseDataDTOResp> baseDataList = baseDataApi.findBaseListByParentCode(SystemConstant.USER_STATUS);
+        model.addAttribute("baseDataList", DozerUtil.mapList(baseDataList, BaseDataVOResp.class));
         return "user/user_show";
     }
 

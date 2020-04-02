@@ -17,7 +17,7 @@
 	function search() {
 		var index = layer.load(0, {shade:0.5});
 		$.post("<%=request.getContextPath()%>/auth/user/updateStatusByEmail",
-				{"status":1, "email":'${email}', "_method" : "PUT"},
+				{"status":10, "email":'${email}', "_method" : "PUT"},
 				function(data){
 					layer.close(index);
 					window.location.href = "<%=request.getContextPath()%>/auth/user/toLogin";

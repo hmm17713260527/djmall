@@ -71,7 +71,7 @@ public class UserBo implements Serializable {
     private String salt;
 
     /**
-     * 1激活，2未激活
+     * 10激活，11未激活
      */
     private Integer status;
 
@@ -79,4 +79,9 @@ public class UserBo implements Serializable {
      * 角色名
      */
     private String roleName;
+
+    /**
+     * 状态展示
+     */
+    private String statusShow;
 }

@@ -71,6 +71,12 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
 
     }
 
+    /**
+     * 用户授权
+     * @param userId
+     * @param type
+     * @throws Exception
+     */
     @Override
     public void updateUserRole(Integer userId, Integer type) throws Exception {
         User user = new User();
@@ -79,6 +85,12 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         this.updateById(user);
     }
 
+    /**
+     * 删除用户
+     * @param userId
+     * @param isDel
+     * @throws Exception
+     */
     @Override
     public void delByUserId(Integer userId, Integer isDel) throws Exception {
 
@@ -100,11 +112,21 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
 
     }
 
+    /**
+     * 用户激活
+     * @param userDTOReq
+     * @throws Exception
+     */
     @Override
     public void updateStatusById(UserDTOReq userDTOReq) throws Exception {
         this.updateById(DozerUtil.map(userDTOReq, User.class));
     }
 
+    /**
+     * 用户修改
+     * @param userDTOReq
+     * @throws Exception
+     */
     @Override
     public void updateUser(UserDTOReq userDTOReq) throws Exception {
         this.updateById(DozerUtil.map(userDTOReq, User.class));
@@ -121,6 +143,12 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         return DozerUtil.map(this.getById(userId), UserDTOResp.class);
     }
 
+    /**
+     * user展示
+     * @param userDTOReq
+     * @return
+     * @throws Exception
+     */
     @Override
     public HashMap<String, Object> findUserList(UserDTOReq userDTOReq) throws Exception {
 
@@ -285,6 +313,12 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         return new ResultModel<>().success(SystemConstant.REQ_YES);
     }
 
+    /**
+     * 判断手机号是否存在
+     * @param phone
+     * @return
+     * @throws Exception
+     */
     @Override
     public ResultModel<Object> findPhone(String phone) throws Exception {
         QueryWrapper<User> queryWrapper = new QueryWrapper();

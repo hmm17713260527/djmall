@@ -73,9 +73,9 @@ public interface SystemConstant {
     String ID_ACTIVATE = "账号已激活";
 
     /**
-     * 用户状态：已激活 1
+     * 用户状态：已激活 10
      */
-    Integer USER_STATUS_ACTIVATE = 1;
+    Integer USER_STATUS_ACTIVATE = 10;
 
     /**
      * 2：非正常显示
@@ -101,6 +101,12 @@ public interface SystemConstant {
      * BASE_DATA_MANAGER
      */
     String BASE_DATA_MANAGER = "BASE_DATA_MANAGER";
+
+
+    /**
+     * 10激活，11未激活
+     */
+    String USER_STATUS = "STATUS";
 
 
 

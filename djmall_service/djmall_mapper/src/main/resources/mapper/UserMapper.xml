@@ -39,10 +39,12 @@
             dau.is_del,
             dau.verify,
             dau.status,
-            dar.role_name
+            dar.role_name,
+            dabd.`name` as status_show
         FROM
             djmall_auth_user dau
         LEFT JOIN djmall_auth_role dar ON dau.type = dar.id
+        LEFT JOIN djmall_auth_base_data dabd ON dau.`status` = dabd.id
         where dau.is_del = 1
         <if test="user.type != null">
             and dau.type = #{user.type}

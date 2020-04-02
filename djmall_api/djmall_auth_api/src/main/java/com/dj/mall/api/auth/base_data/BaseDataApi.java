@@ -4,6 +4,7 @@ import com.dj.mall.model.dto.auth.base.BaseDataDTOReq;
 import com.dj.mall.model.dto.auth.base.BaseDataDTOResp;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @ProjectName: djmall
@@ -44,4 +45,12 @@ public interface BaseDataApi {
      * @throws Exception
      */
     BaseDataDTOResp getBase(Integer baseId) throws Exception;
+
+    /**
+     * 通过Parent_Code查询集合
+     * @param userStatus
+     * @return
+     * @throws Exception
+     */
+    List<BaseDataDTOResp> findBaseListByParentCode(String userStatus) throws Exception;
 }

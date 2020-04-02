@@ -2,14 +2,10 @@ package com.dj.mall.admin.web.auth.base_data;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.dj.mall.admin.vo.auth.base.BaseDataVOReq;
-import com.dj.mall.admin.vo.auth.role.RoleVOReq;
-import com.dj.mall.admin.vo.auth.user.UserVOReq;
 import com.dj.mall.api.auth.base_data.BaseDataApi;
 import com.dj.mall.model.base.ResultModel;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.base.BaseDataDTOReq;
-import com.dj.mall.model.dto.auth.role.RoleDTOReq;
-import com.dj.mall.model.dto.auth.user.UserDTOReq;
 import com.dj.mall.model.util.DozerUtil;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;

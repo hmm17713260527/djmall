@@ -5,11 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dj.mall.api.auth.base_data.BaseDataApi;
 import com.dj.mall.entity.auth.base_data.BaseData;
-import com.dj.mall.entity.auth.role.Role;
-import com.dj.mall.entity.auth.user.User;
 import com.dj.mall.mapper.auth.base.BaseDataMapper;
-import com.dj.mall.mapper.bo.auth.user.UserBo;
-import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.base.BaseDataDTOReq;
 import com.dj.mall.model.dto.auth.base.BaseDataDTOResp;
 import com.dj.mall.model.util.DozerUtil;
@@ -79,6 +75,16 @@ public class BaseDataApiImpl extends ServiceImpl<BaseDataMapper, BaseData> imple
     @Override
     public BaseDataDTOResp getBase(Integer baseId) throws Exception {
         return DozerUtil.map(this.getById(baseId), BaseDataDTOResp.class);
+    }
+
+    @Override
+    public List<BaseDataDTOResp> findBaseListByParentCode(String userStatus) throws Exception {
+
+        QueryWrapper<BaseData> baseWrapper = new QueryWrapper<>();
+        baseWrapper.eq("parent_code", userStatus);
+        List<BaseData> baseDataList = this.list(baseWrapper);
+
+        return DozerUtil.mapList(baseDataList, BaseDataDTOResp.class);
     }
 
 

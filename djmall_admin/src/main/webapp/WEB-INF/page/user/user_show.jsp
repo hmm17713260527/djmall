@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
 <title>Title</title>
@@ -35,13 +36,12 @@
                 for (var i = 0; i < data.data.userList.length; i++) {
                     html += "<tr>";
                     html += "<td><input type='checkbox' name = 'ids' value = '"+data.data.userList[i].id+"'/></td>";
-                    /*html += "<td>"+data.data.userList[i].id+"</td>";*/
                     html += "<td>"+data.data.userList[i].userName+"</td>";
                     html += "<td>"+data.data.userList[i].nickName+"</td>";
                     html += "<td>"+data.data.userList[i].phone+"</td>";
                     html += "<td>"+data.data.userList[i].email+"</td>";
                     html += data.data.userList[i].roleName == null ? "<td>角色已删除</td>" : "<td>"+data.data.userList[i].roleName+"</td>";
-                    html += data.data.userList[i].status == 1 ? "<td>正常</td>" : "<td>未激活</td>";
+                    html += "<td>"+data.data.userList[i].statusShow+"</td>";
                     html += "</tr>";
                 }
                 $("#tbd").html(html);
@@ -88,7 +88,7 @@
             var id = chkValue.val();
             var index = layer.load(0, {shade:0.5});
             $.post("<%=request.getContextPath()%>/auth/user/updateStatus",
-                {"userId" : id, "status" : 1, "_method" : "PUT"},
+                {"userId" : id, "status" : 10, "_method" : "PUT"},
                 function(data){
                     layer.close(index);
                     layer.msg(data.data, function(){
@@ -142,9 +142,12 @@
     </table>
     状态:
     <select name = "status">
-        <option value = "">请选择</option>
-        <option value = 1>正常</option>
-        <option value = 2>未激活</option>
+        <c:forEach items="${baseDataList}" var="b">
+            <option value="${b.baseId}">${b.name}</option>
+        </c:forEach>
+<%--        <option value = "">请选择</option>--%>
+<%--        <option value = 1>正常</option>--%>
+<%--        <option value = 2>未激活</option>--%>
     </select>
     <input type = "hidden" name = "isDel" value = "1"/><br/>
     <input type = "button" value = "search" onclick = "search()"/><br/>
