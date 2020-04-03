@@ -70,6 +70,11 @@ public class UserDTOResp implements Serializable {
     private Integer status;
 
     /**
+     * 7男，8女
+     */
+    private Integer sex;
+
+    /**
      * 用户权限集合
      */
     private List<ResourceDTOResp> ResourceList;

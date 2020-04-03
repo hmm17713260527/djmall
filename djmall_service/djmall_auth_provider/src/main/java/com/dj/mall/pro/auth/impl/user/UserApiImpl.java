@@ -1,4 +1,5 @@
 package com.dj.mall.pro.auth.impl.user;
+import java.text.DateFormat;
 import	java.util.Date;
 
 import com.alibaba.dubbo.config.annotation.Service;
@@ -25,6 +26,7 @@ import com.dj.mall.model.dto.auth.user.UserDTOResp;
 import com.dj.mall.model.util.DozerUtil;
 import com.dj.mall.model.util.EmailUtil;
 import com.dj.mall.model.util.MessageVerifyUtils;
+import com.dj.mall.model.util.PasswordSecurityUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -219,7 +221,7 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
     @Override
     public void addUser(UserDTOReq userDTOReq) throws Exception {
         User user = DozerUtil.map(userDTOReq, User.class);
-        EmailUtil.sendEmail(user.getEmail(), SystemConstant.STRING_EMAIL);
+        EmailUtil.sendEmail(user.getEmail(), SystemConstant.STRING_EMAIL, SystemConstant.EMAIL_ADD_CODE, 0);
         this.save(user);
 
         UserRole userRole = new UserRole();
@@ -257,11 +259,15 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         QueryWrapper<User> queryWrapper = new QueryWrapper();
         queryWrapper.eq("user_name", userName);
         User user = this.getOne(queryWrapper);
-        if (user == null) {
+        if (user == null || user.getIsDel().equals(SystemConstant.NOT_IS_DEL)) {
             throw new BusinessException(SystemConstant.USER_NOT_Z);
         }
         if (!password.equals(user.getPassword())) {
             throw new BusinessException(SystemConstant.IS_DEL_NOT);
+        }
+
+        if (user.getIsDel().equals(SystemConstant.RSEET_PWD_IS_DEL)) {
+            throw new BusinessException(SystemConstant.RSEET_PWD_IS_DEL_CODE);
         }
 
         QueryWrapper<UserLoginEndTime> loginTimeQueryWrapper = new QueryWrapper<>();
@@ -308,6 +314,7 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
         updateWrapper.set("password", userDTOReq.getPassword());
         updateWrapper.set("salt", userDTOReq.getSalt());
+        updateWrapper.set("is_del", userDTOReq.getIsDel());
         updateWrapper.eq("phone", userDTOReq.getPhone());
         this.update(updateWrapper);
         return new ResultModel<>().success(SystemConstant.REQ_YES);
@@ -324,6 +331,7 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         QueryWrapper<User> queryWrapper = new QueryWrapper();
         queryWrapper.eq("phone", phone);
         queryWrapper.eq("is_del", SystemConstant.IS_DEL);
+        queryWrapper.or().eq("is_del", SystemConstant.RSEET_PWD_IS_DEL);
         User user = this.getOne(queryWrapper);
         if (user != null) {
             return new ResultModel<>().success(SystemConstant.REQ_YES);
@@ -331,7 +339,29 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         return new ResultModel<>().error(SystemConstant.PHONE_REGISTER);
     }
 
+    /**
+     * 重置密码
+     * @param userId
+     * @param isDel
+     * @throws Exception
+     */
+    @Override
+    public void resetPwd(Integer userId, Integer isDel, UserDTOResp userDTOResp) throws Exception {
 
+        User user = this.getById(userId);
+        String s = (int)((Math.random()*9+1)*100000) + "";
+
+        String str = SystemConstant.EMAIL_RESET_PWD_CODE_1 + user.getUserName() + SystemConstant.EMAIL_RESET_PWD_CODE_2
+                + userDTOResp.getUserName() + SystemConstant.EMAIL_RESET_PWD_CODE_3 + DateFormat.getDateTimeInstance().format(new Date()) + SystemConstant.EMAIL_RESET_PWD_CODE_5 + s + SystemConstant.EMAIL_RESET_PWD_CODE_4;
+        EmailUtil.sendEmail(user.getEmail(), SystemConstant.RESET_PWD, str, 1);
+
+        String s1 = PasswordSecurityUtil.enCode32(s);
+        String s2 = PasswordSecurityUtil.enCode32(s1 + user.getSalt());
+        user.setPassword(s2);
+        user.setIsDel(0);
+        this.updateById(user);
+
+    }
 
 
 }

@@ -93,6 +93,10 @@ public class UserPageController {
 
         List<BaseDataDTOResp> baseDataList = baseDataApi.findBaseListByParentCode(SystemConstant.USER_STATUS);
         model.addAttribute("baseDataList", DozerUtil.mapList(baseDataList, BaseDataVOResp.class));
+
+        List<BaseDataDTOResp> baseDataSexList = baseDataApi.findBaseListByParentCode(SystemConstant.USER_SEX);
+        model.addAttribute("baseDataSexList", baseDataSexList);
+
         return "user/user_show";
     }
 
@@ -118,6 +122,8 @@ public class UserPageController {
         model.addAttribute("roleList", roleList);
         String salt = PasswordSecurityUtil.generateSalt();
         model.addAttribute("salt", salt);
+        List<BaseDataDTOResp> baseDataSexList = baseDataApi.findBaseListByParentCode(SystemConstant.USER_SEX);
+        model.addAttribute("baseDataSexList", baseDataSexList);
         return "user/user_add";
     }
 

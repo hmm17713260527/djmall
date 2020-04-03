@@ -84,4 +84,9 @@ public class UserBo implements Serializable {
      * 状态展示
      */
     private String statusShow;
+
+    /**
+     * 7男，8女
+     */
+    private String sexShow;
 }

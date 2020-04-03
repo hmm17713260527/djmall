@@ -25,6 +25,20 @@ public class UserController {
     @Reference
     private UserApi userApi;
 
+    /**
+     * 重置密码
+     * @param userId
+     * @param isDel
+     * @return
+     * @throws Exception
+     */
+    @PutMapping("resetPwd")
+    public ResultModel<Object> resetPwd(Integer userId, Integer isDel, HttpSession session) throws Exception {
+        UserDTOResp userDTOResp = (UserDTOResp) session.getAttribute(SystemConstant.USER_SESSION);
+        userApi.resetPwd(userId, isDel, userDTOResp);
+        return new ResultModel<>().success(SystemConstant.REQ_YES);
+
+    }
 
     /**
      * 判断手机号是否存在

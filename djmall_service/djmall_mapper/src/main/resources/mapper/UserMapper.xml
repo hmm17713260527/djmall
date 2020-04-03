@@ -40,17 +40,22 @@
             dau.verify,
             dau.status,
             dar.role_name,
-            dabd.`name` as status_show
+            dabd.`name` as status_show,
+            da.`name` as sex_show
         FROM
             djmall_auth_user dau
         LEFT JOIN djmall_auth_role dar ON dau.type = dar.id
         LEFT JOIN djmall_auth_base_data dabd ON dau.`status` = dabd.id
-        where dau.is_del = 1
+        LEFT JOIN djmall_auth_base_data da ON da.id = dau.sex
+        where (dau.is_del = 1 or dau.is_del = 0)
         <if test="user.type != null">
             and dau.type = #{user.type}
         </if>
         <if test="user.status != null">
             and dau.status = #{user.status}
+        </if>
+        <if test="user.sex != null">
+            and dau.sex = #{user.sex}
         </if>
         <if test="user.userName != null and user.userName != ''">
             and (dau.user_name = #{user.userName} or dau.phone = #{user.userName} or dau.email = #{user.userName})

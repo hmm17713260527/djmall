@@ -21,9 +21,14 @@ public class EmailUtil {
 
 
 
-	public static boolean sendEmail(String to, String subject) {
+	public static boolean sendEmail(String to, String subject, String str, Integer i) {
 		try {
-			String content ="<a href=\"http://127.0.0.1:8081/admin/auth/user/toActivate/"+ to +"\">点击激活</a>";
+			String content ="";
+			if (i == 0) {
+				content += "<a href=\"http://127.0.0.1:8081/admin/auth/user/toActivate/"+ to +"\">'"+str+"'</a>";
+			} else {
+				content += "<a href=\"http://127.0.0.1:8081/admin/auth/user/toShow\">'"+str+"'</a>";
+			}
 			//System.out.println(content);
 			Session session = createSession();
 			session.setDebug(true);

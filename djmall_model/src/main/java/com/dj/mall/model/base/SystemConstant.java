@@ -1,8 +1,59 @@
 package com.dj.mall.model.base;
 
 
+
 public interface SystemConstant {
 
+    /**
+     * 基础数据，性别
+     */
+    String USER_SEX = "SEX";
+
+    /**
+     * 密码已重置，请重新修改密码
+     */
+    String RSEET_PWD_IS_DEL_CODE = "密码已重置，请重新修改密码";
+
+    /**
+     * 重置密码=0
+     */
+    Integer RSEET_PWD_IS_DEL = 0;
+
+    /**
+     * 重置密码信息1
+     */
+    String EMAIL_RESET_PWD_CODE_1 = "尊敬的";
+
+    /**
+     * 重置密码信息2
+     */
+    String EMAIL_RESET_PWD_CODE_2 = ",您的密码已被管理员";
+
+    /**
+     * 重置密码信息3
+     */
+    String EMAIL_RESET_PWD_CODE_3 = ",于";
+
+    /**
+     * 重置密码信息5
+     */
+    String EMAIL_RESET_PWD_CODE_5 = "重置为";
+
+    /**
+     * 重置密码信息4
+     */
+    String EMAIL_RESET_PWD_CODE_4 = ",为了您的账户安全，请及时修改，点我去登录";
+
+
+    /**
+     * 重置密码
+     */
+    String RESET_PWD = "重置密码:";
+
+    /**
+     * EMAIL_CODE
+     */
+    String EMAIL_ADD_CODE = "点击激活";
 
     /**
      * 手机号不存在，请注册

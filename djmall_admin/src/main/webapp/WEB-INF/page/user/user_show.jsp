@@ -38,6 +38,7 @@
                     html += "<td><input type='checkbox' name = 'ids' value = '"+data.data.userList[i].id+"'/></td>";
                     html += "<td>"+data.data.userList[i].userName+"</td>";
                     html += "<td>"+data.data.userList[i].nickName+"</td>";
+                    html += "<td>"+data.data.userList[i].sexShow+"</td>";
                     html += "<td>"+data.data.userList[i].phone+"</td>";
                     html += "<td>"+data.data.userList[i].email+"</td>";
                     html += data.data.userList[i].roleName == null ? "<td>角色已删除</td>" : "<td>"+data.data.userList[i].roleName+"</td>";
@@ -126,7 +127,29 @@
         }
     }
 
+    function updatePwd() {
+        var chkValue = $('input[name="ids"]:checked');
+        if (chkValue.length == 0) {
+            layer.msg('未选中');
+        } else if (chkValue.length > 1) {
+            layer.msg('多选');
+        } else {
+            var id = chkValue.val();
+            var index = layer.load(0, {shade:0.5});
+            $.post("<%=request.getContextPath()%>/auth/user/resetPwd",
+                {"userId" : id, "isDel" : 0, "_method" : "PUT"},
+                function(data){
+                    layer.close(index);
+                    layer.msg(data.msg, function(){
+                        if (data.code != 200) {
+                            return;
+                        }
+                        search();
+                    });
 
+                })
+        }
+    }
 
 
 </script>
@@ -140,14 +163,18 @@
         <tbody id = "tbd1">
         </tbody>
     </table>
+
+    性别:
+    <c:forEach items="${baseDataSexList}" var="s">
+        <input type = "radio" name = "sex" value = "${s.baseId}">${s.name}
+    </c:forEach>
+
     状态:
     <select name = "status">
+        <option value="">==请选择==</option>
         <c:forEach items="${baseDataList}" var="b">
             <option value="${b.baseId}">${b.name}</option>
         </c:forEach>
-<%--        <option value = "">请选择</option>--%>
-<%--        <option value = 1>正常</option>--%>
-<%--        <option value = 2>未激活</option>--%>
     </select>
     <input type = "hidden" name = "isDel" value = "1"/><br/>
     <input type = "button" value = "search" onclick = "search()"/><br/>
@@ -157,6 +184,9 @@
     </shiro:hasPermission>
     <shiro:hasPermission name="USER_UPDATE_STATUS">
         <input type="button" value="激活" onclick="tooUpdate()"/>
+    </shiro:hasPermission>
+    <shiro:hasPermission name="USER_UPDATE_PWD">
+        <input type="button" value="重置密码" onclick="updatePwd()"/>
     </shiro:hasPermission>
     <shiro:hasPermission name="USER_DEL">
         <input type="button" value="删除" onclick="del()"/>
@@ -169,6 +199,7 @@
             <td>用户id</td>
             <td>用户名</td>
             <td>昵称</td>
+            <td>性别</td>
             <td>手机号</td>
             <td>邮箱</td>
             <td>级别</td>

@@ -66,4 +66,9 @@ public class UserVOResp implements Serializable {
      */
     private Integer status;
 
+    /**
+     * 7男，8女
+     */
+    private Integer sex;
+
 }

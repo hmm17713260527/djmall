@@ -22,6 +22,7 @@
     <form id="fm">
         <input type="hidden" name="salt" value="${salt}" id="salt">
         <input type="hidden" name="_method" value="PUT">
+        <input type="hidden" name="isDel" value="1">
         <table>
             <tr>
                 <td>新密码:</td>

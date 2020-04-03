@@ -190,6 +190,11 @@
     确认密码:<input type="password" name="password2"><br />
     手机:<input type="text" name="phone" id="phone"><br />
     邮箱:<input type="text" name="email" id="email"><br />
+    性别:
+    <c:forEach items="${baseDataSexList}" var="s">
+        <input type = "radio" name = "sex" value = "${s.baseId}">${s.name}
+    </c:forEach>
+    <br/>
     级别:
     <c:forEach items="${roleList}" var="t">
         <input type = "radio" name = "type" value = "${t.roleId}">${t.roleName}

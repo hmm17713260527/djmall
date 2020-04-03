@@ -123,4 +123,12 @@ public interface UserApi {
      * @throws Exception
      */
     ResultModel<Object> findPhone(String phone) throws Exception;
+
+    /**
+     * 重置密码
+     * @param userId
+     * @param isDel
+     * @throws Exception
+     */
+    void resetPwd(Integer userId, Integer isDel, UserDTOResp userDTOResp) throws Exception;
 }
