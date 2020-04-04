@@ -42,7 +42,9 @@
                     html += "<td>"+data.data.baseDataList[i].name+"</td>";
                     html += "<td>"+data.data.baseDataList[i].parentCode+"</td>";
                     html += "<td>";
+                    html += "<shiro:hasPermission name='BASE_DATA_UPDATE'>";
                     html += "<input type='button' value='修改' onclick='toUpdate("+data.data.baseDataList[i].id+")'/>";
+                    html += "</shiro:hasPermission>";
                     html += "</td>";
                     html += "</tr>";
 

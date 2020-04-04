@@ -34,12 +34,18 @@
                     html += "<tr>";
                     html += "<td>"+data.data[i].roleId+"</td>";
                     html += "<td>"+data.data[i].roleName+"</td>";
-                    html += "<td>"
+                    html += "<td>";
+                    html += "<shiro:hasPermission name='ROLE_RELEVANCE'>";
                     html += "<input type='button' value='关联资源' onclick='toRoleResource("+data.data[i].roleId+")'/>";
+                    html += "</shiro:hasPermission>";
                     html += "||";
-                    html += "<a href='<%=request.getContextPath()%>/auth/role/toUpdate/"+data.data[i].roleId+"'>编辑</a>";
+                    html += "<shiro:hasPermission name='ROLE_UPDATE'>";
+                    html += "<input type='button' value='编辑' onclick='toUpdate("+data.data[i].roleId+")'/>";
+                    html += "</shiro:hasPermission>";
                     html += "||";
-                    html += "<a href='<%=request.getContextPath()%>/auth/role/del/"+data.data[i].roleId+"'>删除</a>";
+                    html += "<shiro:hasPermission name='ROLE_DEL'>";
+                    html += "<input type='button' value='删除' onclick='del("+data.data[i].roleId+")'/>";
+                    html += "</shiro:hasPermission>";
                     html += "</td>";
                     html += "</tr>";
                 }
@@ -49,6 +55,40 @@
 
             })
     }
+
+    function del(roleId) {
+        var index = layer.load(1,{shade:0.5});
+        $.post("<%=request.getContextPath()%>/auth/role/del",
+            {"roleId" : roleId, "_method" : "DELETE"},
+            function(data){
+                if(data.code == -1){
+                    layer.close(index);
+                    layer.msg(data.msg, {icon: 5});
+                    return
+                }
+                layer.msg(data.msg, {
+                    icon: 6,
+                    time: 2000
+                }, function(){
+                    show();
+                });
+            }
+        )
+    }
+
+
+
+    function toUpdate(roleId) {
+        layer.open({
+            type: 2,
+            title: '编辑页面',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['380px', '80%'],
+            content: '<%=request.getContextPath()%>/auth/role/toUpdate/' + roleId
+        });
+    }
+
 
     function toRoleResource(roleId) {
         layer.open({

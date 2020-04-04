@@ -36,6 +36,18 @@ public class RoleContriller {
     @Reference
     private ResourceApi resourceApi;
 
+    /**
+     * 角色删除
+     * @param roleId
+     * @return
+     * @throws Exception
+     */
+    @DeleteMapping("del")
+    public ResultModel<Object> del(Integer roleId) throws Exception {
+        roleApi.del(roleId);
+        return new ResultModel<>().success(SystemConstant.REQ_YES);
+    }
+
 
     /**
      * 关联资源保持

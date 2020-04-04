@@ -9,7 +9,6 @@ import com.dj.mall.model.util.DozerUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -43,17 +42,6 @@ public class RolePageContriller {
     }
 
 
-    /**
-     * 角色删除
-     * @param roleId
-     * @return
-     * @throws Exception
-     */
-    @GetMapping("del/{roleId}")
-    public String del(@PathVariable("roleId") Integer roleId) throws Exception {
-        roleApi.del(roleId);
-        return "role/role_show";
-    }
 
     /**
      * 去修改，通过id查询role

@@ -25,7 +25,7 @@
                     if (data.code != 200) {
                         return;
                     }
-                    window.location.href = "<%=request.getContextPath()%>/auth/role/toShow";
+                    parent.window.location.href = "<%=request.getContextPath()%>/auth/role/toShow";
                 });
 
             })
