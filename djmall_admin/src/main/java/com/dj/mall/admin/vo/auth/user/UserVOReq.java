@@ -15,7 +15,10 @@ public class UserVOReq implements Serializable {
      */
     private Integer userId;
 
-
+    /**
+     * 当前页
+     */
+    private Integer pageNo;
 
 
     /**

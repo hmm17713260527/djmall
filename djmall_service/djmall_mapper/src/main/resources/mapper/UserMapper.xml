@@ -60,12 +60,5 @@
         <if test="user.userName != null and user.userName != ''">
             and (dau.user_name = #{user.userName} or dau.phone = #{user.userName} or dau.email = #{user.userName})
         </if>
-
-
-
-
-
-
-
     </select>
 </mapper>

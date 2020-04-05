@@ -8,6 +8,7 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -39,7 +40,7 @@ public class UserLoginEndTime implements Serializable {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")//返回前台格式
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")//接受前台时间格式
-    private Date endTime;
+    private LocalDateTime endTime;
 
     /**
      * 1在，2无

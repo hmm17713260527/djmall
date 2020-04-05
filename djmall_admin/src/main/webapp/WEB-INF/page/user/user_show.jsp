@@ -51,7 +51,33 @@
                     html1 += "<input type = 'radio' name = 'type' value = '"+data.data.roleList[i].id+"'>"+data.data.roleList[i].roleName;
                 }
                 $("#tbd1").html(html1);
+
+                var pageNo = $("#pageNo").val();
+                var pageHtml = "<input type='button' value='上一页' onclick='page("+data.data.totalNum+", "+(parseInt(pageNo) - 1)+")'>";
+                pageHtml += "<input type='button' value='下一页' onclick='page("+data.data.totalNum+", "+(parseInt(pageNo) + 1)+")')'>";
+                $("#pageInfo").html(pageHtml);
+
             });
+    }
+
+    function toSearch() {
+        $("#pageNo").val(1);
+        search();
+    }
+
+    function page(totalNum, page) {
+
+        if (page < 1) {
+            layer.msg('已经到首页啦!', {icon:0});
+            return;
+        }
+        if (page > totalNum) {
+            layer.msg('已经到尾页啦!!', {icon:0});
+            return;
+        }
+        $("#pageNo").val(page);
+        search();
+
     }
 
 
@@ -158,6 +184,7 @@
 
 
 <form id = "fm">
+    <input type="hidden" value="1" id="pageNo" name="pageNo">
     用户名/手机号/邮箱:<input type = "text" name = "userName"/><br/>
     <table>
         <tbody id = "tbd1">
@@ -167,7 +194,7 @@
     性别:
     <c:forEach items="${baseDataSexList}" var="s">
         <input type = "radio" name = "sex" value = "${s.baseId}">${s.name}
-    </c:forEach>
+    </c:forEach><br/>
 
     状态:
     <select name = "status">
@@ -177,7 +204,7 @@
         </c:forEach>
     </select>
     <input type = "hidden" name = "isDel" value = "1"/><br/>
-    <input type = "button" value = "search" onclick = "search()"/><br/>
+    <input type = "button" value = "search" onclick = "toSearch()"/><br/>
 
     <shiro:hasPermission name="USER_UPDATE">
         <input type="button" value="修改" onclick="toUpdate()"/>
@@ -212,11 +239,11 @@
 
     </table>
 
+<div id="pageInfo">
+
+</div>
 
 </form>
-
-
-
 
 </body>
 </html>

@@ -1,10 +1,12 @@
 package com.dj.mall.pro.auth.impl.user;
-import java.text.DateFormat;
-import	java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dj.mall.api.auth.user.UserApi;
 import com.dj.mall.entity.auth.resource.Resource;
@@ -155,15 +157,20 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
     public HashMap<String, Object> findUserList(UserDTOReq userDTOReq) throws Exception {
 
         HashMap<String, Object> map = new HashMap<>();
+        Page<UserBo> page = new Page();
         QueryWrapper<Role> roleWrapper = new QueryWrapper<>();
         roleWrapper.eq("is_del", SystemConstant.IS_DEL);
         List<Role> roleList = roleMapper.selectList(roleWrapper);
-
-        User user = DozerUtil.map(userDTOReq, User.class);
-        List<UserBo> userList = this.baseMapper.findUserList(user);
-
         map.put("roleList", roleList);
-        map.put("userList", userList);
+
+        page.setCurrent(userDTOReq.getPageNo());
+        page.setSize(SystemConstant.PAGE_SIZE);
+
+        UserBo userBO = DozerUtil.map(userDTOReq, UserBo.class);
+
+        IPage<UserBo> pageInfo = getBaseMapper().findUserList(page, userBO);
+        map.put("userList", pageInfo.getRecords());
+        map.put("totalNum", pageInfo.getPages());
         return map;
     }
 
@@ -277,11 +284,11 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         if (null == userLogin) {
             UserLoginEndTime userLoginEndTime = new UserLoginEndTime();
             userLoginEndTime.setUserId(user.getId());
-            userLoginEndTime.setEndTime(new Date());
+            userLoginEndTime.setEndTime(LocalDateTime.now());
             userLoginEndTime.setIsDel(SystemConstant.IS_DEL);
             userLoginEndTimeMapper.insert(userLoginEndTime);
         } else {
-            userLogin.setEndTime(new Date());
+            userLogin.setEndTime(LocalDateTime.now());
             userLoginEndTimeMapper.updateById(userLogin);
         }
 
@@ -352,7 +359,7 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         String s = (int)((Math.random()*9+1)*100000) + "";
 
         String str = SystemConstant.EMAIL_RESET_PWD_CODE_1 + user.getUserName() + SystemConstant.EMAIL_RESET_PWD_CODE_2
-                + userDTOResp.getUserName() + SystemConstant.EMAIL_RESET_PWD_CODE_3 + DateFormat.getDateTimeInstance().format(new Date()) + SystemConstant.EMAIL_RESET_PWD_CODE_5 + s + SystemConstant.EMAIL_RESET_PWD_CODE_4;
+                + userDTOResp.getUserName() + SystemConstant.EMAIL_RESET_PWD_CODE_3 + DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now()) + SystemConstant.EMAIL_RESET_PWD_CODE_5 + s + SystemConstant.EMAIL_RESET_PWD_CODE_4;
         EmailUtil.sendEmail(user.getEmail(), SystemConstant.RESET_PWD, str, 1);
 
         String s1 = PasswordSecurityUtil.enCode32(s);

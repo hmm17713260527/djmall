@@ -1,6 +1,8 @@
 package com.dj.mall.mapper.auth.user;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dj.mall.entity.auth.resource.Resource;
 import com.dj.mall.entity.auth.user.User;
 import com.dj.mall.mapper.bo.auth.user.UserBo;
@@ -16,5 +18,6 @@ public interface UserMapper extends BaseMapper<User> {
 
     List<Resource> getUserResourceByUserId(@Param("userId") Integer userId) throws DataAccessException;
 
-    List<UserBo> findUserList(@Param("user") User user) throws DataAccessException;
+    IPage<UserBo> findUserList(@Param("page") Page<UserBo> page, @Param("user") UserBo user) throws DataAccessException;
+
 }

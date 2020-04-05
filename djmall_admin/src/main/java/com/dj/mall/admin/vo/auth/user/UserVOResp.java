@@ -16,6 +16,12 @@ public class UserVOResp implements Serializable {
     private Integer userId;
 
     /**
+     * 当前页
+     */
+    private Integer pageNo;
+
+
+    /**
      * 用户名
      */
     private String userName;

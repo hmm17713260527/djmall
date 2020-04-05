@@ -25,6 +25,11 @@ public class UserBo implements Serializable {
     private Integer id;
 
     /**
+     * 当前页
+     */
+    private Integer pageNo;
+
+    /**
      * 用户名
      */
     private String userName;
@@ -87,6 +92,11 @@ public class UserBo implements Serializable {
 
     /**
      * 7男，8女
+     */
+    private Integer sex;
+
+    /**
+     * 性别展示
      */
     private String sexShow;
 }

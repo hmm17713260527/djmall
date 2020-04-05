@@ -5,6 +5,11 @@ package com.dj.mall.model.base;
 public interface SystemConstant {
 
     /**
+     * 页面大小
+     */
+    Integer PAGE_SIZE = 1;
+
+    /**
      * 基础数据，性别
      */
     String USER_SEX = "SEX";
