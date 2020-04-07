@@ -36,23 +36,12 @@
                 var html1 = "分类上级:";
                 html1 += "<select name='parentCode'>";
                 html1 += "<option value='SYSTEM'>==SYSTEM==</option>";
-                for (var i = 0; i < data.data.baseDataList.length; i++) {
-                    html += "<tr>";
-                    html += "<td>"+data.data.baseDataList[i].code+"</td>";
-                    html += "<td>"+data.data.baseDataList[i].name+"</td>";
-                    html += "<td>"+data.data.baseDataList[i].parentCode+"</td>";
-                    html += "<td>";
-                    html += "<shiro:hasPermission name='BASE_DATA_UPDATE'>";
-                    html += "<input type='button' value='修改' onclick='toUpdate("+data.data.baseDataList[i].id+")'/>";
-                    html += "</shiro:hasPermission>";
-                    html += "</td>";
-                    html += "</tr>";
 
-                    if (data.data.baseDataList[i].parentCode == "SYSTEM") {
-                        html1 += "<option value='data.data.baseDataList[i].code'>"+data.data.baseDataList[i].name+"</option>";
+                for (var i = 0; i < data.data.paramList.length; i++) {
+                    if (data.data.paramList[i].parentCode == "SYSTEM") {
+                        html1 += "<option value='data.data.paramList[i].code'>"+data.data.paramList[i].name+"</option>";
                     }
                 }
-                $("#tbd").html(html);
 
                 html1 += "<select/><br/>";
                 html1 += "分类名称：";
@@ -61,8 +50,46 @@
                 html1 += "<input type='text' name='code'/><br/>";
 
                 $("#tbd1").html(html1);
+
+                for (var i = 0; i < data.data.list.length; i++) {
+                    html += "<tr>";
+                    html += "<td>"+data.data.list[i].code+"</td>";
+                    html += "<td>"+data.data.list[i].name+"</td>";
+                    html += "<td>"+data.data.list[i].parentCode+"</td>";
+                    html += "<td>";
+                    html += "<shiro:hasPermission name='BTN_BASE_DATA_UPDATE'>";
+                    html += "<input type='button' value='修改' onclick='toUpdate("+data.data.list[i].baseId+")'/>";
+                    html += "</shiro:hasPermission>";
+                    html += "</td>";
+                    html += "</tr>";
+                }
+                $("#tbd").html(html);
+
+
+
+                var pageNo = $("#pageNo").val();
+                var pageHtml = "<input type='button' value='上一页' onclick='page("+data.data.pages+", "+(parseInt(pageNo) - 1)+")'>";
+                pageHtml += "<input type='button' value='下一页' onclick='page("+data.data.pages+", "+(parseInt(pageNo) + 1)+")')'>";
+                $("#pageInfo").html(pageHtml);
+
             });
     }
+
+    function page(totalNum, page) {
+
+        if (page < 1) {
+            layer.msg('已经到首页啦!', {icon:0});
+            return;
+        }
+        if (page > totalNum) {
+            layer.msg('已经到尾页啦!!', {icon:0});
+            return;
+        }
+        $("#pageNo").val(page);
+        search();
+
+    }
+
 
     function toUpdate(baseId) {
         layer.open({
@@ -103,13 +130,13 @@
 
 <form id = "fm">
 
-
+    <input type="hidden" value="1" id="pageNo" name="pageNo">
     <table>
         <tbody id = "tbd1">
         </tbody>
     </table>
 
-    <shiro:hasPermission name="BASE_DATA_ADD">
+    <shiro:hasPermission name="BTN_BASE_DATA_ADD">
         <input type="button" value="新增" onclick="add()"/>
     </shiro:hasPermission>
 
@@ -127,6 +154,10 @@
         </tbody>
 
     </table>
+
+    <div id="pageInfo">
+
+    </div>
 
 
 </form>

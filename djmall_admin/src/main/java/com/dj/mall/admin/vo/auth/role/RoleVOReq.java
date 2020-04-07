@@ -23,6 +23,11 @@ public class RoleVOReq implements Serializable {
     private Integer roleId;
 
     /**
+     * 当前页
+     */
+    private Integer pageNo;
+
+    /**
      * 角色名
      */
     private String roleName;

@@ -3,6 +3,8 @@ package com.dj.mall.pro.auth.impl.role;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dj.mall.api.auth.role.RoleApi;
 import com.dj.mall.entity.auth.resource.Resource;
@@ -16,10 +18,12 @@ import com.dj.mall.model.dto.auth.resource.ResourceDTOResp;
 import com.dj.mall.model.dto.auth.role.RoleDTOReq;
 import com.dj.mall.model.dto.auth.role.RoleDTOResp;
 import com.dj.mall.model.util.DozerUtil;
+import com.dj.mall.model.util.PageResult;
 import com.dj.mall.pro.auth.service.role.RoleResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -69,10 +73,19 @@ public class RoleApiImpl extends ServiceImpl<RoleMapper, Role> implements RoleAp
      * @throws Exception
      */
     @Override
-    public List<RoleDTOResp> findRole() throws Exception {
+    public PageResult findRole(RoleDTOReq roleDTOReq) throws Exception {
+        PageResult pageResult = new PageResult();
+        Page<Role> page = new Page();
+
+        page.setCurrent(roleDTOReq.getPageNo());
+        page.setSize(SystemConstant.PAGE_SIZE);
+
         QueryWrapper<Role> queryWrapper = new QueryWrapper<Role>();
         queryWrapper.eq("is_del", SystemConstant.ROLE_IS_DEL_YES);
-        return DozerUtil.mapList(this.list(queryWrapper), RoleDTOResp.class);
+        IPage<Role> pageInfo = this.page(page, queryWrapper);
+        pageResult.setList(DozerUtil.mapList(pageInfo.getRecords(), RoleDTOResp.class));
+        pageResult.setPages(pageInfo.getPages());
+        return pageResult;
     }
 
     /**
@@ -161,5 +174,13 @@ public class RoleApiImpl extends ServiceImpl<RoleMapper, Role> implements RoleAp
         }
         roleResourceService.saveBatch(roleResourceList);
         return null;
+    }
+
+    @Override
+    public List<RoleDTOResp> findRoleList() throws Exception {
+        QueryWrapper<Role> queryWrapper = new QueryWrapper<Role>();
+        queryWrapper.eq("is_del", SystemConstant.ROLE_IS_DEL_YES);
+        List<Role> list = this.list(queryWrapper);
+        return DozerUtil.mapList(list, RoleDTOResp.class);
     }
 }

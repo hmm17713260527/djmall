@@ -2,6 +2,7 @@ package com.dj.mall.api.auth.base_data;
 
 import com.dj.mall.model.dto.auth.base.BaseDataDTOReq;
 import com.dj.mall.model.dto.auth.base.BaseDataDTOResp;
+import com.dj.mall.model.util.PageResult;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,9 +28,11 @@ public interface BaseDataApi {
 
     /**
      * 查询base_data表
+     * @param baseDataDTOReq
      * @return
+     * @throws Exception
      */
-    HashMap<String, Object> findBaseList() throws Exception;
+    PageResult findBaseList(BaseDataDTOReq baseDataDTOReq) throws Exception;
 
     /**
      * 字典新增

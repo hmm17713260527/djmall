@@ -2,11 +2,13 @@ package com.dj.mall.admin.web.auth.base_data;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.dj.mall.admin.vo.auth.base.BaseDataVOReq;
+import com.dj.mall.admin.vo.auth.base.BaseDataVOResp;
 import com.dj.mall.api.auth.base_data.BaseDataApi;
 import com.dj.mall.model.base.ResultModel;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.base.BaseDataDTOReq;
 import com.dj.mall.model.util.DozerUtil;
+import com.dj.mall.model.util.PageResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,10 +50,12 @@ public class BaseDataController {
      * @return
      */
     @RequestMapping("show")
-    public ResultModel<Object> show() throws Exception {
+    public ResultModel<Object> show(BaseDataVOReq baseDataVOReq) throws Exception {
 
-        HashMap<String, Object> map = baseDataApi.findBaseList();
-        return new ResultModel<>().success(map);
+        PageResult pageResult =  baseDataApi.findBaseList(DozerUtil.map(baseDataVOReq, BaseDataDTOReq.class));
+        pageResult.setList(DozerUtil.mapList(pageResult.getList(), BaseDataVOResp.class));
+        pageResult.setParamList(DozerUtil.mapList(pageResult.getParamList(), BaseDataVOResp.class));
+        return new ResultModel<>().success(pageResult);
 
     }
 

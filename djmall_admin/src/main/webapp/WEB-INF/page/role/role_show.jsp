@@ -30,31 +30,52 @@
                     return;
                 }
                 var html = "";
-                for (var i = 0; i < data.data.length; i++) {
+                for (var i = 0; i < data.data.list.length; i++) {
                     html += "<tr>";
-                    html += "<td>"+data.data[i].roleId+"</td>";
-                    html += "<td>"+data.data[i].roleName+"</td>";
+                    html += "<td>"+data.data.list[i].roleId+"</td>";
+                    html += "<td>"+data.data.list[i].roleName+"</td>";
                     html += "<td>";
-                    html += "<shiro:hasPermission name='ROLE_RELEVANCE'>";
-                    html += "<input type='button' value='关联资源' onclick='toRoleResource("+data.data[i].roleId+")'/>";
+                    html += "<shiro:hasPermission name='BTN_ROLE_RELEVANCE'>";
+                    html += "<input type='button' value='关联资源' onclick='toRoleResource("+data.data.list[i].roleId+")'/>";
                     html += "</shiro:hasPermission>";
                     html += "||";
-                    html += "<shiro:hasPermission name='ROLE_UPDATE'>";
-                    html += "<input type='button' value='编辑' onclick='toUpdate("+data.data[i].roleId+")'/>";
+                    html += "<shiro:hasPermission name='BTN_ROLE_UPDATE'>";
+                    html += "<input type='button' value='编辑' onclick='toUpdate("+data.data.list[i].roleId+")'/>";
                     html += "</shiro:hasPermission>";
                     html += "||";
-                    html += "<shiro:hasPermission name='ROLE_DEL'>";
-                    html += "<input type='button' value='删除' onclick='del("+data.data[i].roleId+")'/>";
+                    html += "<shiro:hasPermission name='BTN_ROLE_DEL'>";
+                    html += "<input type='button' value='删除' onclick='del("+data.data.list[i].roleId+")'/>";
                     html += "</shiro:hasPermission>";
                     html += "</td>";
                     html += "</tr>";
                 }
                 $("#tbd").html(html);
 
+                var pageNo = $("#pageNo").val();
+                var pageHtml = "<input type='button' value='上一页' onclick='page("+data.data.pages+", "+(parseInt(pageNo) - 1)+")'>";
+                pageHtml += "<input type='button' value='下一页' onclick='page("+data.data.pages+", "+(parseInt(pageNo) + 1)+")')'>";
+                $("#pageInfo").html(pageHtml);
+
 
 
             })
     }
+
+    function page(totalNum, page) {
+
+        if (page < 1) {
+            layer.msg('已经到首页啦!', {icon:0});
+            return;
+        }
+        if (page > totalNum) {
+            layer.msg('已经到尾页啦!!', {icon:0});
+            return;
+        }
+        $("#pageNo").val(page);
+        show();
+
+    }
+
 
     function del(roleId) {
         var index = layer.load(1,{shade:0.5});
@@ -119,9 +140,10 @@
 </head>
 <body>
 <form id = "fm">
+    <input type="hidden" value="1" id="pageNo" name="pageNo">
 
     <input type="hidden" name = "isDel" value="1">
-    <shiro:hasPermission name="ROLE_ADD">
+    <shiro:hasPermission name="BTN_ROLE_ADD">
         <input type="button" value="新增" onclick="toAdd()"/>
     </shiro:hasPermission>
     <table cellpadding='12px' cellspacing='0px' border='1px'  bordercolor='gray' bgcolor='pink'>
@@ -137,6 +159,9 @@
 
     </table>
 
+    <div id="pageInfo">
+
+    </div>
 
 </form>
 

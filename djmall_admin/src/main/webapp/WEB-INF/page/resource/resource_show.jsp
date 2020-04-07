@@ -141,13 +141,13 @@
 </head>
 <body>
 
-    <shiro:hasPermission name="RESOURCE_ADD">
+    <shiro:hasPermission name="BTN_RESOURCE_ADD">
         <input type="button" value="新增" onclick="saveTwo()">
     </shiro:hasPermission>
-    <shiro:hasPermission name="RESOURCE_UPDATE">
+    <shiro:hasPermission name="BTN_RESOURCE_UPDATE">
         <input type="button" value="修改" onclick="updateRes()">
     </shiro:hasPermission>
-    <shiro:hasPermission name="RESOURCE_DEL">
+    <shiro:hasPermission name="BTN_RESOURCE_DEL">
         <input type="button" value="删除" onclick="deleRes()">
     </shiro:hasPermission>
     <div id="tree" class="ztree">

@@ -23,12 +23,10 @@ import com.dj.mall.model.base.BusinessException;
 import com.dj.mall.model.base.ResultModel;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.resource.ResourceDTOResp;
+import com.dj.mall.model.dto.auth.role.RoleDTOResp;
 import com.dj.mall.model.dto.auth.user.UserDTOReq;
 import com.dj.mall.model.dto.auth.user.UserDTOResp;
-import com.dj.mall.model.util.DozerUtil;
-import com.dj.mall.model.util.EmailUtil;
-import com.dj.mall.model.util.MessageVerifyUtils;
-import com.dj.mall.model.util.PasswordSecurityUtil;
+import com.dj.mall.model.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -154,14 +152,15 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
      * @throws Exception
      */
     @Override
-    public HashMap<String, Object> findUserList(UserDTOReq userDTOReq) throws Exception {
+    public PageResult findUserList(UserDTOReq userDTOReq) throws Exception {
 
-        HashMap<String, Object> map = new HashMap<>();
+        PageResult pageResult = new PageResult();
+
         Page<UserBo> page = new Page();
         QueryWrapper<Role> roleWrapper = new QueryWrapper<>();
         roleWrapper.eq("is_del", SystemConstant.IS_DEL);
         List<Role> roleList = roleMapper.selectList(roleWrapper);
-        map.put("roleList", roleList);
+        pageResult.setParamList(DozerUtil.mapList(roleList, RoleDTOResp.class));
 
         page.setCurrent(userDTOReq.getPageNo());
         page.setSize(SystemConstant.PAGE_SIZE);
@@ -169,9 +168,9 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         UserBo userBO = DozerUtil.map(userDTOReq, UserBo.class);
 
         IPage<UserBo> pageInfo = getBaseMapper().findUserList(page, userBO);
-        map.put("userList", pageInfo.getRecords());
-        map.put("totalNum", pageInfo.getPages());
-        return map;
+        pageResult.setList(DozerUtil.mapList(pageInfo.getRecords(), UserDTOResp.class));
+        pageResult.setPages(pageInfo.getPages());
+        return pageResult;
     }
 
 
@@ -277,20 +276,11 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
             throw new BusinessException(SystemConstant.RSEET_PWD_IS_DEL_CODE);
         }
 
-        QueryWrapper<UserLoginEndTime> loginTimeQueryWrapper = new QueryWrapper<>();
-        loginTimeQueryWrapper.eq("user_id", user.getId()).eq("is_del", SystemConstant.IS_DEL);
-        UserLoginEndTime userLogin = userLoginEndTimeMapper.selectOne(loginTimeQueryWrapper);
-
-        if (null == userLogin) {
-            UserLoginEndTime userLoginEndTime = new UserLoginEndTime();
-            userLoginEndTime.setUserId(user.getId());
-            userLoginEndTime.setEndTime(LocalDateTime.now());
-            userLoginEndTime.setIsDel(SystemConstant.IS_DEL);
-            userLoginEndTimeMapper.insert(userLoginEndTime);
-        } else {
-            userLogin.setEndTime(LocalDateTime.now());
-            userLoginEndTimeMapper.updateById(userLogin);
-        }
+        UserLoginEndTime userLoginEndTime = new UserLoginEndTime();
+        userLoginEndTime.setUserId(user.getId());
+        userLoginEndTime.setEndTime(LocalDateTime.now());
+        userLoginEndTime.setIsDel(SystemConstant.IS_DEL);
+        userLoginEndTimeMapper.insert(userLoginEndTime);
 
         UserDTOResp userDTOResp = DozerUtil.map(user, UserDTOResp.class);
 

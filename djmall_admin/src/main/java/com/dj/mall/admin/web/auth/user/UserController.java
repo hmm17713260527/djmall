@@ -1,6 +1,7 @@
 package com.dj.mall.admin.web.auth.user;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.dj.mall.admin.vo.auth.role.RoleVOResp;
 import com.dj.mall.admin.vo.auth.user.UserVOReq;
 import com.dj.mall.admin.vo.auth.user.UserVOResp;
 import com.dj.mall.api.auth.user.UserApi;
@@ -9,6 +10,7 @@ import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.user.UserDTOReq;
 import com.dj.mall.model.dto.auth.user.UserDTOResp;
 import com.dj.mall.model.util.DozerUtil;
+import com.dj.mall.model.util.PageResult;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -16,6 +18,7 @@ import org.apache.shiro.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 @RestController
@@ -141,8 +144,13 @@ public class UserController {
     @RequestMapping("show")
     public ResultModel<Object> show(UserVOReq userVOReq) throws Exception {
 
-        HashMap<String, Object> map = userApi.findUserList(DozerUtil.map(userVOReq, UserDTOReq.class));
-        return new ResultModel<>().success(map);
+        PageResult pageResult = userApi.findUserList(DozerUtil.map(userVOReq, UserDTOReq.class));
+
+        pageResult.setList(DozerUtil.mapList(pageResult.getList(), UserVOResp.class));
+
+        pageResult.setParamList(DozerUtil.mapList(pageResult.getParamList(), RoleVOResp.class));
+
+        return new ResultModel<>().success(pageResult);
 
     }
 
@@ -169,6 +177,7 @@ public class UserController {
      */
     @PostMapping("add")
     public ResultModel<Object> addUser(UserVOReq userVOReq) throws Exception {
+        userVOReq.setCreateTime(LocalDateTime.now());
         UserDTOReq userDTOReq = DozerUtil.map(userVOReq, UserDTOReq.class);
         userApi.addUser(userDTOReq);
         return new ResultModel<>().success(SystemConstant.STRING_4);

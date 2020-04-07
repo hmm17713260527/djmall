@@ -3,7 +3,9 @@ package com.dj.mall.api.auth.role;
 import com.dj.mall.model.dto.auth.resource.ResourceDTOResp;
 import com.dj.mall.model.dto.auth.role.RoleDTOReq;
 import com.dj.mall.model.dto.auth.role.RoleDTOResp;
+import com.dj.mall.model.util.PageResult;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -36,7 +38,7 @@ public interface RoleApi {
      * @return
      * @throws Exception
      */
-    List<RoleDTOResp> findRole() throws Exception;;
+    PageResult findRole(RoleDTOReq roleDTOReq) throws Exception;;
 
     /**
      * 根据角色名查询，新增去重
@@ -77,4 +79,11 @@ public interface RoleApi {
      * @throws Exception
      */
     Boolean addRoleResource(Integer roleId, Integer[] resourceIds) throws Exception;;
+
+    /**
+     * 查询角色
+     * @return
+     * @throws Exception
+     */
+    List<RoleDTOResp> findRoleList() throws Exception;;
 }

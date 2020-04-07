@@ -39,14 +39,17 @@
             dau.is_del,
             dau.verify,
             dau.status,
+            dau.create_time,
             dar.role_name,
             dabd.`name` as status_show,
-            da.`name` as sex_show
+            da.`name` as sex_show,
+            MAX(dal.end_time) AS end_time
         FROM
             djmall_auth_user dau
         LEFT JOIN djmall_auth_role dar ON dau.type = dar.id
         LEFT JOIN djmall_auth_base_data dabd ON dau.`status` = dabd.id
         LEFT JOIN djmall_auth_base_data da ON da.id = dau.sex
+        LEFT JOIN djmall_auth_login_end_time dal ON dau.id = dal.user_id
         where (dau.is_del = 1 or dau.is_del = 0)
         <if test="user.type != null">
             and dau.type = #{user.type}
@@ -60,5 +63,6 @@
         <if test="user.userName != null and user.userName != ''">
             and (dau.user_name = #{user.userName} or dau.phone = #{user.userName} or dau.email = #{user.userName})
         </if>
+        GROUP BY dal.user_id
     </select>
 </mapper>

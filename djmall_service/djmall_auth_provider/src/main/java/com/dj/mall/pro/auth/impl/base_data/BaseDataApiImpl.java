@@ -2,13 +2,18 @@ package com.dj.mall.pro.auth.impl.base_data;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dj.mall.api.auth.base_data.BaseDataApi;
 import com.dj.mall.entity.auth.base_data.BaseData;
+import com.dj.mall.entity.auth.role.Role;
 import com.dj.mall.mapper.auth.base.BaseDataMapper;
+import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.base.BaseDataDTOReq;
 import com.dj.mall.model.dto.auth.base.BaseDataDTOResp;
 import com.dj.mall.model.util.DozerUtil;
+import com.dj.mall.model.util.PageResult;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,12 +50,21 @@ public class BaseDataApiImpl extends ServiceImpl<BaseDataMapper, BaseData> imple
      * @throws Exception
      */
     @Override
-    public HashMap<String, Object> findBaseList() throws Exception {
+    public PageResult findBaseList(BaseDataDTOReq baseDataDTOReq) throws Exception {
 
-        HashMap<String, Object> map = new HashMap<>();
-        List<BaseData> baseDataList = this.list();
-        map.put("baseDataList", baseDataList);
-        return map;
+        PageResult pageResult = new PageResult();
+        Page<BaseData> page = new Page();
+
+        page.setCurrent(baseDataDTOReq.getPageNo());
+        page.setSize(SystemConstant.PAGE_SIZE);
+
+        IPage<BaseData> pageInfo = this.page(page);
+        pageResult.setList(DozerUtil.mapList(pageInfo.getRecords(), BaseDataDTOResp.class));
+        pageResult.setPages(pageInfo.getPages());
+
+        pageResult.setParamList(DozerUtil.mapList(this.list(), BaseDataDTOResp.class));
+
+        return pageResult;
 
     }
 

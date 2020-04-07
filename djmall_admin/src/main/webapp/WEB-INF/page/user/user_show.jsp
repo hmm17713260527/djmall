@@ -33,28 +33,30 @@
                 }
 
                 var html = "";
-                for (var i = 0; i < data.data.userList.length; i++) {
+                for (var i = 0; i < data.data.list.length; i++) {
                     html += "<tr>";
-                    html += "<td><input type='checkbox' name = 'ids' value = '"+data.data.userList[i].id+"'/></td>";
-                    html += "<td>"+data.data.userList[i].userName+"</td>";
-                    html += "<td>"+data.data.userList[i].nickName+"</td>";
-                    html += "<td>"+data.data.userList[i].sexShow+"</td>";
-                    html += "<td>"+data.data.userList[i].phone+"</td>";
-                    html += "<td>"+data.data.userList[i].email+"</td>";
-                    html += data.data.userList[i].roleName == null ? "<td>角色已删除</td>" : "<td>"+data.data.userList[i].roleName+"</td>";
-                    html += "<td>"+data.data.userList[i].statusShow+"</td>";
+                    html += "<td><input type='checkbox' name = 'ids' value = '"+data.data.list[i].userId+"'/></td>";
+                    html += "<td>"+data.data.list[i].userName+"</td>";
+                    html += "<td>"+data.data.list[i].nickName+"</td>";
+                    html += "<td>"+data.data.list[i].sexShow+"</td>";
+                    html += "<td>"+data.data.list[i].phone+"</td>";
+                    html += "<td>"+data.data.list[i].email+"</td>";
+                    html += data.data.list[i].roleName == null ? "<td>角色已删除</td>" : "<td>"+data.data.list[i].roleName+"</td>";
+                    html += "<td>"+data.data.list[i].statusShow+"</td>";
+                    html += "<td>"+data.data.list[i].createTime+"</td>";
+                    html += "<td>"+data.data.list[i].endTime+"</td>";
                     html += "</tr>";
                 }
                 $("#tbd").html(html);
                 var html1 = "角色:";
-                for (var i = 0; i < data.data.roleList.length; i++) {
-                    html1 += "<input type = 'radio' name = 'type' value = '"+data.data.roleList[i].id+"'>"+data.data.roleList[i].roleName;
+                for (var i = 0; i < data.data.paramList.length; i++) {
+                    html1 += "<input type = 'radio' name = 'type' value = '"+data.data.paramList[i].roleId+"'>"+data.data.paramList[i].roleName;
                 }
                 $("#tbd1").html(html1);
 
                 var pageNo = $("#pageNo").val();
-                var pageHtml = "<input type='button' value='上一页' onclick='page("+data.data.totalNum+", "+(parseInt(pageNo) - 1)+")'>";
-                pageHtml += "<input type='button' value='下一页' onclick='page("+data.data.totalNum+", "+(parseInt(pageNo) + 1)+")')'>";
+                var pageHtml = "<input type='button' value='上一页' onclick='page("+data.data.pages+", "+(parseInt(pageNo) - 1)+")'>";
+                pageHtml += "<input type='button' value='下一页' onclick='page("+data.data.pages+", "+(parseInt(pageNo) + 1)+")')'>";
                 $("#pageInfo").html(pageHtml);
 
             });
@@ -206,19 +208,19 @@
     <input type = "hidden" name = "isDel" value = "1"/><br/>
     <input type = "button" value = "search" onclick = "toSearch()"/><br/>
 
-    <shiro:hasPermission name="USER_UPDATE">
+    <shiro:hasPermission name="BTN_USER_UPDATE">
         <input type="button" value="修改" onclick="toUpdate()"/>
     </shiro:hasPermission>
-    <shiro:hasPermission name="USER_UPDATE_STATUS">
+    <shiro:hasPermission name="BTN_USER_UPDATE_STATUS">
         <input type="button" value="激活" onclick="tooUpdate()"/>
     </shiro:hasPermission>
-    <shiro:hasPermission name="USER_UPDATE_PWD">
+    <shiro:hasPermission name="BTN_USER_UPDATE_PWD">
         <input type="button" value="重置密码" onclick="updatePwd()"/>
     </shiro:hasPermission>
-    <shiro:hasPermission name="USER_DEL">
+    <shiro:hasPermission name="BTN_USER_DEL">
         <input type="button" value="删除" onclick="del()"/>
     </shiro:hasPermission>
-    <shiro:hasPermission name="USER_UPDATE_TYPE">
+    <shiro:hasPermission name="BTN_USER_UPDATE_TYPE">
         <input type="button" value="授权" onclick="toooUpdate()"/>
     </shiro:hasPermission>
     <table cellpadding='12px' cellspacing='0px' border='1px'  bordercolor='gray' bgcolor='pink'>
@@ -231,6 +233,8 @@
             <td>邮箱</td>
             <td>级别</td>
             <td>状态</td>
+            <td>注册时间</td>
+            <td>最后登录时间</td>
         </tr>
 
         <tbody id = "tbd">

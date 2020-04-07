@@ -56,7 +56,7 @@ public class UserPageController {
      */
     @RequestMapping("toooUpdate/{id}")
     public ModelAndView toooUpdate(@PathVariable("id") Integer id) throws Exception {
-        List<RoleDTOResp> roleList = roleApi.findRole();
+        List<RoleDTOResp> roleList = roleApi.findRoleList();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("user/update_user_role");
         modelAndView.addObject("roleList", roleList);
@@ -118,7 +118,7 @@ public class UserPageController {
      */
     @RequestMapping("toAdd")
     public String toAdd(Model model) throws Exception {
-        List<RoleDTOResp> roleList = roleApi.findRole();
+        List<RoleDTOResp> roleList = roleApi.findRoleList();
         model.addAttribute("roleList", roleList);
         String salt = PasswordSecurityUtil.generateSalt();
         model.addAttribute("salt", salt);

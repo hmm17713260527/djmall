@@ -1,8 +1,11 @@
 package com.dj.mall.model.dto.auth.user;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * 用户DTO-Req对象
@@ -77,5 +80,12 @@ public class UserDTOReq  implements Serializable {
      * 7男，8女
      */
     private Integer sex;
+
+    /**
+     * 注册时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")//返回前台格式
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")//接受前台时间格式
+    private LocalDateTime createTime;
 
 }

@@ -5,6 +5,7 @@ import com.dj.mall.model.base.BusinessException;
 import com.dj.mall.model.base.ResultModel;
 import com.dj.mall.model.dto.auth.user.UserDTOReq;
 import com.dj.mall.model.dto.auth.user.UserDTOResp;
+import com.dj.mall.model.util.PageResult;
 
 import java.util.HashMap;
 
@@ -62,7 +63,7 @@ public interface UserApi {
      * @return
      * @throws Exception
      */
-    HashMap<String, Object> findUserList(UserDTOReq userDTOReq) throws Exception;
+    PageResult findUserList(UserDTOReq userDTOReq) throws Exception;
 
 
     /**

@@ -22,6 +22,11 @@ public class BaseDataVOReq implements Serializable {
     private Integer baseId;
 
     /**
+     * 当前页
+     */
+    private Integer pageNo;
+
+    /**
      * 字典code
      */
     private String code;

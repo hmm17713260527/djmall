@@ -1,8 +1,13 @@
 package com.dj.mall.admin.vo.auth.user;
 
+import com.dj.mall.model.dto.auth.resource.ResourceDTOResp;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 用户视图对象
@@ -76,5 +81,41 @@ public class UserVOResp implements Serializable {
      * 7男，8女
      */
     private Integer sex;
+
+    /**
+     * 用户权限集合
+     */
+    private List<ResourceDTOResp> ResourceList;
+
+    /**
+     * 注册时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")//返回前台格式
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")//接受前台时间格式
+    private LocalDateTime createTime;
+
+    /**
+     * 登陆时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")//返回前台格式
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")//接受前台时间格式
+    private LocalDateTime endTime;
+
+    /**
+     * 角色名
+     */
+    private String roleName;
+
+    /**
+     * 状态展示
+     */
+    private String statusShow;
+
+
+    /**
+     * 性别展示
+     */
+    private String sexShow;
+
 
 }
