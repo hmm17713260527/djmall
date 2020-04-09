@@ -42,7 +42,7 @@
     <input type="hidden" name = "baseId" value="${base.baseId}"/>
     CODE:<input type = "text" name = "code" value="${base.code}"/><br/>
     字典名:<input type = "text" name = "name" value="${base.name}"/><br/>
-    <shiro:hasPermission name="BASE_DATA_UPDATE">
+    <shiro:hasPermission name="BTN_BASE_DATA_UPDATE">
         <input type="button" value="修改" onclick="update()"/>
     </shiro:hasPermission>
 </form>

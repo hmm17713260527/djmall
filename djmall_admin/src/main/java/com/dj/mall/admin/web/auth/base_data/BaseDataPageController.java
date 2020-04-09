@@ -2,7 +2,7 @@ package com.dj.mall.admin.web.auth.base_data;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.dj.mall.admin.vo.auth.base.BaseDataVOResp;
-import com.dj.mall.api.auth.base_data.BaseDataApi;
+import com.dj.mall.api.dict.base_data.BaseDataApi;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.base.BaseDataDTOResp;
 import com.dj.mall.model.util.DozerUtil;

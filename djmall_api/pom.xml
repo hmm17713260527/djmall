@@ -25,6 +25,7 @@
 
     <modules>
         <module>djmall_auth_api</module>
+        <module>djmall_dict_api</module>
     </modules>
 
 
