@@ -1,6 +1,9 @@
 package com.dj.mall.admin.vo.auth.user;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -14,6 +17,9 @@ import java.io.Serializable;
  * @Version: 1.0
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserRoleVOReq implements Serializable {
 
     /**

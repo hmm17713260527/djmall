@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 
 /**
  * @ProjectName: djmall
@@ -53,8 +52,9 @@ public class BaseDataController {
     public ResultModel<Object> show(BaseDataVOReq baseDataVOReq) throws Exception {
 
         PageResult pageResult =  baseDataApi.findBaseList(DozerUtil.map(baseDataVOReq, BaseDataDTOReq.class));
-        pageResult.setList(DozerUtil.mapList(pageResult.getList(), BaseDataVOResp.class));
-        pageResult.setParamList(DozerUtil.mapList(pageResult.getParamList(), BaseDataVOResp.class));
+
+        PageResult.builder().list(DozerUtil.mapList(pageResult.getList(), BaseDataVOResp.class)).paramList(DozerUtil.mapList(pageResult.getParamList(), BaseDataVOResp.class));
+
         return new ResultModel<>().success(pageResult);
 
     }

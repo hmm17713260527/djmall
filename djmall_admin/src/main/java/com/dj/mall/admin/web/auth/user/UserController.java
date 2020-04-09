@@ -117,7 +117,7 @@ public class UserController {
         if (user.getStatus().equals(SystemConstant.USER_STATUS_ACTIVATE)) {
             return new ResultModel<>().success(SystemConstant.ID_ACTIVATE);
         }
-        user.setStatus(status);
+        UserDTOResp.builder().status(status);
         userApi.updateStatusById(DozerUtil.map(user, UserDTOReq.class));
         return new ResultModel<>().success(SystemConstant.REQ_YES);
 
@@ -146,9 +146,7 @@ public class UserController {
 
         PageResult pageResult = userApi.findUserList(DozerUtil.map(userVOReq, UserDTOReq.class));
 
-        pageResult.setList(DozerUtil.mapList(pageResult.getList(), UserVOResp.class));
-
-        pageResult.setParamList(DozerUtil.mapList(pageResult.getParamList(), RoleVOResp.class));
+        PageResult.builder().list(DozerUtil.mapList(pageResult.getList(), UserVOResp.class)).paramList(DozerUtil.mapList(pageResult.getParamList(), RoleVOResp.class));
 
         return new ResultModel<>().success(pageResult);
 
@@ -177,7 +175,8 @@ public class UserController {
      */
     @PostMapping("add")
     public ResultModel<Object> addUser(UserVOReq userVOReq) throws Exception {
-        userVOReq.setCreateTime(LocalDateTime.now());
+
+
         UserDTOReq userDTOReq = DozerUtil.map(userVOReq, UserDTOReq.class);
         userApi.addUser(userDTOReq);
         return new ResultModel<>().success(SystemConstant.STRING_4);

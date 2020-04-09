@@ -25,6 +25,16 @@ public interface SystemConstant {
     Integer RSEET_PWD_IS_DEL = 0;
 
     /**
+     * 待激活
+     */
+    Integer USER_NOT_STATUS = 11;
+
+    /**
+     * 待激活CODE
+     */
+    String USER_STATUS_CODE = "用户未激活";
+
+    /**
      * 重置密码信息1
      */
     String EMAIL_RESET_PWD_CODE_1 = "尊敬的";

@@ -3,7 +3,10 @@ package com.dj.mall.model.dto.auth.user;
 import com.dj.mall.model.dto.auth.resource.ResourceDTOReq;
 import com.dj.mall.model.dto.auth.resource.ResourceDTOResp;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -14,6 +17,9 @@ import java.util.List;
  * 用户DTO-Resp对象
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDTOResp implements Serializable {
 
     /**

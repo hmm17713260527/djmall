@@ -81,10 +81,7 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
      */
     @Override
     public void updateUserRole(Integer userId, Integer type) throws Exception {
-        User user = new User();
-        user.setId(userId);
-        user.setType(type);
-        this.updateById(user);
+        this.updateById(User.builder().id(userId).type(type).build());
     }
 
     /**
@@ -96,21 +93,15 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
     @Override
     public void delByUserId(Integer userId, Integer isDel) throws Exception {
 
-        User user = new User();
-        user.setId(userId);
-        user.setIsDel(isDel);
 
-        this.updateById(user);
+        this.updateById(User.builder().id(userId).isDel(isDel).build());
 
         UpdateWrapper<UserRole> updateWrapper = new UpdateWrapper<>();
         updateWrapper.set("is_del", isDel);
         updateWrapper.eq("user_id", userId);
 
-        UserRole userRole = new UserRole();
-        userRole.setUserId(userId);
-        userRole.setIsDel(isDel);
 
-        userRoleMapper.update(userRole, updateWrapper);
+        userRoleMapper.update(UserRole.builder().userId(userId).isDel(isDel).build(), updateWrapper);
 
     }
 
@@ -154,13 +145,11 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
     @Override
     public PageResult findUserList(UserDTOReq userDTOReq) throws Exception {
 
-        PageResult pageResult = new PageResult();
 
         Page<UserBo> page = new Page();
         QueryWrapper<Role> roleWrapper = new QueryWrapper<>();
         roleWrapper.eq("is_del", SystemConstant.IS_DEL);
         List<Role> roleList = roleMapper.selectList(roleWrapper);
-        pageResult.setParamList(DozerUtil.mapList(roleList, RoleDTOResp.class));
 
         page.setCurrent(userDTOReq.getPageNo());
         page.setSize(SystemConstant.PAGE_SIZE);
@@ -168,9 +157,8 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         UserBo userBO = DozerUtil.map(userDTOReq, UserBo.class);
 
         IPage<UserBo> pageInfo = getBaseMapper().findUserList(page, userBO);
-        pageResult.setList(DozerUtil.mapList(pageInfo.getRecords(), UserDTOResp.class));
-        pageResult.setPages(pageInfo.getPages());
-        return pageResult;
+
+        return PageResult.builder().paramList(DozerUtil.mapList(roleList, RoleDTOResp.class)).list(DozerUtil.mapList(pageInfo.getRecords(), UserDTOResp.class)).pages(pageInfo.getPages()).build();
     }
 
 
@@ -227,14 +215,11 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
     @Override
     public void addUser(UserDTOReq userDTOReq) throws Exception {
         User user = DozerUtil.map(userDTOReq, User.class);
+        user.setCreateTime(LocalDateTime.now());
         EmailUtil.sendEmail(user.getEmail(), SystemConstant.STRING_EMAIL, SystemConstant.EMAIL_ADD_CODE, 0);
         this.save(user);
 
-        UserRole userRole = new UserRole();
-        userRole.setUserId(user.getId());
-        userRole.setRoleId(user.getType());
-        userRole.setIsDel(SystemConstant.IS_DEL);
-        userRoleMapper.insert(userRole);
+        userRoleMapper.insert(UserRole.builder().userId(user.getId()).roleId(user.getType()).isDel(SystemConstant.IS_DEL).build());
     }
 
     /**
@@ -276,11 +261,11 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
             throw new BusinessException(SystemConstant.RSEET_PWD_IS_DEL_CODE);
         }
 
-        UserLoginEndTime userLoginEndTime = new UserLoginEndTime();
-        userLoginEndTime.setUserId(user.getId());
-        userLoginEndTime.setEndTime(LocalDateTime.now());
-        userLoginEndTime.setIsDel(SystemConstant.IS_DEL);
-        userLoginEndTimeMapper.insert(userLoginEndTime);
+        if (user.getStatus().equals(SystemConstant.USER_NOT_STATUS)) {
+            throw new BusinessException(SystemConstant.USER_STATUS_CODE);
+        }
+
+        userLoginEndTimeMapper.insert(UserLoginEndTime.builder().userId(user.getId()).endTime(LocalDateTime.now()).isDel(SystemConstant.IS_DEL).build());
 
         UserDTOResp userDTOResp = DozerUtil.map(user, UserDTOResp.class);
 

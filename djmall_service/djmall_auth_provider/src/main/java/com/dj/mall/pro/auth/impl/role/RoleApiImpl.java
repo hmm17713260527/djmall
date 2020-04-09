@@ -74,7 +74,6 @@ public class RoleApiImpl extends ServiceImpl<RoleMapper, Role> implements RoleAp
      */
     @Override
     public PageResult findRole(RoleDTOReq roleDTOReq) throws Exception {
-        PageResult pageResult = new PageResult();
         Page<Role> page = new Page();
 
         page.setCurrent(roleDTOReq.getPageNo());
@@ -83,9 +82,8 @@ public class RoleApiImpl extends ServiceImpl<RoleMapper, Role> implements RoleAp
         QueryWrapper<Role> queryWrapper = new QueryWrapper<Role>();
         queryWrapper.eq("is_del", SystemConstant.ROLE_IS_DEL_YES);
         IPage<Role> pageInfo = this.page(page, queryWrapper);
-        pageResult.setList(DozerUtil.mapList(pageInfo.getRecords(), RoleDTOResp.class));
-        pageResult.setPages(pageInfo.getPages());
-        return pageResult;
+
+        return PageResult.builder().list(DozerUtil.mapList(pageInfo.getRecords(), RoleDTOResp.class)).pages(pageInfo.getPages()).build();
     }
 
     /**
@@ -121,13 +119,9 @@ public class RoleApiImpl extends ServiceImpl<RoleMapper, Role> implements RoleAp
     public void del(Integer roleId) throws Exception {
         this.removeById(roleId);
 
-        UserRole userRole = new UserRole();
-        userRole.setIsDel(2);
-        userRole.setRoleId(roleId);
-
         UpdateWrapper<UserRole> updateUserRoleWrapper = new UpdateWrapper<UserRole>();
         updateUserRoleWrapper.set("is_del", 2).eq("role_id", roleId);
-        userRoleMapper.update(userRole, updateUserRoleWrapper);
+        userRoleMapper.update(UserRole.builder().isDel(2).roleId(roleId).build(), updateUserRoleWrapper);
 
         UpdateWrapper<RoleResource> updateRoleResourceWrapper = new UpdateWrapper<RoleResource>();
         updateRoleResourceWrapper.set("is_del", 2).eq("role_id", roleId);
@@ -165,12 +159,12 @@ public class RoleApiImpl extends ServiceImpl<RoleMapper, Role> implements RoleAp
 
         for (Integer resourceId : resourceIds) {
 
-            RoleResource roleResource = new RoleResource();
-            roleResource.setResourceId(resourceId);
-            roleResource.setRoleId(roleId);
-            roleResource.setIsDel(SystemConstant.IS_DEL);
+//            RoleResource roleResource = new RoleResource();
+//            roleResource.setResourceId(resourceId);
+//            roleResource.setRoleId(roleId);
+//            roleResource.setIsDel(SystemConstant.IS_DEL);
 
-            roleResourceList.add(roleResource);
+            roleResourceList.add(RoleResource.builder().resourceId(resourceId).roleId(roleId).isDel(SystemConstant.IS_DEL).build());
         }
         roleResourceService.saveBatch(roleResourceList);
         return null;

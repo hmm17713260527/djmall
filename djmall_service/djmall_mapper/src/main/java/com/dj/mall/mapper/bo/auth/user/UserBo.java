@@ -3,7 +3,10 @@ package com.dj.mall.mapper.bo.auth.user;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.dozer.Mapping;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -20,11 +23,15 @@ import java.time.LocalDateTime;
  * @Version: 1.0
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserBo implements Serializable {
 
     /**
      * 用户ID
      */
+    @Mapping("userId")
     private Integer id;
 
     /**

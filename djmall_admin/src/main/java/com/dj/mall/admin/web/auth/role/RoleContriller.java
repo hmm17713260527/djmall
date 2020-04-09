@@ -10,13 +10,11 @@ import com.dj.mall.model.base.ResultModel;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.resource.ResourceDTOResp;
 import com.dj.mall.model.dto.auth.role.RoleDTOReq;
-import com.dj.mall.model.dto.auth.role.RoleDTOResp;
 import com.dj.mall.model.util.DozerUtil;
 import com.dj.mall.model.util.PageResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -145,7 +143,8 @@ public class RoleContriller {
     public ResultModel<Object> show(RoleVOReq roleVOReq) throws Exception {
 
         PageResult pageResult = roleApi.findRole(DozerUtil.map(roleVOReq, RoleDTOReq.class));
-        pageResult.setList(DozerUtil.mapList(pageResult.getList(), RoleVOResp.class));
+
+        PageResult.builder().list(DozerUtil.mapList(pageResult.getList(), RoleVOResp.class));
 
         return new ResultModel<>().success(pageResult);
 

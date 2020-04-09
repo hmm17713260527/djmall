@@ -54,7 +54,9 @@ public class ResourceController {
     @PutMapping("update")
     public ResultModel<Object> update(ResourceVOReq resourceVOReq) throws Exception {
         String s = resourceVOReq.getResourceCode().toUpperCase();
-        resourceVOReq.setResourceCode(s);
+
+        ResourceVOReq.builder().resourceCode(s);
+
         resourceApi.updateRes(DozerUtil.map(resourceVOReq, ResourceDTOReq.class));
         return new ResultModel<>().success(SystemConstant.REQ_YES);
     }
@@ -104,11 +106,18 @@ public class ResourceController {
 
         UserDTOResp userDTOResp  = (UserDTOResp) session.getAttribute(SystemConstant.USER_SESSION);
         List<ResourceVOResp> resourceList = new ArrayList<ResourceVOResp>();
-        for (ResourceDTOResp resource : userDTOResp.getResourceList()) {
+
+        userDTOResp.getResourceList().forEach(resource ->{
             if (resource.getType().equals(SystemConstant.RES_TYPE)) {
                 resourceList.add(DozerUtil.map(resource, ResourceVOResp.class));
             }
-        }
+        });
+
+//        for (ResourceDTOResp resource : userDTOResp.getResourceList()) {
+//            if (resource.getType().equals(SystemConstant.RES_TYPE)) {
+//                resourceList.add(DozerUtil.map(resource, ResourceVOResp.class));
+//            }
+//        }
         return resourceList;
 
     }

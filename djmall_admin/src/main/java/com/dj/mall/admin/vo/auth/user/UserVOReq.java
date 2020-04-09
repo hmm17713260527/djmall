@@ -1,7 +1,10 @@
 package com.dj.mall.admin.vo.auth.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -11,6 +14,9 @@ import java.time.LocalDateTime;
  * 用户视图对象
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserVOReq implements Serializable {
 
     /**

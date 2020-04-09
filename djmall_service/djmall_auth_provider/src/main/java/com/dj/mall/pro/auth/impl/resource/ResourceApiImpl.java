@@ -114,6 +114,7 @@ public class ResourceApiImpl extends ServiceImpl<ResourceMapper, Resource> imple
         List<Resource> resourceList = this.list(queryWrapper);
         ids.add(resId);
         if (null != resourceList && resourceList.size() > 0) {
+
             for (Resource resource : resourceList) {
                 ids(resource.getId(), ids);
             }
@@ -137,23 +138,32 @@ public class ResourceApiImpl extends ServiceImpl<ResourceMapper, Resource> imple
 
         ArrayList<Integer> roleResourceIds = new ArrayList<>();
 
-        for (Integer id : ids) {
-
+        ids.forEach(id -> {
             QueryWrapper<RoleResource> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("resource_id", id);
             List<RoleResource> roleResourceList = roleResourceService.list(queryWrapper);
-            for (RoleResource roleResource : roleResourceList) {
-               roleResourceIds.add(roleResource.getId());
-//                roleResource.setIsDel(SystemConstant.NOT_IS_DEL);
-//                roleResourceMapper.updateById(roleResource);
+            roleResourceList.forEach(roleResource -> {
+                roleResourceIds.add(roleResource.getId());
+            });
+        });
 
-            }
+//        for (Integer id : ids) {
+//
+//            QueryWrapper<RoleResource> queryWrapper = new QueryWrapper<>();
+//            queryWrapper.eq("resource_id", id);
+//            List<RoleResource> roleResourceList = roleResourceService.list(queryWrapper);
+//            for (RoleResource roleResource : roleResourceList) {
+//               roleResourceIds.add(roleResource.getId());
+//
+//            }
+//        }
+        if (null != roleResourceIds && roleResourceIds.size() > 0) {
+            UpdateWrapper<RoleResource> roleResourceUpdateWrapper = new UpdateWrapper<>();
+            roleResourceUpdateWrapper.set("is_del", SystemConstant.NOT_IS_DEL);
+            roleResourceUpdateWrapper.in("id", roleResourceIds);
+            roleResourceService.remove(roleResourceUpdateWrapper);
         }
 
-        UpdateWrapper<RoleResource> roleResourceUpdateWrapper = new UpdateWrapper<>();
-        roleResourceUpdateWrapper.set("is_del", SystemConstant.NOT_IS_DEL);
-        roleResourceUpdateWrapper.in("id", roleResourceIds);
-        roleResourceService.remove(roleResourceUpdateWrapper);
 
 
     }

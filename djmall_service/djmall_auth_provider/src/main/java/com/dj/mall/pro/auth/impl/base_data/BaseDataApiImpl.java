@@ -39,7 +39,7 @@ public class BaseDataApiImpl extends ServiceImpl<BaseDataMapper, BaseData> imple
     public void updateBase(BaseDataDTOReq baseDataDTOReq) throws Exception {
         if (null != baseDataDTOReq.getCode()) {
             String s = baseDataDTOReq.getCode().toUpperCase();
-            baseDataDTOReq.setCode(s);
+            BaseDataDTOReq.builder().code(s);
         }
         this.updateById(DozerUtil.map(baseDataDTOReq, BaseData.class));
     }
@@ -52,19 +52,14 @@ public class BaseDataApiImpl extends ServiceImpl<BaseDataMapper, BaseData> imple
     @Override
     public PageResult findBaseList(BaseDataDTOReq baseDataDTOReq) throws Exception {
 
-        PageResult pageResult = new PageResult();
         Page<BaseData> page = new Page();
 
         page.setCurrent(baseDataDTOReq.getPageNo());
         page.setSize(SystemConstant.PAGE_SIZE);
 
         IPage<BaseData> pageInfo = this.page(page);
-        pageResult.setList(DozerUtil.mapList(pageInfo.getRecords(), BaseDataDTOResp.class));
-        pageResult.setPages(pageInfo.getPages());
 
-        pageResult.setParamList(DozerUtil.mapList(this.list(), BaseDataDTOResp.class));
-
-        return pageResult;
+        return PageResult.builder().list(DozerUtil.mapList(pageInfo.getRecords(), BaseDataDTOResp.class)).pages(pageInfo.getPages()).paramList(DozerUtil.mapList(this.list(), BaseDataDTOResp.class)).build();
 
     }
 
