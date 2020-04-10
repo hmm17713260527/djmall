@@ -168,11 +168,21 @@ public interface SystemConstant {
      */
     String BASE_DATA_MANAGER = "BASE_DATA_MANAGER";
 
+    /**
+     * FREIGHT_MANAGER
+     */
+    String FREIGHT_MANAGER = "FREIGHT_MANAGER";
+
 
     /**
-     * 10激活，11未激活
+     * USER_STATUS
      */
     String USER_STATUS = "STATUS";
+
+    /**
+     * LOGISTICS
+     */
+    String LOGISTICS = "LOGISTICS";
 
 
 

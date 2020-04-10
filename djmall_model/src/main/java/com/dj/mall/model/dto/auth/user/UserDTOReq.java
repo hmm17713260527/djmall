@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTOReq  implements Serializable {
+public class UserDTOReq implements Serializable {
 
     /**
      * 用户ID
