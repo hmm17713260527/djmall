@@ -7,8 +7,6 @@ import com.dj.mall.api.dict.freight.FreightApi;
 import com.dj.mall.entity.dict.freight.Freight;
 import com.dj.mall.mapper.bo.dict.freight.FreightBO;
 import com.dj.mall.mapper.dict.freight.FreightMapper;
-import com.dj.mall.model.dto.auth.role.RoleDTOResp;
-import com.dj.mall.model.dto.auth.user.UserDTOResp;
 import com.dj.mall.model.dto.dict.freight.FreightDTOReq;
 import com.dj.mall.model.dto.dict.freight.FreightDTOResp;
 import com.dj.mall.model.util.DozerUtil;

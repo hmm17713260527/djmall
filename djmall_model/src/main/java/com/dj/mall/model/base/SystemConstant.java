@@ -184,6 +184,11 @@ public interface SystemConstant {
      */
     String LOGISTICS = "LOGISTICS";
 
+    /**
+     * PRODUCT_ATTR_MANAGER
+     */
+    String PRODUCT_ATTR_MANAGER = "PRODUCT_ATTR_MANAGER";
+
 
 
 }
