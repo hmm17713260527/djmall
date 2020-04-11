@@ -2,14 +2,11 @@ package com.dj.mall.admin.web.dict.freight;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.dj.mall.admin.vo.auth.base.BaseDataVOResp;
-import com.dj.mall.admin.vo.auth.role.RoleVOResp;
 import com.dj.mall.admin.vo.dict.freight.FreightVOResp;
 import com.dj.mall.api.dict.base_data.BaseDataApi;
 import com.dj.mall.api.dict.freight.FreightApi;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.base.BaseDataDTOResp;
-import com.dj.mall.model.dto.auth.role.RoleDTOResp;
-import com.dj.mall.model.dto.dict.freight.FreightDTOReq;
 import com.dj.mall.model.dto.dict.freight.FreightDTOResp;
 import com.dj.mall.model.util.DozerUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;

@@ -1,17 +1,12 @@
 package com.dj.mall.admin.web.dict.product_attr;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.dj.mall.admin.vo.auth.base.BaseDataVOResp;
 import com.dj.mall.api.dict.product_attr.ProductAttrApi;
 import com.dj.mall.model.base.SystemConstant;
-import com.dj.mall.model.dto.auth.base.BaseDataDTOResp;
-import com.dj.mall.model.util.DozerUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
 
 /**
  * @ProjectName: djmall

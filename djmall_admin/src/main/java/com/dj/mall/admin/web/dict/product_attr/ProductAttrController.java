@@ -1,14 +1,11 @@
 package com.dj.mall.admin.web.dict.product_attr;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.dj.mall.admin.vo.dict.freight.FreightVOReq;
-import com.dj.mall.admin.vo.dict.freight.FreightVOResp;
 import com.dj.mall.admin.vo.dict.product_attr.ProductAttrVOReq;
 import com.dj.mall.admin.vo.dict.product_attr.ProductAttrVOResp;
 import com.dj.mall.api.dict.product_attr.ProductAttrApi;
 import com.dj.mall.model.base.ResultModel;
 import com.dj.mall.model.base.SystemConstant;
-import com.dj.mall.model.dto.dict.freight.FreightDTOReq;
 import com.dj.mall.model.dto.dict.product_attr.ProductAttrDTOReq;
 import com.dj.mall.model.util.DozerUtil;
 import com.dj.mall.model.util.PageResult;

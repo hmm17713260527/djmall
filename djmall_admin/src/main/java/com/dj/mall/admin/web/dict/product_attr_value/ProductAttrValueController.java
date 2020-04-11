@@ -1,21 +1,16 @@
 package com.dj.mall.admin.web.dict.product_attr_value;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.dj.mall.admin.vo.dict.product_attr.ProductAttrVOReq;
-import com.dj.mall.admin.vo.dict.product_attr.ProductAttrVOResp;
 import com.dj.mall.admin.vo.dict.product_attr_value.ProductAttrValueVOReq;
 import com.dj.mall.admin.vo.dict.product_attr_value.ProductAttrValueVOResp;
 import com.dj.mall.api.dict.product_attr_value.ProductAttrValueApi;
 import com.dj.mall.model.base.ResultModel;
 import com.dj.mall.model.base.SystemConstant;
-import com.dj.mall.model.dto.auth.user.UserDTOResp;
-import com.dj.mall.model.dto.dict.product_attr.ProductAttrDTOReq;
 import com.dj.mall.model.dto.dict.product_attr_value.ProductAttrValueDTOReq;
 import com.dj.mall.model.util.DozerUtil;
 import com.dj.mall.model.util.PageResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 
 /**
  * @ProjectName: djmall

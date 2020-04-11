@@ -4,17 +4,13 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dj.mall.api.dict.product_attr_value.ProductAttrValueApi;
-import com.dj.mall.entity.dict.product_attr.ProductAttr;
 import com.dj.mall.entity.dict.product_attr_value.ProductAttrValue;
-import com.dj.mall.mapper.bo.dict.product_attr.ProductAttrBO;
 import com.dj.mall.mapper.dict.product_attr_value.ProductAttrValueMapper;
-import com.dj.mall.model.dto.dict.product_attr.ProductAttrDTOResp;
 import com.dj.mall.model.dto.dict.product_attr_value.ProductAttrValueDTOReq;
 import com.dj.mall.model.dto.dict.product_attr_value.ProductAttrValueDTOResp;
 import com.dj.mall.model.util.DozerUtil;
 import com.dj.mall.model.util.PageResult;
 
-import java.util.List;
 
 /**
  * @ProjectName: djmall

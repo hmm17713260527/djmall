@@ -3,7 +3,6 @@ package com.dj.mall.mapper.dict.product_attr;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.dj.mall.entity.dict.product_attr.ProductAttr;
 import com.dj.mall.mapper.bo.dict.product_attr.ProductAttrBO;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
