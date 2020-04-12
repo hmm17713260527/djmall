@@ -11,6 +11,7 @@
         SELECT
             dabd.id,
             dabd.`name`,
+            dabd.`code`,
             GROUP_CONCAT(ddpa.attr SEPARATOR ",") AS attr
         FROM
             djmall_auth_base_data dabd
@@ -23,5 +24,14 @@
 
 
 
+    </select>
+    <select id="findProductAttrList" resultType="java.lang.Integer">
+
+          SELECT
+            ddpsg.attr_id as attr_ids
+        FROM
+            djmall_auth_base_data dabd
+        LEFT JOIN djmall_dict_product_sku_gm ddpsg ON ddpsg.product_type = dabd.`code`
+        WHERE dabd.id = #{productId}
     </select>
 </mapper>

@@ -38,4 +38,9 @@ public class ProductAttrBO implements Serializable {
      * 属性值
      */
     private String attrValue;
+
+    /**
+     * 是否勾选
+     */
+    private Boolean checked = false;
 }

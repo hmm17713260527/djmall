@@ -7,9 +7,7 @@ import com.dj.mall.api.dict.product_sku.ProductSkuApi;
 import com.dj.mall.model.base.ResultModel;
 import com.dj.mall.model.util.DozerUtil;
 import com.dj.mall.model.util.PageResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @ProjectName: djmall
@@ -27,6 +25,38 @@ public class ProductSkuController {
     @Reference
     private ProductSkuApi productSkuApi;
 
+
+    /**
+     * 关联属性保存
+     * @param productId
+     * @param skuIds
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("update/{productId}")
+    public ResultModel<Object> update(@PathVariable Integer productId, Integer[] skuIds) throws Exception {
+        System.out.println(skuIds.toString());
+        productSkuApi.addProductSku(productId, skuIds);
+
+        return new ResultModel<>().success(true);
+    }
+
+
+    /**
+     * SKU展示
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("attrShow")
+    public ResultModel<Object> attrShow(Integer productId) throws Exception {
+
+        PageResult pageResult = productSkuApi.findProductAttrList(productId);
+
+        PageResult.builder().list(DozerUtil.mapList(pageResult.getList(), ProductAttrVOResp.class));
+
+        return new ResultModel<>().success(pageResult);
+
+    }
 
     /**
      * SKU展示

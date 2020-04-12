@@ -5,7 +5,9 @@ import com.dj.mall.api.dict.product_sku.ProductSkuApi;
 import com.dj.mall.model.base.SystemConstant;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @ProjectName: djmall
@@ -33,6 +35,20 @@ public class ProductSkuPageController {
     @RequiresPermissions(value = SystemConstant.PRODUCT_SKU_MANAGER)
     public String toShow() throws Exception {
         return "product_sku/product_sku_show";
+    }
+
+    /**
+     * 去查看关联属性
+     * @param productId
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("toAttr/{productId}")
+    public ModelAndView toAttrValue(@PathVariable("productId") Integer productId) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("product_sku/product_attr_show");
+        modelAndView.addObject("productId", productId);
+        return modelAndView;
     }
 
 }

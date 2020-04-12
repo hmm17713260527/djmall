@@ -20,4 +20,19 @@ public interface ProductSkuApi {
      * @throws Exception
      */
     PageResult findProductSKUList(String parentCode) throws Exception;
+
+    /**
+     * 属性展示
+     * @param productId
+     * @return
+     * @throws Exception
+     */
+    PageResult findProductAttrList(Integer productId) throws Exception;
+
+    /**
+     * 关联属性保存
+     * @param productId
+     * @param skuIds
+     */
+    void addProductSku(Integer productId, Integer[] skuIds) throws Exception;
 }

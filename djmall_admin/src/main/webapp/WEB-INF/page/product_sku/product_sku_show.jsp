@@ -42,7 +42,7 @@
                     html += data.data.list[i].attr == null ? "<td>暂无属性</td>" : "<td>"+data.data.list[i].attr+"</td>";
                     html += "<td>";
                     html += "<shiro:hasPermission name='BTN_PRODUCT_SKU_RELEVANCE'>";
-                    html += "<input type='button' value='关联属性' onclick='toAttrValue("+data.data.list[i].productId+")'/>";
+                    html += "<input type='button' value='关联属性' onclick='toAttr("+data.data.list[i].productId+")'/>";
                     html += "</shiro:hasPermission>";
                     html += "</td>";
                     html += "</tr>";
@@ -52,11 +52,21 @@
             });
     }
 
-
-    function toAttrValue(productId) {
-
-        window.location.href= "<%=request.getContextPath()%>/dict/product_attr_value/toAttrValue/"+productId;
+    function toAttr(productId) {
+        layer.open({
+            type: 2,
+            title: '关联属性页面',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['380px', '80%'],
+            content: '<%=request.getContextPath()%>/dict/product_sku/toAttr/' + productId
+        });
     }
+
+    <%--function toAttr(productId) {--%>
+
+    <%--    window.location.href= "<%=request.getContextPath()%>/dict/product_sku/toAttr/"+productId;--%>
+    <%--}--%>
 
 
 </script>

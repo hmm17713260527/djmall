@@ -37,4 +37,9 @@ public class ProductSKUDTOResp implements Serializable {
      * 商品属性
      */
     private String attr;
+
+    /**
+     * 商品CODE
+     */
+    private String code;
 }
