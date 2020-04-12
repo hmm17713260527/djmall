@@ -2,6 +2,8 @@ package com.dj.mall.admin.web.dict.product_sku;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.dj.mall.api.dict.product_sku.ProductSkuApi;
+import com.dj.mall.model.base.SystemConstant;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -20,5 +22,17 @@ public class ProductSkuPageController {
 
     @Reference
     private ProductSkuApi productSkuApi;
+
+
+    /**
+     * 去展示
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("toShow")
+    @RequiresPermissions(value = SystemConstant.PRODUCT_SKU_MANAGER)
+    public String toShow() throws Exception {
+        return "product_sku/product_sku_show";
+    }
 
 }

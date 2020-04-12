@@ -6,4 +6,22 @@
 <mapper namespace="com.dj.mall.mapper.dict.product_sku.ProductSkuMapper">
 
 
+    <select id="findProductSKUList" resultType="com.dj.mall.mapper.bo.dict.product_sku.ProductSKUBO">
+
+        SELECT
+            dabd.id,
+            dabd.`name`,
+            GROUP_CONCAT(ddpa.attr SEPARATOR ",") AS attr
+        FROM
+            djmall_auth_base_data dabd
+        LEFT JOIN djmall_dict_product_sku_gm ddpsg ON dabd.`code` = ddpsg.product_type
+        LEFT JOIN djmall_dict_product_attr ddpa ON ddpa.id = ddpsg.attr_id
+        WHERE
+            dabd.parent_code = #{parentCode}
+        GROUP BY
+            dabd.id
+
+
+
+    </select>
 </mapper>

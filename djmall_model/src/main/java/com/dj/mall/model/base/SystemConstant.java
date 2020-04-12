@@ -189,6 +189,11 @@ public interface SystemConstant {
      */
     String PRODUCT_ATTR_MANAGER = "PRODUCT_ATTR_MANAGER";
 
+    /**
+     * PRODUCT_SKU_MANAGER
+     */
+    String PRODUCT_SKU_MANAGER = "PRODUCT_SKU_MANAGER";
+
 
 
 }

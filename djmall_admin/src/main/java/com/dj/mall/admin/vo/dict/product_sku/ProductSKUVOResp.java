@@ -1,4 +1,4 @@
-package com.dj.mall.mapper.bo.dict.product_attr_value;
+package com.dj.mall.admin.vo.dict.product_sku;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,31 +9,31 @@ import java.io.Serializable;
 
 /**
  * @ProjectName: djmall
- * @Package: com.dj.mall.mapper.bo.dict.product_attr
- * @ClassName: ProductAttrBO
+ * @Package: com.dj.mall.mapper.bo.dict.product_sku
+ * @ClassName: ProductSKUBO
  * @Author: Administrator
  * @Description:
- * @Date: 2020/4/11 16:02
+ * @Date: 2020/4/12 12:50
  * @Version: 1.0
  */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductAttrValueBO implements Serializable {
+public class ProductSKUVOResp implements Serializable {
 
     /**
      * id
      */
-    private Integer id;
+    private Integer productId;
 
     /**
-     * 属性
+     * 商品名
+     */
+    private String name;
+
+    /**
+     * 商品属性
      */
     private String attr;
-
-    /**
-     * 属性值
-     */
-    private String attrValue;
 }
