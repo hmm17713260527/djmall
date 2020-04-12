@@ -7,12 +7,15 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dj.mall.api.dict.base_data.BaseDataApi;
 import com.dj.mall.entity.auth.base_data.BaseData;
+import com.dj.mall.entity.dict.product_sku.ProductSku;
 import com.dj.mall.mapper.auth.base.BaseDataMapper;
+import com.dj.mall.mapper.dict.product_sku.ProductSkuMapper;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.base.BaseDataDTOReq;
 import com.dj.mall.model.dto.auth.base.BaseDataDTOResp;
 import com.dj.mall.model.util.DozerUtil;
 import com.dj.mall.model.util.PageResult;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -27,6 +30,9 @@ import java.util.List;
  */
 @Service
 public class BaseDataApiImpl extends ServiceImpl<BaseDataMapper, BaseData> implements BaseDataApi {
+
+    @Autowired
+    private ProductSkuMapper productSkuMapper;
 
     /**
      * 字典修改
@@ -70,6 +76,11 @@ public class BaseDataApiImpl extends ServiceImpl<BaseDataMapper, BaseData> imple
     public void addBase(BaseDataDTOReq baseDataDTOReq) throws Exception {
         String s = baseDataDTOReq.getCode().toUpperCase();
         baseDataDTOReq.setCode(s);
+        if (SystemConstant.PRODUCT_TYPE.equals(baseDataDTOReq.getParentCode())) {
+            ProductSku productSku = new ProductSku();
+            productSku.setProductType(s);
+            productSkuMapper.insert(productSku);
+        }
         this.save(DozerUtil.map(baseDataDTOReq, BaseData.class));
     }
 

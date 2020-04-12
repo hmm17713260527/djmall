@@ -39,7 +39,7 @@
 
                 for (var i = 0; i < data.data.paramList.length; i++) {
                     if (data.data.paramList[i].parentCode == "SYSTEM") {
-                        html1 += "<option value='data.data.paramList[i].code'>"+data.data.paramList[i].name+"</option>";
+                        html1 += "<option value='"+data.data.paramList[i].code+"'>"+data.data.paramList[i].name+"</option>";
                     }
                 }
 

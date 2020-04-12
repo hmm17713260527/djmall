@@ -194,6 +194,11 @@ public interface SystemConstant {
      */
     String PRODUCT_SKU_MANAGER = "PRODUCT_SKU_MANAGER";
 
+    /**
+     * 字典商品类型
+     */
+    String PRODUCT_TYPE = "PRODUCT_TYPE";
+
 
 
 }
