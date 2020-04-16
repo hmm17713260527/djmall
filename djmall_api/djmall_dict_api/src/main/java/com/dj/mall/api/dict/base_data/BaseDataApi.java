@@ -51,7 +51,7 @@ public interface BaseDataApi {
     BaseDataDTOResp getBase(String code) throws Exception;
 
     /**
-     * 通过Parent_Code查询集合
+     * 通过Parent_Code查询基础数据
      * @param userStatus
      * @return
      * @throws Exception

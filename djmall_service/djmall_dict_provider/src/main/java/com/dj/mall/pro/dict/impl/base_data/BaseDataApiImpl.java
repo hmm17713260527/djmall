@@ -103,6 +103,12 @@ public class BaseDataApiImpl extends ServiceImpl<BaseDataMapper, BaseData> imple
         return DozerUtil.map(this.getOne(baseWrapper), BaseDataDTOResp.class);
     }
 
+    /**
+     * 通过Parent_Code查询基础数据
+     * @param userStatus
+     * @return
+     * @throws Exception
+     */
     @Override
     public List<BaseData> findBaseListByParentCode(String userStatus) throws Exception {
 
