@@ -1,11 +1,14 @@
 package com.dj.mall.pro.dict.impl.base_data;
+import	java.util.ArrayList;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.dj.mall.api.cmpt.RedisApi;
 import com.dj.mall.api.dict.base_data.BaseDataApi;
 import com.dj.mall.entity.auth.base_data.BaseData;
 import com.dj.mall.entity.dict.product_sku.ProductSku;
@@ -19,6 +22,7 @@ import com.dj.mall.model.util.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @ProjectName: djmall
@@ -34,6 +38,9 @@ public class BaseDataApiImpl extends ServiceImpl<BaseDataMapper, BaseData> imple
 
     @Autowired
     private ProductSkuMapper productSkuMapper;
+
+    @Reference
+    private RedisApi redisApi;
 
     /**
      * 字典修改
@@ -97,13 +104,32 @@ public class BaseDataApiImpl extends ServiceImpl<BaseDataMapper, BaseData> imple
     }
 
     @Override
-    public List<BaseDataDTOResp> findBaseListByParentCode(String userStatus) throws Exception {
+    public List<BaseData> findBaseListByParentCode(String userStatus) throws Exception {
 
-        QueryWrapper<BaseData> baseWrapper = new QueryWrapper<>();
-        baseWrapper.eq("parent_code", userStatus);
-        List<BaseData> baseDataList = this.list(baseWrapper);
 
-        return DozerUtil.mapList(baseDataList, BaseDataDTOResp.class);
+        //Redis
+        List<BaseData> baseDataList = new ArrayList<> ();
+        baseDataList = redisApi.getHashValues(userStatus);
+
+        if (baseDataList.isEmpty() || baseDataList.size() < 1) {
+            QueryWrapper<BaseData> baseWrapper = new QueryWrapper<>();
+            baseWrapper.eq("parent_code", userStatus);
+            baseDataList = this.list(baseWrapper);
+
+            baseDataList.forEach(base->{
+                redisApi.pushHash(userStatus, base.getCode(), base);
+            });
+
+        }
+
+        //普通
+//        QueryWrapper<BaseData> baseWrapper = new QueryWrapper<>();
+//        baseWrapper.eq("parent_code", userStatus);
+//        List<BaseData> baseDataList = this.list(baseWrapper);
+  //      return DozerUtil.mapList(baseDataList, BaseDataDTOResp.class);
+
+
+         return baseDataList;
     }
 
 

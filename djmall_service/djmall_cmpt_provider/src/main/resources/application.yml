@@ -1,0 +1,29 @@
+# 提供者
+# Dubbo 配置
+dubbo:
+  application:
+    name: djmall_cmpt_provider # 项目名(子项目名)
+    qos-enable: false # 关闭在线调试
+  registry:
+    address:  zookeeper://127.0.0.1:2181  # 注册中心地址
+  protocol:
+    name: dubbo # 协议名
+    port: 20888 # 服务端口
+  consumer:
+    check: false
+  provider:
+    timeout: 120000
+
+spring:
+#   redis集群配置
+#  redis:
+#    sentinel:
+#      master: mymaster
+#      nodes: 192.168.88.128:27000, 192.168.88.130:27000, 192.168.88.131:27000
+#    password: 123456
+  # redis 单机配置
+  redis:
+    host: 127.0.0.1
+    database: 0
+    port: 6379
+#    password: 123456

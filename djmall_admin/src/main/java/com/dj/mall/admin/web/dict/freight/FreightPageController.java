@@ -5,6 +5,7 @@ import com.dj.mall.admin.vo.auth.base.BaseDataVOResp;
 import com.dj.mall.admin.vo.dict.freight.FreightVOResp;
 import com.dj.mall.api.dict.base_data.BaseDataApi;
 import com.dj.mall.api.dict.freight.FreightApi;
+import com.dj.mall.entity.auth.base_data.BaseData;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.base.BaseDataDTOResp;
 import com.dj.mall.model.dto.dict.freight.FreightDTOResp;
@@ -46,8 +47,9 @@ public class FreightPageController {
     @RequiresPermissions(value = SystemConstant.FREIGHT_MANAGER)
     public String toShow(Model model) throws Exception {
 
-        List<BaseDataDTOResp> baseDataList = baseDataApi.findBaseListByParentCode(SystemConstant.LOGISTICS);
-        model.addAttribute("baseDataList", DozerUtil.mapList(baseDataList, BaseDataVOResp.class));
+        List<BaseData> baseDataList = baseDataApi.findBaseListByParentCode(SystemConstant.LOGISTICS);
+        //model.addAttribute("baseDataList", DozerUtil.mapList(baseDataList, BaseDataVOResp.class));
+        model.addAttribute("baseDataList", baseDataList);
 
 
         return "freight/freight_show";

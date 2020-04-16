@@ -6,6 +6,7 @@ import com.dj.mall.admin.vo.auth.user.UserVOResp;
 import com.dj.mall.api.auth.role.RoleApi;
 import com.dj.mall.api.auth.user.UserApi;
 import com.dj.mall.api.dict.base_data.BaseDataApi;
+import com.dj.mall.entity.auth.base_data.BaseData;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.base.BaseDataDTOResp;
 import com.dj.mall.model.dto.auth.role.RoleDTOResp;
@@ -34,6 +35,7 @@ public class UserPageController {
 
     @Reference
     private BaseDataApi baseDataApi;
+
 
     /**
      * 去重置密码
@@ -91,10 +93,10 @@ public class UserPageController {
     @RequiresPermissions(value = SystemConstant.USER_MANAGER)
     public String toShow(Model model) throws Exception {
 
-        List<BaseDataDTOResp> baseDataList = baseDataApi.findBaseListByParentCode(SystemConstant.USER_STATUS);
+        List<BaseData> baseDataList = baseDataApi.findBaseListByParentCode(SystemConstant.USER_STATUS);
         model.addAttribute("baseDataList", DozerUtil.mapList(baseDataList, BaseDataVOResp.class));
 
-        List<BaseDataDTOResp> baseDataSexList = baseDataApi.findBaseListByParentCode(SystemConstant.USER_SEX);
+        List<BaseData> baseDataSexList = baseDataApi.findBaseListByParentCode(SystemConstant.USER_SEX);
         model.addAttribute("baseDataSexList", baseDataSexList);
 
         return "user/user_show";
@@ -122,7 +124,7 @@ public class UserPageController {
         model.addAttribute("roleList", roleList);
         String salt = PasswordSecurityUtil.generateSalt();
         model.addAttribute("salt", salt);
-        List<BaseDataDTOResp> baseDataSexList = baseDataApi.findBaseListByParentCode(SystemConstant.USER_SEX);
+        List<BaseData> baseDataSexList = baseDataApi.findBaseListByParentCode(SystemConstant.USER_SEX);
         model.addAttribute("baseDataSexList", baseDataSexList);
         return "user/user_add";
     }

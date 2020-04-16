@@ -1,10 +1,12 @@
 package com.dj.mall.api.dict.base_data;
 
+import com.dj.mall.entity.auth.base_data.BaseData;
 import com.dj.mall.model.dto.auth.base.BaseDataDTOReq;
 import com.dj.mall.model.dto.auth.base.BaseDataDTOResp;
 import com.dj.mall.model.util.PageResult;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @ProjectName: djmall
@@ -54,5 +56,5 @@ public interface BaseDataApi {
      * @return
      * @throws Exception
      */
-    List<BaseDataDTOResp> findBaseListByParentCode(String userStatus) throws Exception;
+    List<BaseData> findBaseListByParentCode(String userStatus) throws Exception;
 }
