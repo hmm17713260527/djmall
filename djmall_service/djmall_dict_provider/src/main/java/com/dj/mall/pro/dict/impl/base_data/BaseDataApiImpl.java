@@ -52,6 +52,7 @@ public class BaseDataApiImpl extends ServiceImpl<BaseDataMapper, BaseData> imple
         UpdateWrapper<BaseData> baseWrapper = new UpdateWrapper<>();
         baseWrapper.set("name", baseDataDTOReq.getName()).eq("code", baseDataDTOReq.getCode());
         this.update(baseWrapper);
+        redisApi.pushHash(baseDataDTOReq.getParentCode(), baseDataDTOReq.getCode(), DozerUtil.map(baseDataDTOReq, BaseData.class));
     }
 
     /**
@@ -87,6 +88,7 @@ public class BaseDataApiImpl extends ServiceImpl<BaseDataMapper, BaseData> imple
             productSku.setProductType(s);
             productSkuMapper.insert(productSku);
         }
+        redisApi.pushHash(baseDataDTOReq.getParentCode(), baseDataDTOReq.getCode(), DozerUtil.map(baseDataDTOReq, BaseData.class));
         this.save(DozerUtil.map(baseDataDTOReq, BaseData.class));
     }
 
@@ -133,7 +135,6 @@ public class BaseDataApiImpl extends ServiceImpl<BaseDataMapper, BaseData> imple
 //        baseWrapper.eq("parent_code", userStatus);
 //        List<BaseData> baseDataList = this.list(baseWrapper);
   //      return DozerUtil.mapList(baseDataList, BaseDataDTOResp.class);
-
 
          return baseDataList;
     }
