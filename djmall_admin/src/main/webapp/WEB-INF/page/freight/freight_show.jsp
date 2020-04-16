@@ -112,9 +112,9 @@
 <form id="fm">
 
     物流公司:
-    <select name = "baseId">
+    <select name = "baseCode">
         <c:forEach items="${baseDataList}" var="b">
-            <option value="${b.baseId}">${b.name}</option>
+            <option value="${b.code}">${b.name}</option>
         </c:forEach>
     </select><br/>
     运费：<span style="color : red">包邮为：0</span><br/>

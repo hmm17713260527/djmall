@@ -30,9 +30,9 @@ public class FreightBO implements Serializable {
     private Integer id;
 
     /**
-     * base_id
+     * base_code
      */
-    private Integer baseId;
+    private String baseCode;
 
     /**
      * base_name

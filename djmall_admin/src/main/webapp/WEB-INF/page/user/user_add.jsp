@@ -181,7 +181,7 @@
 <body>
 <form id="fm">
     <input type="hidden" name="isDel" value="1">
-    <input type="hidden" name="status" value="11">
+    <input type="hidden" name="status" value="NOT_ACTIVE">
     <input type="hidden" name="salt" value="${salt}" id="salt">
     <input type="hidden" name = "_method" value = "POST">
     用户名:<input type="text" name="userName" id="userName"><br />
@@ -192,7 +192,7 @@
     邮箱:<input type="text" name="email" id="email"><br />
     性别:
     <c:forEach items="${baseDataSexList}" var="s">
-        <input type = "radio" name = "sex" value = "${s.baseId}">${s.name}
+        <input type = "radio" name = "sex" value = "${s.code}">${s.name}
     </c:forEach>
     <br/>
     级别:

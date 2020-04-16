@@ -79,12 +79,12 @@ public class UserVOReq implements Serializable {
     /**
      * 10激活，11未激活
      */
-    private Integer status;
+    private String status;
 
     /**
      * 7男，8女
      */
-    private Integer sex;
+    private String sex;
 
     /**
      * 注册时间

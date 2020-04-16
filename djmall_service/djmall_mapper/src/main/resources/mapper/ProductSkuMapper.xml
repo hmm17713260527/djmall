@@ -8,8 +8,9 @@
 
     <select id="findProductSKUList" resultType="com.dj.mall.mapper.bo.dict.product_sku.ProductSKUBO">
 
+
         SELECT
-            dabd.id,
+            ddpsg.id,
             dabd.`name`,
             dabd.`code`,
             GROUP_CONCAT(ddpa.attr SEPARATOR ",") AS attr
@@ -20,8 +21,7 @@
         WHERE
             dabd.parent_code = #{parentCode}
         GROUP BY
-            dabd.id
-
+            ddpsg.product_type
 
 
     </select>
@@ -32,6 +32,6 @@
         FROM
             djmall_auth_base_data dabd
         LEFT JOIN djmall_dict_product_sku_gm ddpsg ON ddpsg.product_type = dabd.`code`
-        WHERE dabd.id = #{productId}
+        WHERE dabd.`code` = #{productCode}
     </select>
 </mapper>

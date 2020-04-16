@@ -53,14 +53,14 @@ public class ProductSkuApiImpl extends ServiceImpl<ProductSkuMapper, ProductSku>
 
     /**
      * 属性展示
-     * @param productId
+     * @param productCode
      * @return
      * @throws Exception
      */
     @Override
-    public PageResult findProductAttrList(Integer productId) throws Exception {
+    public PageResult findProductAttrList(String productCode) throws Exception {
         List<ProductAttrBO> productAttrBOList = productAttrMapper.findFreightList();
-        List<Integer> ids= baseMapper.findProductAttrList(productId);
+        List<Integer> ids= baseMapper.findProductAttrList(productCode);
 
         if (ids.get(0) != null && ids.size() > 0) {
             ArrayList<ProductAttrBO> attrList = new ArrayList<>();
@@ -81,14 +81,16 @@ public class ProductSkuApiImpl extends ServiceImpl<ProductSkuMapper, ProductSku>
 
     /**
      * 关联属性保存
-     * @param productId
+     * @param productCode
      * @param skuIds
      * @throws Exception
      */
     @Override
-    public void addProductSku(Integer productId, Integer[] skuIds) throws Exception {
+    public void addProductSku(String productCode, Integer[] skuIds) throws Exception {
 
-        BaseData baseData = baseDataMapper.selectById(productId);
+        QueryWrapper<BaseData> baseDataQueryWrapper = new QueryWrapper<>();
+        baseDataQueryWrapper.eq("code", productCode);
+        BaseData baseData = baseDataMapper.selectOne(baseDataQueryWrapper);
 
         QueryWrapper<ProductSku> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("product_type", baseData.getCode());

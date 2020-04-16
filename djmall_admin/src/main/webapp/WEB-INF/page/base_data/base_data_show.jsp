@@ -58,7 +58,7 @@
                     html += "<td>"+data.data.list[i].parentCode+"</td>";
                     html += "<td>";
                     html += "<shiro:hasPermission name='BTN_BASE_DATA_UPDATE'>";
-                    html += "<input type='button' value='修改' onclick='toUpdate("+data.data.list[i].baseId+")'/>";
+                    html += "<input type='button' value='修改' onclick='toUpdate(&quot;"+data.data.list[i].code+"&quot;)'/>";
                     html += "</shiro:hasPermission>";
                     html += "</td>";
                     html += "</tr>";
@@ -91,14 +91,14 @@
     }
 
 
-    function toUpdate(baseId) {
+    function toUpdate(code) {
         layer.open({
             type: 2,
             title: '修改页面',
             shadeClose: true,
             shade: 0.8,
             area: ['380px', '80%'],
-            content: '<%=request.getContextPath()%>/auth/base_data/toUpdate/' + baseId
+            content: '<%=request.getContextPath()%>/auth/base_data/toUpdate/' + code
         });
     }
 

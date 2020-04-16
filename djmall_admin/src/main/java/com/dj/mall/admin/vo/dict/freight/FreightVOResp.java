@@ -28,9 +28,9 @@ public class FreightVOResp implements Serializable {
     private Integer freightId;
 
     /**
-     * base_id
+     * base_code
      */
-    private Integer baseId;
+    private String baseCode;
 
     /**
      * base_name

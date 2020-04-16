@@ -88,7 +88,7 @@ public class UserBo implements Serializable {
     /**
      * 10激活，11未激活
      */
-    private Integer status;
+    private String status;
 
     /**
      * 角色名
@@ -103,7 +103,7 @@ public class UserBo implements Serializable {
     /**
      * 7男，8女
      */
-    private Integer sex;
+    private String sex;
 
     /**
      * 性别展示

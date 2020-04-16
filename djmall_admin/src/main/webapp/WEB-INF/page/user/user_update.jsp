@@ -41,8 +41,8 @@
     用户名:<input type = "text" name = "userName" value="${user.userName}"/><br/>
     手机:<input type = "text" name = "phone" value="${user.phone}"/><br/>
     邮箱:<input type = "text" name = "email" value="${user.email}"/><br/>
-    性别:<input type = "radio" name = "sex" value="7" <c:if test = "${user.sex == 7}">checked</c:if>/>男
-    <input type = "radio" name = "sex" value="8" <c:if test = "${user.sex == 8}">checked</c:if>/>女<br/>
+    性别:<input type = "radio" name = "sex" value="MAN" <c:if test = "${user.sex == 'MAN'}">checked</c:if>/>男
+    <input type = "radio" name = "sex" value="WOMAN" <c:if test = "${user.sex == 'WOMAN'}">checked</c:if>/>女<br/>
     <input type="button" value="修改" onclick="update()"/>
 </form>
 

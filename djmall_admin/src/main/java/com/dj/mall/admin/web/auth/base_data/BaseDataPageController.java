@@ -29,15 +29,15 @@ public class BaseDataPageController {
     private BaseDataApi baseDataApi;
 
     /**
-     * 去修改，通过id查询role
-     * @param baseId
+     * 去修改，通过code查询role
+     * @param code
      * @param model
      * @return
      * @throws Exception
      */
-    @RequestMapping("toUpdate/{baseId}")
-    public String toUpdate(@PathVariable("baseId") Integer baseId, Model model) throws Exception {
-        BaseDataDTOResp BaseDataDTOResp = baseDataApi.getBase(baseId);
+    @RequestMapping("toUpdate/{code}")
+    public String toUpdate(@PathVariable("code") String code, Model model) throws Exception {
+        BaseDataDTOResp BaseDataDTOResp = baseDataApi.getBase(code);
         model.addAttribute("base", DozerUtil.map(BaseDataDTOResp, BaseDataVOResp.class));
         return "base_data/base_data_update";
     }

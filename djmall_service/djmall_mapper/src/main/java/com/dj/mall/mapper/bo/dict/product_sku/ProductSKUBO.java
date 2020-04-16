@@ -26,7 +26,7 @@ public class ProductSKUBO implements Serializable {
     /**
      * id
      */
-    @Mapping("productId")
+    @Mapping("skuId")
     private Integer id;
 
     /**

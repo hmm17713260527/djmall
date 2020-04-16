@@ -27,7 +27,7 @@ public interface SystemConstant {
     /**
      * 待激活
      */
-    Integer USER_NOT_STATUS = 11;
+    String USER_NOT_STATUS = "NOT_ACTIVE";
 
     /**
      * 待激活CODE
@@ -139,9 +139,9 @@ public interface SystemConstant {
     String ID_ACTIVATE = "账号已激活";
 
     /**
-     * 用户状态：已激活 10
+     * 用户状态：已激活
      */
-    Integer USER_STATUS_ACTIVATE = 10;
+    String USER_STATUS_ACTIVATE = "ACTIVE";
 
     /**
      * 2：非正常显示

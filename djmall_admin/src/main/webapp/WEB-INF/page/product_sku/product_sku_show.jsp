@@ -37,12 +37,12 @@
                 var html = "";
                 for (var i = 0; i < data.data.list.length; i++) {
                     html += "<tr>";
-                    html += "<td>"+data.data.list[i].productId+"</td>";
+                    html += "<td>"+data.data.list[i].skuId+"</td>";
                     html += "<td>"+data.data.list[i].name+"</td>";
                     html += data.data.list[i].attr == null ? "<td>暂无属性</td>" : "<td>"+data.data.list[i].attr+"</td>";
                     html += "<td>";
                     html += "<shiro:hasPermission name='BTN_PRODUCT_SKU_RELEVANCE'>";
-                    html += "<input type='button' value='关联属性' onclick='toAttr("+data.data.list[i].productId+")'/>";
+                    html += "<input type='button' value='关联属性' onclick='toAttr(&quot;"+data.data.list[i].code+"&quot;)'/>";
                     html += "</shiro:hasPermission>";
                     html += "</td>";
                     html += "</tr>";
@@ -52,14 +52,14 @@
             });
     }
 
-    function toAttr(productId) {
+    function toAttr(code) {
         layer.open({
             type: 2,
             title: '关联属性页面',
             shadeClose: true,
             shade: 0.8,
             area: ['380px', '80%'],
-            content: '<%=request.getContextPath()%>/dict/product_sku/toAttr/' + productId
+            content: '<%=request.getContextPath()%>/dict/product_sku/toAttr/' + code
         });
     }
 

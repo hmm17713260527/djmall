@@ -47,17 +47,17 @@
         FROM
             djmall_auth_user dau
         LEFT JOIN djmall_auth_role dar ON dau.type = dar.id
-        LEFT JOIN djmall_auth_base_data dabd ON dau.`status` = dabd.id
-        LEFT JOIN djmall_auth_base_data da ON da.id = dau.sex
+        LEFT JOIN djmall_auth_base_data dabd ON dau.`status` = dabd.`code`
+        LEFT JOIN djmall_auth_base_data da ON da.`code` = dau.sex
         LEFT JOIN djmall_auth_login_end_time dal ON dau.id = dal.user_id
         where (dau.is_del = 1 or dau.is_del = 0)
         <if test="user.type != null">
             and dau.type = #{user.type}
         </if>
-        <if test="user.status != null">
+        <if test="user.status != null and user.status != ''">
             and dau.status = #{user.status}
         </if>
-        <if test="user.sex != null">
+        <if test="user.sex != null and user.sex != ''">
             and dau.sex = #{user.sex}
         </if>
         <if test="user.userName != null and user.userName != ''">

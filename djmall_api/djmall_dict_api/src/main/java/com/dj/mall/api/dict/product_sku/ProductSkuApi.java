@@ -23,16 +23,16 @@ public interface ProductSkuApi {
 
     /**
      * 属性展示
-     * @param productId
+     * @param productCode
      * @return
      * @throws Exception
      */
-    PageResult findProductAttrList(Integer productId) throws Exception;
+    PageResult findProductAttrList(String productCode) throws Exception;
 
     /**
      * 关联属性保存
-     * @param productId
+     * @param productCode
      * @param skuIds
      */
-    void addProductSku(Integer productId, Integer[] skuIds) throws Exception;
+    void addProductSku(String productCode, Integer[] skuIds) throws Exception;
 }

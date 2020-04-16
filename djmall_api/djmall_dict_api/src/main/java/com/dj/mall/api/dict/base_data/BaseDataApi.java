@@ -41,12 +41,12 @@ public interface BaseDataApi {
     void addBase(BaseDataDTOReq baseDataDTOReq) throws Exception;
 
     /**
-     * 通过id查询
-     * @param baseId
+     * 通过code查询
+     * @param code
      * @return
      * @throws Exception
      */
-    BaseDataDTOResp getBase(Integer baseId) throws Exception;
+    BaseDataDTOResp getBase(String code) throws Exception;
 
     /**
      * 通过Parent_Code查询集合

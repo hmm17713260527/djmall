@@ -23,7 +23,7 @@
 
     function search() {
         var index = layer.load(0, {shade:0.5});
-        $.post("<%=request.getContextPath() %>/auth/user/show",
+        $.get("<%=request.getContextPath() %>/auth/user/show",
             $("#fm").serialize(),
             function(data){
                 layer.close(index);
@@ -117,7 +117,7 @@
             var id = chkValue.val();
             var index = layer.load(0, {shade:0.5});
             $.post("<%=request.getContextPath()%>/auth/user/updateStatus",
-                {"userId" : id, "status" : 10, "_method" : "PUT"},
+                {"userId" : id, "status" : "ACTIVE", "_method" : "PUT"},
                 function(data){
                     layer.close(index);
                     layer.msg(data.data, function(){
@@ -195,14 +195,14 @@
 
     性别:
     <c:forEach items="${baseDataSexList}" var="s">
-        <input type = "radio" name = "sex" value = "${s.baseId}">${s.name}
+        <input type = "radio" name = "sex" value = "${s.code}">${s.name}
     </c:forEach><br/>
 
     状态:
     <select name = "status">
         <option value="">==请选择==</option>
         <c:forEach items="${baseDataList}" var="b">
-            <option value="${b.baseId}">${b.name}</option>
+            <option value="${b.code}">${b.name}</option>
         </c:forEach>
     </select>
     <input type = "hidden" name = "isDel" value = "1"/><br/>

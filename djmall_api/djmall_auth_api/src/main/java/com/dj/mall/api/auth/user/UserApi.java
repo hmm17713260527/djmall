@@ -98,7 +98,7 @@ public interface UserApi {
      * @return
      * @throws Exception
      */
-    void updateStatusByEmail(Integer status, String email) throws Exception;
+    void updateStatusByEmail(String status, String email) throws Exception;
 
     /**
      * 登陆

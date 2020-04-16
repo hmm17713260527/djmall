@@ -230,7 +230,7 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
      * @throws Exception
      */
     @Override
-    public void updateStatusByEmail(Integer status, String email) throws Exception {
+    public void updateStatusByEmail(String status, String email) throws Exception {
         UpdateWrapper<User> updateWrapper = new UpdateWrapper<User>();
         updateWrapper.set("status", status);
         updateWrapper.eq("email", email);

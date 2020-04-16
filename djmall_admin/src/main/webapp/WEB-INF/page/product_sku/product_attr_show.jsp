@@ -26,7 +26,7 @@
     function search() {
         var index = layer.load(0, {shade:0.5});
         $.get("<%=request.getContextPath() %>/dict/product_sku/attrShow",
-            {"productId" : '${productId}'},
+            {"productCode" : '${productCode}'},
             function(data){
                 layer.close(index);
                 if (data.code != 200) {
@@ -64,7 +64,7 @@
         });
 
         $.post(
-            "<%=request.getContextPath()%>/dict/product_sku/update/${productId}",
+            "<%=request.getContextPath()%>/dict/product_sku/update/${productCode}",
             {"skuIds": str},
             function (data) {
 
@@ -92,7 +92,7 @@
 
 <form id="fm">
 
-    <input type="hidden" name="productId" value="${productId}"/>
+    <input type="hidden" name="productId" value="${productCode}"/>
     <input type="button" value="保存" onclick="update()">
 
     <table cellpadding='12px' cellspacing='0px' border='1px'  bordercolor='gray' bgcolor='pink'>

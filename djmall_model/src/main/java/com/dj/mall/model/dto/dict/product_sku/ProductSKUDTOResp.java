@@ -26,7 +26,7 @@ public class ProductSKUDTOResp implements Serializable {
     /**
      * id
      */
-    private Integer productId;
+    private Integer skuId;
 
     /**
      * 商品名

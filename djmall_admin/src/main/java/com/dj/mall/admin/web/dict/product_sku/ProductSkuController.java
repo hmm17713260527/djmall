@@ -28,15 +28,14 @@ public class ProductSkuController {
 
     /**
      * 关联属性保存
-     * @param productId
+     * @param productCode
      * @param skuIds
      * @return
      * @throws Exception
      */
-    @PostMapping("update/{productId}")
-    public ResultModel<Object> update(@PathVariable Integer productId, Integer[] skuIds) throws Exception {
-        System.out.println(skuIds.toString());
-        productSkuApi.addProductSku(productId, skuIds);
+    @PostMapping("update/{productCode}")
+    public ResultModel<Object> update(@PathVariable String productCode, Integer[] skuIds) throws Exception {
+        productSkuApi.addProductSku(productCode, skuIds);
 
         return new ResultModel<>().success(true);
     }
@@ -48,9 +47,9 @@ public class ProductSkuController {
      * @throws Exception
      */
     @GetMapping("attrShow")
-    public ResultModel<Object> attrShow(Integer productId) throws Exception {
+    public ResultModel<Object> attrShow(String productCode) throws Exception {
 
-        PageResult pageResult = productSkuApi.findProductAttrList(productId);
+        PageResult pageResult = productSkuApi.findProductAttrList(productCode);
 
         PageResult.builder().list(DozerUtil.mapList(pageResult.getList(), ProductAttrVOResp.class));
 

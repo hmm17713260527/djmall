@@ -22,10 +22,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class BaseDataDTOResp implements Serializable {
 
-    /**
-     * ID
-     */
-    private Integer baseId;
 
     /**
      * 字典code

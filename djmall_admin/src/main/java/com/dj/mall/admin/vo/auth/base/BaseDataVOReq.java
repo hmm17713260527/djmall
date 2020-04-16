@@ -22,10 +22,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class BaseDataVOReq implements Serializable {
 
-    /**
-     * ID
-     */
-    private Integer baseId;
 
     /**
      * 当前页

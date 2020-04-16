@@ -27,12 +27,6 @@ import java.io.Serializable;
 @TableName("djmall_auth_base_data")
 public class BaseData implements Serializable {
 
-    /**
-     * ID
-     */
-    @TableId(type = IdType.AUTO)
-    @Mapping("baseId")
-    private Integer id;
 
     /**
      * 字典code

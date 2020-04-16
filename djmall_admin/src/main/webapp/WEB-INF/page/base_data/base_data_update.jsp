@@ -39,8 +39,7 @@
 
 <form id = "fm">
     <input type="hidden" name = "_method" value = "PUT">
-    <input type="hidden" name = "baseId" value="${base.baseId}"/>
-    CODE:<input type = "text" name = "code" value="${base.code}"/><br/>
+    <input type="hidden" name = "code" value="${base.code}"/>
     字典名:<input type = "text" name = "name" value="${base.name}"/><br/>
     <shiro:hasPermission name="BTN_BASE_DATA_UPDATE">
         <input type="button" value="修改" onclick="update()"/>

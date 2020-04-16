@@ -110,7 +110,7 @@ public class UserController {
      * @throws Exception
      */
     @RequestMapping("updateStatus")
-    public ResultModel<Object> updateStatus(Integer userId, Integer status) throws Exception {
+    public ResultModel<Object> updateStatus(Integer userId, String status) throws Exception {
         UserDTOResp user = userApi.getUser(userId);
         if (user.getStatus().equals(SystemConstant.USER_STATUS_ACTIVATE)) {
             return new ResultModel<>().success(SystemConstant.ID_ACTIVATE);
@@ -139,7 +139,7 @@ public class UserController {
      * @param userVOReq
      * @return
      */
-    @RequestMapping("show")
+    @GetMapping("show")
     public ResultModel<Object> show(UserVOReq userVOReq) throws Exception {
 
         PageResult pageResult = userApi.findUserList(DozerUtil.map(userVOReq, UserDTOReq.class));
@@ -159,7 +159,7 @@ public class UserController {
      * @throws Exception
      */
     @PutMapping("updateStatusByEmail")
-    public ResultModel<Object> updateStatusByEmail(Integer status, String email) throws Exception {
+    public ResultModel<Object> updateStatusByEmail(String status, String email) throws Exception {
         userApi.updateStatusByEmail(status, email);
         return new ResultModel<>().success(SystemConstant.REQ_YES);
 

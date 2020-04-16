@@ -22,10 +22,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class BaseDataVOResp implements Serializable {
 
-    /**
-     * ID
-     */
-    private Integer baseId;
 
     /**
      * 字典code

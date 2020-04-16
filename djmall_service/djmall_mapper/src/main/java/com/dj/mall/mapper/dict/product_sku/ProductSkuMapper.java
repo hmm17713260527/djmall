@@ -21,5 +21,5 @@ public interface ProductSkuMapper extends BaseMapper<ProductSku> {
 
     List<ProductSKUBO> findProductSKUList(@Param("parentCode") String parentCode) throws DataAccessException;
 
-    List<Integer> findProductAttrList(@Param("productId") Integer productId) throws DataAccessException;
+    List<Integer> findProductAttrList(@Param("productCode") String productCode) throws DataAccessException;
 }

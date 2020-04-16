@@ -2,6 +2,7 @@ package com.dj.mall.pro.dict.impl.base_data;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -41,11 +42,9 @@ public class BaseDataApiImpl extends ServiceImpl<BaseDataMapper, BaseData> imple
      */
     @Override
     public void updateBase(BaseDataDTOReq baseDataDTOReq) throws Exception {
-        if (null != baseDataDTOReq.getCode()) {
-            String s = baseDataDTOReq.getCode().toUpperCase();
-            BaseDataDTOReq.builder().code(s);
-        }
-        this.updateById(DozerUtil.map(baseDataDTOReq, BaseData.class));
+        UpdateWrapper<BaseData> baseWrapper = new UpdateWrapper<>();
+        baseWrapper.set("name", baseDataDTOReq.getName()).eq("code", baseDataDTOReq.getCode());
+        this.update(baseWrapper);
     }
 
     /**
@@ -85,14 +84,16 @@ public class BaseDataApiImpl extends ServiceImpl<BaseDataMapper, BaseData> imple
     }
 
     /**
-     * 通过id查询
-     * @param baseId
+     * 通过code查询
+     * @param code
      * @return
      * @throws Exception
      */
     @Override
-    public BaseDataDTOResp getBase(Integer baseId) throws Exception {
-        return DozerUtil.map(this.getById(baseId), BaseDataDTOResp.class);
+    public BaseDataDTOResp getBase(String code) throws Exception {
+        QueryWrapper<BaseData> baseWrapper = new QueryWrapper<>();
+        baseWrapper.eq("code", code);
+        return DozerUtil.map(this.getOne(baseWrapper), BaseDataDTOResp.class);
     }
 
     @Override

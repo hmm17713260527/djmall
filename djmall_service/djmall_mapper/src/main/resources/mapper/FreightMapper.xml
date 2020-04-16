@@ -9,12 +9,12 @@
 
         SELECT
             ddf.id,
-            ddf.base_id,
+            ddf.base_code,
             ddf.freight,
             dabd.`name` AS base_name
         FROM
             djmall_dict_freight ddf
-        LEFT JOIN djmall_auth_base_data dabd ON ddf.base_id = dabd.id
+        LEFT JOIN djmall_auth_base_data dabd ON dabd.`code` = ddf.base_code
 
 
     </select>

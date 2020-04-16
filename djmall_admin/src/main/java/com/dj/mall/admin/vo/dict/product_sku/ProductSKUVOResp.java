@@ -22,10 +22,11 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class ProductSKUVOResp implements Serializable {
 
+
     /**
      * id
      */
-    private Integer productId;
+    private Integer skuId;
 
     /**
      * 商品名

@@ -39,15 +39,15 @@ public class ProductSkuPageController {
 
     /**
      * 去查看关联属性
-     * @param productId
+     * @param code
      * @return
      * @throws Exception
      */
-    @RequestMapping("toAttr/{productId}")
-    public ModelAndView toAttrValue(@PathVariable("productId") Integer productId) throws Exception {
+    @RequestMapping("toAttr/{code}")
+    public ModelAndView toAttrValue(@PathVariable("code") String code) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("product_sku/product_attr_show");
-        modelAndView.addObject("productId", productId);
+        modelAndView.addObject("productCode", code);
         return modelAndView;
     }
 
