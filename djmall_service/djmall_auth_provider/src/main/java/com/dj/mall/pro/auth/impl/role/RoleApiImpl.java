@@ -186,6 +186,11 @@ public class RoleApiImpl extends ServiceImpl<RoleMapper, Role> implements RoleAp
         return true;
     }
 
+    /**
+     * 查询所有角色
+     * @return
+     * @throws Exception
+     */
     @Override
     public List<RoleDTOResp> findRoleList() throws Exception {
         QueryWrapper<Role> queryWrapper = new QueryWrapper<Role>();

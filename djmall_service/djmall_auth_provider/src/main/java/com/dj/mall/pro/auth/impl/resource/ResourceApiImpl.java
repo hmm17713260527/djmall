@@ -103,10 +103,18 @@ public class ResourceApiImpl extends ServiceImpl<ResourceMapper, Resource> imple
      */
     @Override
     public void updateRes(ResourceDTOReq resourceDTOReq) throws Exception {
+        String s = resourceDTOReq.getResourceCode().toUpperCase();
+        resourceDTOReq.setResourceCode(s);
         this.updateById(DozerUtil.map(resourceDTOReq, Resource.class));
     }
 
 
+    /**
+     * 递归方法
+     * @param resId
+     * @param ids
+     * @throws Exception
+     */
     public void ids(Integer resId, List<Integer> ids) throws Exception {
         QueryWrapper<Resource> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("is_del", SystemConstant.IS_DEL)

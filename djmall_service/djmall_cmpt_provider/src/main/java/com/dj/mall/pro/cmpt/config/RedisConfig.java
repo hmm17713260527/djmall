@@ -1,5 +1,8 @@
 package com.dj.mall.pro.cmpt.config;
 
+
+import com.alibaba.fastjson.parser.ParserConfig;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,15 +25,22 @@ public class RedisConfig {
     @Bean
     public RedisTemplate redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate redisTemplate = new RedisTemplate();
-        redisTemplate.setConnectionFactory(redisConnectionFactory);
-        // Key 序列化-String
+        // 开启自动类型支持
+        ParserConfig.getGlobalInstance().setAutoTypeSupport(true);//.addAccept("com.dj.demo");
+        // FastJSON序列化
+        FastJsonRedisSerializer<Object> fastJsonRedisSerializer = new FastJsonRedisSerializer<>(Object.class);
+        // 序列化时写入类的类型
+        fastJsonRedisSerializer.getFastJsonConfig().setSerializerFeatures(SerializerFeature.WriteClassName);
+
+        // key的序列化采用StringRedisSerializer
         redisTemplate.setKeySerializer(RedisSerializer.string());
         redisTemplate.setHashKeySerializer(RedisSerializer.string());
-        // value序列化JSON
-        FastJsonRedisSerializer fastJsonRedisSerializer = new FastJsonRedisSerializer(String.class);
+
+        // 值序列化JSON
         redisTemplate.setValueSerializer(fastJsonRedisSerializer);
-//        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(String.class);
-//        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
+        redisTemplate.setHashValueSerializer(fastJsonRedisSerializer);
+
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
         return redisTemplate;
     }
 }

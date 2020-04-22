@@ -60,10 +60,6 @@ public class ResourceController {
      */
     @PutMapping("update")
     public ResultModel<Object> update(ResourceVOReq resourceVOReq) throws Exception {
-        String s = resourceVOReq.getResourceCode().toUpperCase();
-
-        ResourceVOReq.builder().resourceCode(s);
-
         resourceApi.updateRes(DozerUtil.map(resourceVOReq, ResourceDTOReq.class));
         return new ResultModel<>().success(SystemConstant.REQ_YES);
     }
