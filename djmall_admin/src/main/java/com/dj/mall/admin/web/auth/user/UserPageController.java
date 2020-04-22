@@ -93,10 +93,10 @@ public class UserPageController {
     @RequiresPermissions(value = SystemConstant.USER_MANAGER)
     public String toShow(Model model) throws Exception {
 
-        List<BaseData> baseDataList = baseDataApi.findBaseListByParentCode(SystemConstant.USER_STATUS);
+        List<BaseDataDTOResp> baseDataList = baseDataApi.findBaseListByParentCode(SystemConstant.USER_STATUS);
         model.addAttribute("baseDataList", DozerUtil.mapList(baseDataList, BaseDataVOResp.class));
 
-        List<BaseData> baseDataSexList = baseDataApi.findBaseListByParentCode(SystemConstant.USER_SEX);
+        List<BaseDataDTOResp> baseDataSexList = baseDataApi.findBaseListByParentCode(SystemConstant.USER_SEX);
         model.addAttribute("baseDataSexList", baseDataSexList);
 
         return "user/user_show";
@@ -124,8 +124,8 @@ public class UserPageController {
         model.addAttribute("roleList", roleList);
         String salt = PasswordSecurityUtil.generateSalt();
         model.addAttribute("salt", salt);
-        List<BaseData> baseDataSexList = baseDataApi.findBaseListByParentCode(SystemConstant.USER_SEX);
-        model.addAttribute("baseDataSexList", baseDataSexList);
+        List<BaseDataDTOResp> baseDataSexList = baseDataApi.findBaseListByParentCode(SystemConstant.USER_SEX);
+        model.addAttribute("baseDataSexList", DozerUtil.mapList(baseDataSexList, BaseDataVOResp.class));
         return "user/user_add";
     }
 

@@ -4,6 +4,8 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.dj.mall.admin.vo.auth.resource.ResourceVOReq;
 import com.dj.mall.admin.vo.auth.resource.ResourceVOResp;
 import com.dj.mall.api.auth.resource.ResourceApi;
+import com.dj.mall.api.cmpt.RedisApi;
+import com.dj.mall.model.base.RedisConstant;
 import com.dj.mall.model.base.ResultModel;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.resource.ResourceDTOReq;
@@ -31,6 +33,11 @@ public class ResourceController {
 
     @Reference
     private ResourceApi resourceApi;
+
+    @Reference
+    private RedisApi redisApi;
+
+
 
     /**
      * 资源删除
@@ -105,9 +112,11 @@ public class ResourceController {
     public List<ResourceVOResp> toList(Integer id, HttpSession session) throws Exception {
 
         UserDTOResp userDTOResp  = (UserDTOResp) session.getAttribute(SystemConstant.USER_SESSION);
+        List<ResourceDTOResp> resourceDTORespList = redisApi.getHash(RedisConstant.ROLE_RESOURCE_ALL, RedisConstant.ROLE_RESOURCE + userDTOResp.getRoleId());
+
         List<ResourceVOResp> resourceList = new ArrayList<ResourceVOResp>();
 
-        userDTOResp.getResourceList().forEach(resource ->{
+        resourceDTORespList.forEach(resource ->{
             if (resource.getType().equals(SystemConstant.RES_TYPE)) {
                 resourceList.add(DozerUtil.map(resource, ResourceVOResp.class));
             }

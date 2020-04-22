@@ -47,9 +47,9 @@ public class FreightPageController {
     @RequiresPermissions(value = SystemConstant.FREIGHT_MANAGER)
     public String toShow(Model model) throws Exception {
 
-        List<BaseData> baseDataList = baseDataApi.findBaseListByParentCode(SystemConstant.LOGISTICS);
-        //model.addAttribute("baseDataList", DozerUtil.mapList(baseDataList, BaseDataVOResp.class));
-        model.addAttribute("baseDataList", baseDataList);
+        List<BaseDataDTOResp> baseDataList = baseDataApi.findBaseListByParentCode(SystemConstant.LOGISTICS);
+        model.addAttribute("baseDataList", DozerUtil.mapList(baseDataList, BaseDataVOResp.class));
+        //model.addAttribute("baseDataList", baseDataList);
 
 
         return "freight/freight_show";

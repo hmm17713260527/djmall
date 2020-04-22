@@ -269,9 +269,16 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
 
         UserDTOResp userDTOResp = DozerUtil.map(user, UserDTOResp.class);
 
-        List<Resource> ResourceList = getBaseMapper().getUserResourceByUserId(userDTOResp.getUserId());
+//        List<Resource> ResourceList = getBaseMapper().getUserResourceByUserId(userDTOResp.getUserId());
+//
+//        userDTOResp.setResourceList(DozerUtil.mapList(ResourceList, ResourceDTOResp.class));
 
-        userDTOResp.setResourceList(DozerUtil.mapList(ResourceList, ResourceDTOResp.class));
+        QueryWrapper<UserRole> userRoleQueryWrapper = new QueryWrapper<>();
+        userRoleQueryWrapper.eq("user_id", user.getId());
+        UserRole userRole = userRoleMapper.selectOne(userRoleQueryWrapper);
+
+        userDTOResp.setRoleId(userRole.getRoleId());
+
         return userDTOResp;
     }
 

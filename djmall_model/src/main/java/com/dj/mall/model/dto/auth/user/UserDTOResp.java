@@ -109,6 +109,11 @@ public class UserDTOResp implements Serializable {
     private LocalDateTime endTime;
 
     /**
+     * 角色ID
+     */
+    private Integer roleId;
+
+    /**
      * 角色名
      */
     private String roleName;

@@ -112,29 +112,24 @@ public class BaseDataApiImpl extends ServiceImpl<BaseDataMapper, BaseData> imple
      * @throws Exception
      */
     @Override
-    public List<BaseData> findBaseListByParentCode(String userStatus) throws Exception {
+    public List<BaseDataDTOResp> findBaseListByParentCode(String userStatus) throws Exception {
 
 
         //Redis
-        List<BaseData> baseDataList = new ArrayList<> ();
-        baseDataList = redisApi.getHashValues(userStatus);
+        List<BaseDataDTOResp> baseDataList = redisApi.getHashValues(userStatus);
 
-        if (baseDataList.isEmpty() || baseDataList.size() < 1) {
+        if (baseDataList.isEmpty() || baseDataList.size() == 0) {
             QueryWrapper<BaseData> baseWrapper = new QueryWrapper<>();
             baseWrapper.eq("parent_code", userStatus);
-            baseDataList = this.list(baseWrapper);
+            List<BaseData> baseList = this.list(baseWrapper);
 
-            baseDataList.forEach(base->{
+            baseList.forEach(base->{
                 redisApi.pushHash(userStatus, base.getCode(), base);
             });
 
-        }
+            return DozerUtil.mapList(baseList, BaseDataDTOResp.class);
 
-        //普通
-//        QueryWrapper<BaseData> baseWrapper = new QueryWrapper<>();
-//        baseWrapper.eq("parent_code", userStatus);
-//        List<BaseData> baseDataList = this.list(baseWrapper);
-  //      return DozerUtil.mapList(baseDataList, BaseDataDTOResp.class);
+        }
 
          return baseDataList;
     }

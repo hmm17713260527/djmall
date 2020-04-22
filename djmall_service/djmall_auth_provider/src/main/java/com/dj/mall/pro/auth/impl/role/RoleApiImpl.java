@@ -1,5 +1,6 @@
 package com.dj.mall.pro.auth.impl.role;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -7,12 +8,14 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dj.mall.api.auth.role.RoleApi;
+import com.dj.mall.api.cmpt.RedisApi;
 import com.dj.mall.entity.auth.resource.Resource;
 import com.dj.mall.entity.auth.role.Role;
 import com.dj.mall.entity.auth.role.RoleResource;
 import com.dj.mall.entity.auth.user.UserRole;
 import com.dj.mall.mapper.auth.role.RoleMapper;
 import com.dj.mall.mapper.auth.user.UserRoleMapper;
+import com.dj.mall.model.base.RedisConstant;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.resource.ResourceDTOResp;
 import com.dj.mall.model.dto.auth.role.RoleDTOReq;
@@ -45,6 +48,9 @@ public class RoleApiImpl extends ServiceImpl<RoleMapper, Role> implements RoleAp
     @Autowired
     private RoleResourceService roleResourceService;
 
+    @Reference
+    private RedisApi redisApi;
+
 
     
     /**
@@ -64,7 +70,10 @@ public class RoleApiImpl extends ServiceImpl<RoleMapper, Role> implements RoleAp
      */
     @Override
     public void add(RoleDTOReq roleDTOReq) throws Exception {
-        this.save(DozerUtil.map(roleDTOReq, Role.class));
+        Role role = DozerUtil.map(roleDTOReq, Role.class);
+        this.save(role);
+        //redis更新
+        redisApi.pushHash(RedisConstant.ROLE_RESOURCE_ALL, RedisConstant.ROLE_RESOURCE + role.getId(), null);
     }
 
     /**
@@ -126,6 +135,9 @@ public class RoleApiImpl extends ServiceImpl<RoleMapper, Role> implements RoleAp
         UpdateWrapper<RoleResource> updateRoleResourceWrapper = new UpdateWrapper<RoleResource>();
         updateRoleResourceWrapper.set("is_del", 2).eq("role_id", roleId);
         roleResourceService.update(updateRoleResourceWrapper);
+
+        //redis更新
+        redisApi.delHash(RedisConstant.ROLE_RESOURCE_ALL, RedisConstant.ROLE_RESOURCE + roleId);
         
     }
 
@@ -167,7 +179,11 @@ public class RoleApiImpl extends ServiceImpl<RoleMapper, Role> implements RoleAp
             roleResourceList.add(RoleResource.builder().resourceId(resourceId).roleId(roleId).isDel(SystemConstant.IS_DEL).build());
         }
         roleResourceService.saveBatch(roleResourceList);
-        return null;
+
+        //redis更新覆盖
+        redisApi.pushHash(RedisConstant.ROLE_RESOURCE_ALL, RedisConstant.ROLE_RESOURCE + roleId, this.getRoleResource(roleId));
+
+        return true;
     }
 
     @Override

@@ -56,5 +56,5 @@ public interface BaseDataApi {
      * @return
      * @throws Exception
      */
-    List<BaseData> findBaseListByParentCode(String userStatus) throws Exception;
+    List<BaseDataDTOResp> findBaseListByParentCode(String userStatus) throws Exception;
 }

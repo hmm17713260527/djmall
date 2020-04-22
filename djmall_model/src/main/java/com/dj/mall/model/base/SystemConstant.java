@@ -7,7 +7,7 @@ public interface SystemConstant {
     /**
      * 页面大小
      */
-    Integer PAGE_SIZE = 1;
+    Integer PAGE_SIZE = 5;
 
     /**
      * 基础数据，性别

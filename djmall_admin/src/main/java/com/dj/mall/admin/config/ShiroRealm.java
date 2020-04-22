@@ -2,6 +2,9 @@ package com.dj.mall.admin.config;
 
 
 
+import com.alibaba.dubbo.config.annotation.Reference;
+import com.dj.mall.api.cmpt.RedisApi;
+import com.dj.mall.model.base.RedisConstant;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.resource.ResourceDTOResp;
 
@@ -15,10 +18,15 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 
 @Component
 public class ShiroRealm extends AuthorizingRealm {
 
+
+    @Reference
+    private RedisApi redisApi;
 
     /**
      * 授权
@@ -31,7 +39,10 @@ public class ShiroRealm extends AuthorizingRealm {
         //获取当前登录用户权限信息
         Session session = SecurityUtils.getSubject().getSession();
         UserDTOResp userDTOResp = (UserDTOResp) session.getAttribute(SystemConstant.USER_SESSION);
-        for (ResourceDTOResp resourceEntity : userDTOResp.getResourceList()) {
+
+        List<ResourceDTOResp> resourceDTORespList = redisApi.getHash(RedisConstant.ROLE_RESOURCE_ALL, RedisConstant.ROLE_RESOURCE + userDTOResp.getRoleId());
+
+        for (ResourceDTOResp resourceEntity : resourceDTORespList) {
             simpleAuthorizationInfo.addStringPermission(resourceEntity.getResourceCode());
         }
         return simpleAuthorizationInfo;
