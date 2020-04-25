@@ -16,7 +16,7 @@ mybatis-plus:
 # Dubbo
 dubbo:
   application:
-    name: auth-service # 应用名
+    name: dict-service # 应用名
     qos-enable: false # 关闭在线调试
   registry:
     address: zookeeper://127.0.0.1:2181 # 注册中心地址

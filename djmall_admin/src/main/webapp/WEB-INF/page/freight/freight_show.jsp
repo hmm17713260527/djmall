@@ -72,13 +72,13 @@
                 }
 
                 var html = "";
-                for (var i = 0; i < data.data.list.length; i++) {
+                for (var i = 0; i < data.data.length; i++) {
                     html += "<tr>";
-                    html += "<td>"+data.data.list[i].baseName+"</td>";
-                    html += "<td>"+data.data.list[i].freight+"</td>";
+                    html += "<td>"+data.data[i].baseName+"</td>";
+                    html += "<td>"+data.data[i].freight+"</td>";
                     html += "<td>";
                     html += "<shiro:hasPermission name='BTN_FREIGHT_UPDATE'>";
-                    html += "<input type='button' value='修改' onclick='toUpdate("+data.data.list[i].freightId+")'/>";
+                    html += "<input type='button' value='修改' onclick='toUpdate("+data.data[i].freightId+")'/>";
                     html += "</shiro:hasPermission>";
                     html += "</td>";
                     html += "</tr>";

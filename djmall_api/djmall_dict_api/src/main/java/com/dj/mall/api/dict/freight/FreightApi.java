@@ -4,6 +4,8 @@ import com.dj.mall.model.dto.dict.freight.FreightDTOReq;
 import com.dj.mall.model.dto.dict.freight.FreightDTOResp;
 import com.dj.mall.model.util.PageResult;
 
+import java.util.List;
+
 /**
  * @ProjectName: djmall
  * @Package: com.dj.mall.api.dict.freight
@@ -34,7 +36,7 @@ public interface FreightApi {
      * @return
      * @throws Exception
      */
-    PageResult findFreightList() throws Exception;
+    List<FreightDTOReq> findFreightList() throws Exception;
 
     /**
      * 通过id查询
@@ -43,4 +45,5 @@ public interface FreightApi {
      * @throws Exception
      */
     FreightDTOResp getFreight(Integer freightId) throws Exception;
+
 }

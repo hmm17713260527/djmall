@@ -5,6 +5,21 @@ package com.dj.mall.model.base;
 public interface SystemConstant {
 
     /**
+     * String方法调用：-
+     */
+    String PARENT_NAME  = "-";
+
+    /**
+     * String方法调用：""
+     */
+    String EXCEPTION = "";
+
+    /**
+     * String方法调用：.
+     */
+    String SYMBOL = ".";
+
+    /**
      * 页面大小
      */
     Integer PAGE_SIZE = 5;
@@ -172,6 +187,12 @@ public interface SystemConstant {
      * FREIGHT_MANAGER
      */
     String FREIGHT_MANAGER = "FREIGHT_MANAGER";
+
+    /**
+     * PRODUCT_MANAGER
+     */
+    String PRODUCT_MANAGER = "PRODUCT_MANAGER";
+
 
 
     /**

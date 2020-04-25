@@ -37,6 +37,7 @@
         <module>djmall_pojo</module>
         <module>djmall_dict_provider</module>
         <module>djmall_cmpt_provider</module>
+        <module>djmall_product_provider</module>
     </modules>
 
 

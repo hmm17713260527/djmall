@@ -1,5 +1,4 @@
 package com.dj.mall.pro.dict.impl.base_data;
-import	java.util.ArrayList;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
@@ -11,9 +10,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dj.mall.api.cmpt.RedisApi;
 import com.dj.mall.api.dict.base_data.BaseDataApi;
 import com.dj.mall.entity.auth.base_data.BaseData;
-import com.dj.mall.entity.dict.product_sku.ProductSku;
+import com.dj.mall.entity.dict.pro_sku.ProSku;
 import com.dj.mall.mapper.auth.base.BaseDataMapper;
-import com.dj.mall.mapper.dict.product_sku.ProductSkuMapper;
+import com.dj.mall.mapper.dict.pro_sku.ProSkuMapper;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.base.BaseDataDTOReq;
 import com.dj.mall.model.dto.auth.base.BaseDataDTOResp;
@@ -22,7 +21,6 @@ import com.dj.mall.model.util.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * @ProjectName: djmall
@@ -37,7 +35,7 @@ import java.util.Set;
 public class BaseDataApiImpl extends ServiceImpl<BaseDataMapper, BaseData> implements BaseDataApi {
 
     @Autowired
-    private ProductSkuMapper productSkuMapper;
+    private ProSkuMapper proSkuMapper;
 
     @Reference
     private RedisApi redisApi;
@@ -84,9 +82,9 @@ public class BaseDataApiImpl extends ServiceImpl<BaseDataMapper, BaseData> imple
         String s = baseDataDTOReq.getCode().toUpperCase();
         baseDataDTOReq.setCode(s);
         if (SystemConstant.PRODUCT_TYPE.equals(baseDataDTOReq.getParentCode())) {
-            ProductSku productSku = new ProductSku();
+            ProSku productSku = new ProSku();
             productSku.setProductType(s);
-            productSkuMapper.insert(productSku);
+            proSkuMapper.insert(productSku);
         }
         redisApi.pushHash(baseDataDTOReq.getParentCode(), baseDataDTOReq.getCode(), DozerUtil.map(baseDataDTOReq, BaseData.class));
         this.save(DozerUtil.map(baseDataDTOReq, BaseData.class));

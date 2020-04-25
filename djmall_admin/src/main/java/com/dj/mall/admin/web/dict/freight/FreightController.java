@@ -11,6 +11,8 @@ import com.dj.mall.model.util.DozerUtil;
 import com.dj.mall.model.util.PageResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @ProjectName: djmall
  * @Package: com.dj.mall.admin.web.dict.freight
@@ -53,11 +55,11 @@ public class FreightController {
     @GetMapping("show")
     public ResultModel<Object> show() throws Exception {
 
-        PageResult pageResult = freightApi.findFreightList();
+        List<FreightDTOReq> freightList = freightApi.findFreightList();
 
-        PageResult.builder().list(DozerUtil.mapList(pageResult.getList(), FreightVOResp.class));
+        List<FreightVOResp> freightVOResps = DozerUtil.mapList(freightList, FreightVOResp.class);
 
-        return new ResultModel<>().success(pageResult);
+        return new ResultModel<>().success(freightVOResps);
 
     }
 
