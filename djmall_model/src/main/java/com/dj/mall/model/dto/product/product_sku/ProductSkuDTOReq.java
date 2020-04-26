@@ -57,7 +57,7 @@ public class ProductSkuDTOReq implements Serializable {
     /**
      * SKU属性ID集合[id1:id2],-1代表自定
      */
-    private Integer skuAttrIds;
+    private String skuAttrIds;
 
     /**
      * SKU属性名集合[name1:name2]
@@ -67,7 +67,7 @@ public class ProductSkuDTOReq implements Serializable {
     /**
      * SKU属性值ID集合[id1:id2]-1代表自定
      */
-    private Integer skuAttrValueIds;
+    private String skuAttrValueIds;
 
     /**
      * SKU属性值名集合[name1:name2]

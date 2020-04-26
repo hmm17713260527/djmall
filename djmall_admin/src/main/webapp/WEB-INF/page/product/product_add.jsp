@@ -161,7 +161,7 @@
                             myIndex = 0;
                         }
                         for (var k = 0; k < itemLoopNum; k++) {
-                            e[index] = (e[index] == null ? "" : e[index] + ":") + d[i][myIndex];
+                            e[index] = (e[index] == null ? "" : e[index] + ",") + d[i][myIndex];
                             index++;
                         }
                         myIndex++

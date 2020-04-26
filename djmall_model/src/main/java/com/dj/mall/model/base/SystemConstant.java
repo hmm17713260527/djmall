@@ -25,6 +25,16 @@ public interface SystemConstant {
     Integer PAGE_SIZE = 5;
 
     /**
+     * 集合下标
+     */
+    Integer ARRAY_SUB = 0;
+
+    /**
+     * 是否默认[0默认,1不默认]
+     */
+    Integer IS_DEFAULT_YES = 0;
+
+    /**
      * 基础数据，性别
      */
     String USER_SEX = "SEX";
