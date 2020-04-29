@@ -23,4 +23,62 @@
 
 
     </select>
+
+
+    <select id="findProductList" resultType="com.dj.mall.mapper.bo.product.ProductSpuBO">
+
+        SELECT
+            dps.id AS product_id,
+            dps.product_name,
+            dps.spu_status,
+            dps.img,
+            dps.product_order,
+            dps.praise,
+            dps.product_describe,
+            dabd.`name`,
+            ddf.freight,
+            dpsk.sku_attr_names,
+            dpsk.sku_attr_value_names
+        FROM
+            djmall_product_spu dps
+        LEFT JOIN djmall_auth_base_data dabd ON dps.type = dabd.`code`
+        LEFT JOIN djmall_dict_freight ddf ON dps.freight_id = ddf.id
+        LEFT JOIN djmall_product_sku dpsk ON dpsk.product_id = dps.id
+        WHERE
+            dpsk.is_default = 0
+        <if test="product.productName != null and product.productName != ''">
+            and dps.product_name = #{product.productName}
+        </if>
+        <if test="product.types != null">
+            and dps.type in
+            <foreach collection="product.types" item="type" open="(" close=")" separator=",">
+                #{type}
+            </foreach>
+        </if>
+        <if test="product.userId != null">
+            and dps.user_id = #{product.userId}
+        </if>
+        GROUP BY
+            dpsk.product_id
+
+
+
+    </select>
+
+    <select id="findProductById" resultType="com.dj.mall.mapper.bo.product.ProductSpuBO">
+        SELECT
+            dps.id as product_id,
+            dps.product_name,
+            dps.freight_id,
+            dps.product_describe,
+            dps.img,
+            dabd.`name`
+        FROM
+            djmall_product_spu dps
+        LEFT JOIN djmall_auth_base_data dabd ON dps.type = dabd.`code`
+        WHERE dps.id = #{id}
+
+
+
+    </select>
 </mapper>

@@ -68,8 +68,7 @@
                     var html = "";
                     html += "<tr>";
                     html += "<td>" + $("#attrName").val();
-                    html += "<input type='hidden' value='-1' />";
-                    html += "<input type='hidden' value='"+$("#attrName").val()+"' />";
+                    html += "<input type='hidden' value='-1,"+$("#attrName").val()+"'/>";
                     html += "</td>";
                     html += "<td>";
                     var values = $("#attrValue").val().split(",");
@@ -89,10 +88,10 @@
 
         //生成SKU
         function toSku() {
-            var att2 = [];//属性id数组
-            var att3 = [];//属性名数组
             var att = [];//属性值id数组
             var att1 = [];//属性值数组
+            var att2 = [];//属性id数组
+            var att3 = [];//属性名数组
 
             var $tr = $("#tbd").find("tr");
             for (var i = 0; i< $tr.length; i++) {
@@ -112,14 +111,14 @@
                     att1.push(attrValue);
                 }
             }
-            var dkejId = dkej(att);
-            var dkejValue = dkej(att1);
+            var attrValueIds = dkej(att);
+            var attrValueNames = dkej(att1);
             var html = "";
-            for(var i=0; i<dkejId.length; i++) {
+            for(var i=0; i<attrValueIds.length; i++) {
                 var c = i+1;
                 html += "<tr id = 'tr_"+i+"'>";
                 html += "<td>"+c+"</td>";
-                html += "<td>"+dkejValue[i]+"</td>";
+                html += "<td>"+attrValueNames[i]+"</td>";
                 html += "<td><input type='text' name='productSkuList["+i+"].skuCount' value='10' /></td>";
                 html += "<td><input type='text' name='productSkuList["+i+"].skuPrice' value='10'/></td>";
                 html += "<td>";
@@ -129,8 +128,8 @@
                 html += "<input type = 'hidden' value ='"+1+"' name='productSkuList["+i+"].skuStatus'>";
                 html += "<input type = 'hidden' value ='"+att2+"' name='productSkuList["+i+"].skuAttrIds'>";
                 html += "<input type = 'hidden' value = '"+att3+"' name='productSkuList["+i+"].skuAttrNames'>";
-                html += "<input type = 'hidden' value='"+dkejId[i]+"' name='productSkuList["+i+"].skuAttrValueIds'>";
-                html += "<input type = 'hidden' value='"+dkejValue[i]+"' name='productSkuList["+i+"].skuAttrValueNames'>";
+                html += "<input type = 'hidden' value='"+attrValueIds[i]+"' name='productSkuList["+i+"].skuAttrValueIds'>";
+                html += "<input type = 'hidden' value='"+attrValueNames[i]+"' name='productSkuList["+i+"].skuAttrValueNames'>";
                 html += "</tr>";
             }
             var ht = "";
@@ -148,6 +147,7 @@
             var itemLoopNum = 1;
             var loopPerItem = 1;
             var now = 1;
+
             for (var i = 0; i < d.length; i++) {
                 now *= d[i].length;
                 var index = 0;
@@ -206,13 +206,13 @@
                         required: "没有运费吗？包邮？"
                     },
                     productDescribe:{
-                        required:"请填写商品描述"
+                        required:"请描述该商品"
                     },
                     type:{
                         required:"请填选择商品类型"
                     },
                     file:{
-                        required:"请上传图片"
+                        required:"上传商品图片！！！"
                     }
                 }
             });
@@ -224,9 +224,8 @@
             submitHandler: function () {
                 var formData = new FormData($("#frm")[0]);
                 var index = layer.load();
-                //七牛雲上传图片只能ajax提交
                 $.ajax({
-                    url:'<%= request.getContextPath() %>/product/spu/addProduct',
+                    url:'<%=request.getContextPath()%>/product/spu/addProduct',
                     dataType:'json',
                     type:'POST',
                     data: formData,
@@ -238,7 +237,7 @@
                             if (data.code != 200) {
                                 return;
                             }
-                            window.location.href = "<%= request.getContextPath() %>/product/spu/toShow";
+                            window.location.href = "<%=request.getContextPath()%>/product/spu/toShow";
                         })
                     }
                 });
@@ -264,12 +263,7 @@
         <option value = "">请选择</option>
         <c:forEach items="${freightList}" var="freight">
             <option value="${freight.freightId}">
-                <c:if test="${freight.freight != '运费'}">
                     ${freight.baseName}-${freight.freight}
-                </c:if>
-                <c:if test="${freight.freight == '运费'}">
-                    ${freight.baseName}-包邮
-                </c:if>
             </option>
         </c:forEach>
     </select><br/>

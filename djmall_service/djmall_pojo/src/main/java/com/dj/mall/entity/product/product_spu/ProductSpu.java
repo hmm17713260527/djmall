@@ -50,6 +50,11 @@ public class ProductSpu implements Serializable {
      */
     private String productDescribe;
 
+    /**
+     * SKU状态[0下架,1上架]
+     */
+    private Integer spuStatus;
+
 
     /**
      * 图片
@@ -71,12 +76,12 @@ public class ProductSpu implements Serializable {
     /**
      * 订单量
      */
-    private Integer order;
+    private Integer productOrder;
 
     /**
      * 点赞量
      */
-    private Long praise;
+    private Integer praise;
 
 
 

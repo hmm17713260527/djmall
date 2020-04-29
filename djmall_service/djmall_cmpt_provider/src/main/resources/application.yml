@@ -11,7 +11,9 @@ dubbo:
     port: 20888 # 服务端口
   consumer:
     check: false
-    timeout: 120000
+    timeout: 180000
+  provider:
+    timeout: 180000
 
 spring:
 #   redis集群配置

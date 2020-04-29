@@ -25,6 +25,11 @@ public interface SystemConstant {
     Integer PAGE_SIZE = 5;
 
     /**
+     * 用户角色ID
+     */
+    Integer USER_ROLE_ID = 1;
+
+    /**
      * 集合下标
      */
     Integer ARRAY_SUB = 0;
@@ -230,6 +235,19 @@ public interface SystemConstant {
      */
     String PRODUCT_TYPE = "PRODUCT_TYPE";
 
+    /**
+     * 字符串split方法
+     */
+    String SPLIT = "-";
 
+    /**
+     * 默认商品不可以下架
+     */
+    String NOT_UPDATE_PRODUCT_SKU_STATUS = "默认商品不可以下架";
+
+    /**
+     * 该商品已下架，不能设为默认
+     */
+    String NOT_UPDATE_PRODUCT_SKU_IS_DEFAULT = "该商品已下架，不能设为默认";
 
 }

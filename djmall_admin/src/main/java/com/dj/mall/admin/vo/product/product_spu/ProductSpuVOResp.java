@@ -49,6 +49,11 @@ public class ProductSpuVOResp implements Serializable {
      */
     private String img;
 
+    /**
+     * SKU状态[0下架,1上架]
+     */
+    private Integer spuStatus;
+
 
     /**
      * 商品类型（字典code）
@@ -64,20 +69,12 @@ public class ProductSpuVOResp implements Serializable {
     /**
      * 订单量
      */
-    private Integer order;
+    private Integer productOrder;
 
     /**
      * 点赞量
      */
-    private Long praise;
-
-
-
-
-
-
-
-
+    private Integer praise;
 
 
     /**
@@ -101,6 +98,34 @@ public class ProductSpuVOResp implements Serializable {
     private String attrValues;
 
 
+
+
+
+    /**
+     * 商品ID
+     */
+    private Integer productId;
+
+
+    /**
+     * 商品类型名称
+     */
+    private String name;
+
+    /**
+     * 邮费
+     */
+    private String freight;
+
+    /**
+     * 属性名
+     */
+    private String skuAttrNames;
+
+    /**
+     * 属性值
+     */
+    private String skuAttrValueNames;
 
 
 }

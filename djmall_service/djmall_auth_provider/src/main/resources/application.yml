@@ -24,8 +24,10 @@ dubbo:
     name: dubbo # 协议名我不知道
     port: 20880 # 服务端口
   consumer:
-    timeout: 120000
+    timeout: 180000
     check: false
+  provider:
+    timeout: 180000
 logging:
   level:
     com.dj.mall.mapper:

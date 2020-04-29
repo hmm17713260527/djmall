@@ -23,6 +23,11 @@ dubbo:
   protocol:
     name: dubbo # 协议名我不知道
     port: 20881 # 服务端口
+  consumer:
+    timeout: 180000
+    check: false
+  provider:
+    timeout: 180000
 logging:
   level:
     com.dj.mall.mapper:

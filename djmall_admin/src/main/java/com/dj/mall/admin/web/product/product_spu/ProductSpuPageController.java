@@ -2,8 +2,10 @@ package com.dj.mall.admin.web.product.product_spu;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.dj.mall.admin.vo.auth.base.BaseDataVOResp;
+import com.dj.mall.admin.vo.auth.user.UserVOResp;
 import com.dj.mall.admin.vo.dict.freight.FreightVOResp;
 import com.dj.mall.admin.vo.product.product_spu.ProductSpuVOReq;
+import com.dj.mall.admin.vo.product.product_spu.ProductSpuVOResp;
 import com.dj.mall.api.dict.base_data.BaseDataApi;
 import com.dj.mall.api.dict.freight.FreightApi;
 import com.dj.mall.api.product.product_spu.ProductSpuApi;
@@ -11,14 +13,18 @@ import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.base.BaseDataDTOResp;
 import com.dj.mall.model.dto.auth.user.UserDTOResp;
 import com.dj.mall.model.dto.dict.freight.FreightDTOReq;
+import com.dj.mall.model.dto.dict.freight.FreightDTOResp;
 import com.dj.mall.model.dto.product.product_spu.ProductSpuDTOReq;
+import com.dj.mall.model.dto.product.product_spu.ProductSpuDTOResp;
 import com.dj.mall.model.util.DozerUtil;
 import com.dj.mall.model.util.QiniuUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.io.InputStream;
@@ -47,6 +53,26 @@ public class ProductSpuPageController {
     @Reference
     private FreightApi freightApi;
 
+
+    /**
+     * 去修改
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("toUpdate/{id}")
+    public String toUpdate(@PathVariable("id") Integer id, Model model) throws Exception {
+
+        ProductSpuDTOResp productSpuDTOResp = productSpuApi.getProduct(id);
+        String[] split = productSpuDTOResp.getProductDescribe().split(SystemConstant.SPLIT);
+        productSpuDTOResp.setProductDescribe(split[0]);
+        model.addAttribute("product", DozerUtil.map(productSpuDTOResp, ProductSpuVOResp.class));
+
+        List<FreightDTOResp> freightList = freightApi.findFreightList();
+        model.addAttribute("freightList", DozerUtil.mapList(freightList, FreightVOResp.class));
+        return "product/product_update";
+    }
+
     /**
      * 去展示
      * @return
@@ -54,8 +80,9 @@ public class ProductSpuPageController {
      */
     @RequestMapping("toShow")
     @RequiresPermissions(value = SystemConstant.PRODUCT_MANAGER)
-    public String toShow() throws Exception {
-
+    public String toShow(Model model) throws Exception {
+        List<BaseDataDTOResp> baseDataList = baseDataApi.findBaseListByParentCode(SystemConstant.PRODUCT_TYPE);
+        model.addAttribute("baseDataList", DozerUtil.mapList(baseDataList, BaseDataVOResp.class));
         return "product/product_show";
     }
 
@@ -69,7 +96,7 @@ public class ProductSpuPageController {
     @RequestMapping("toAdd")
     public String toAdd(Model model) throws Exception {
 
-        List<FreightDTOReq> freightList = freightApi.findFreightList();
+        List<FreightDTOResp> freightList = freightApi.findFreightList();
         model.addAttribute("freightList", DozerUtil.mapList(freightList, FreightVOResp.class));
 
         List<BaseDataDTOResp> baseDataList = baseDataApi.findBaseListByParentCode(SystemConstant.PRODUCT_TYPE);

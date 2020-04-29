@@ -36,7 +36,7 @@ public interface FreightApi {
      * @return
      * @throws Exception
      */
-    List<FreightDTOReq> findFreightList() throws Exception;
+    List<FreightDTOResp> findFreightList() throws Exception;
 
     /**
      * 通过id查询

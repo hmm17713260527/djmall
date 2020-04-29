@@ -55,9 +55,9 @@ public class FreightApiImpl  extends ServiceImpl<FreightMapper, Freight> impleme
      * @throws Exception
      */
     @Override
-    public List<FreightDTOReq> findFreightList() throws Exception {
+    public List<FreightDTOResp> findFreightList() throws Exception {
         List<FreightBO> list = baseMapper.findFreightList();
-        return DozerUtil.mapList(list, FreightDTOReq.class);
+        return DozerUtil.mapList(list, FreightDTOResp.class);
     }
 
     /**

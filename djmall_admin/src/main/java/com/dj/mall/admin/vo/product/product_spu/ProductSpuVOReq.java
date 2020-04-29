@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.List;
@@ -22,12 +23,18 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Accessors(chain = true)
 public class ProductSpuVOReq implements Serializable {
 
     /**
      * ID
      */
     private Integer productSpuId;
+
+    /**
+     * 当前页
+     */
+    private Integer pageNo;
 
     /**
      * 商品名
@@ -39,6 +46,11 @@ public class ProductSpuVOReq implements Serializable {
      * 运费ID
      */
     private Integer freightId;
+
+    /**
+     * SKU状态[0下架,1上架]
+     */
+    private Integer spuStatus;
 
     /**
      * 商品描述
@@ -66,12 +78,12 @@ public class ProductSpuVOReq implements Serializable {
     /**
      * 订单量
      */
-    private Integer order;
+    private Integer productOrder;
 
     /**
      * 点赞量
      */
-    private Long praise;
+    private Integer praise;
 
 
     /**
@@ -79,7 +91,10 @@ public class ProductSpuVOReq implements Serializable {
      */
     private List<ProductSkuVOReq> productSkuList;
 
-
+    /**
+     * 商品类型集合
+     */
+    private List<String> types;
 
 
 

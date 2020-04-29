@@ -81,7 +81,12 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
      */
     @Override
     public void updateUserRole(Integer userId, Integer type) throws Exception {
-        this.updateById(User.builder().id(userId).type(type).build());
+
+        QueryWrapper<UserRole> userRoleQueryWrapper = new QueryWrapper<>();
+        userRoleQueryWrapper.eq("user_id", userId);
+        UserRole userRole = userRoleMapper.selectOne(userRoleQueryWrapper);
+        userRole.setRoleId(type);
+        userRoleMapper.updateById(userRole);
     }
 
     /**
@@ -99,7 +104,6 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         UpdateWrapper<UserRole> updateWrapper = new UpdateWrapper<>();
         updateWrapper.set("is_del", isDel);
         updateWrapper.eq("user_id", userId);
-
 
         userRoleMapper.update(UserRole.builder().userId(userId).isDel(isDel).build(), updateWrapper);
 

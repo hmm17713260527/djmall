@@ -109,7 +109,7 @@ public class UserController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("updateStatus")
+    @PutMapping("updateStatus")
     public ResultModel<Object> updateStatus(Integer userId, String status) throws Exception {
         UserDTOResp user = userApi.getUser(userId);
         if (user.getStatus().equals(SystemConstant.USER_STATUS_ACTIVATE)) {

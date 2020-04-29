@@ -7,6 +7,7 @@ import com.dj.mall.api.dict.freight.FreightApi;
 import com.dj.mall.model.base.ResultModel;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.dict.freight.FreightDTOReq;
+import com.dj.mall.model.dto.dict.freight.FreightDTOResp;
 import com.dj.mall.model.util.DozerUtil;
 import com.dj.mall.model.util.PageResult;
 import org.springframework.web.bind.annotation.*;
@@ -55,7 +56,7 @@ public class FreightController {
     @GetMapping("show")
     public ResultModel<Object> show() throws Exception {
 
-        List<FreightDTOReq> freightList = freightApi.findFreightList();
+        List<FreightDTOResp> freightList = freightApi.findFreightList();
 
         List<FreightVOResp> freightVOResps = DozerUtil.mapList(freightList, FreightVOResp.class);
 

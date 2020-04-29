@@ -30,6 +30,11 @@ public class ProductSpuDTOReq implements Serializable {
     private Integer productSpuId;
 
     /**
+     * 当前页
+     */
+    private Integer pageNo;
+
+    /**
      * 商品名
      */
     private String productName;
@@ -51,6 +56,11 @@ public class ProductSpuDTOReq implements Serializable {
      */
     private String img;
 
+    /**
+     * SKU状态[0下架,1上架]
+     */
+    private Integer spuStatus;
+
 
     /**
      * 商品类型（字典code）
@@ -66,18 +76,21 @@ public class ProductSpuDTOReq implements Serializable {
     /**
      * 订单量
      */
-    private Integer order;
+    private Integer productOrder;
 
     /**
      * 点赞量
      */
-    private Long praise;
+    private Integer praise;
 
     /**
      * 商品sku
      */
     private List<ProductSkuDTOReq> productSkuList;
 
-
+    /**
+     * 商品类型集合
+     */
+    private List<String> types;
 
 }
