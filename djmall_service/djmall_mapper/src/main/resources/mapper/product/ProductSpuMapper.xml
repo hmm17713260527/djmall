@@ -38,16 +38,30 @@
             dabd.`name`,
             ddf.freight,
             dpsk.sku_attr_names,
-            dpsk.sku_attr_value_names
+            dpsk.sku_attr_value_names,
+            dpsk.sku_price,
+            dpsk.sku_count,
+            dpsk.sku_rate,
+            dab.`name` as fre_name
         FROM
             djmall_product_spu dps
         LEFT JOIN djmall_auth_base_data dabd ON dps.type = dabd.`code`
         LEFT JOIN djmall_dict_freight ddf ON dps.freight_id = ddf.id
         LEFT JOIN djmall_product_sku dpsk ON dpsk.product_id = dps.id
+        LEFT JOIN djmall_auth_base_data dab ON ddf.base_code = dab.`code`
         WHERE
             dpsk.is_default = 0
         <if test="product.productName != null and product.productName != ''">
             and dps.product_name = #{product.productName}
+        </if>
+        <if test="product.spuStatus != null">
+            and dps.spu_status = #{product.spuStatus}
+        </if>
+        <if test="product.skuPriceMax != null">
+            and dpsk.sku_price &lt; #{product.skuPriceMax}
+        </if>
+        <if test="product.skuPriceMin != null">
+            and dpsk.sku_price  &gt; #{product.skuPriceMin}
         </if>
         <if test="product.types != null">
             and dps.type in
@@ -78,6 +92,39 @@
         LEFT JOIN djmall_auth_base_data dabd ON dps.type = dabd.`code`
         WHERE dps.id = #{id}
 
+
+
+    </select>
+    <select id="findProById" resultType="com.dj.mall.mapper.bo.product.ProductSpuBO">
+
+        SELECT
+            dps.id as product_id,
+            dps.product_name,
+            dsk.sku_price,
+            dsk.sku_rate,
+            ddf.freight,
+            dps.img,
+            dps.product_describe,
+            dsk.sku_attr_names,
+            dsk.sku_attr_value_names,
+            dps.praise,
+            dsk.sku_count
+        FROM
+            djmall_product_spu dps
+        LEFT JOIN djmall_product_sku dsk ON dps.id = dsk.product_id
+        LEFT JOIN djmall_dict_freight ddf ON dps.freight_id = ddf.id
+        <where>
+            <if test="product.productSpuId != null">
+                dps.id = #{product.productSpuId}
+            </if>
+            <if test="product.isDefault != null">
+                AND dsk.is_default= #{product.isDefault}
+            </if>
+
+            <if test="product.productSkuId != null">
+                AND dsk.id= #{product.productSkuId}
+            </if>
+        </where>
 
 
     </select>

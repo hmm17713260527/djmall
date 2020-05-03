@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * @ProjectName: djmall
@@ -126,6 +127,28 @@ public class ProductSpuVOResp implements Serializable {
      * 属性值
      */
     private String skuAttrValueNames;
+
+
+    /**
+     * 价格
+     */
+    private BigDecimal skuPrice;
+
+    /**
+     * 库存
+     */
+    private Integer skuCount;
+
+    /**
+     * 折扣
+     */
+    private Integer skuRate;
+
+    /**
+     * 快递名
+     */
+    private String freName;
+
 
 
 }

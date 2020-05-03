@@ -1,5 +1,6 @@
 package com.dj.mall.api.product.product_sku;
 
+import com.dj.mall.mapper.bo.product.ProductSpuBO;
 import com.dj.mall.model.base.BusinessException;
 import com.dj.mall.model.dto.product.product_sku.ProductSkuDTOReq;
 import com.dj.mall.model.dto.product.product_sku.ProductSkuDTOResp;
@@ -73,4 +74,5 @@ public interface ProductSkuApi {
      * @throws Exception
      */
     void updateCount(ProductSkuDTOReq productSkuDTOReq) throws Exception;
+
 }

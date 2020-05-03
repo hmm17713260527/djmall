@@ -60,5 +60,13 @@ public interface ProductSpuApi {
      * @param productSpuDTOReq
      * @param bytes
      */
-    void update(ProductSpuDTOReq productSpuDTOReq, byte[] bytes);
+    void update(ProductSpuDTOReq productSpuDTOReq, byte[] bytes) throws Exception;
+
+    /**
+     * 通过id查商品
+     * @param productSpuDTOReq
+     * @return
+     * @throws Exception
+     */
+    ProductSpuDTOResp findProductById(ProductSpuDTOReq productSpuDTOReq) throws Exception;
 }

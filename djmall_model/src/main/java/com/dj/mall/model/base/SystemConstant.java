@@ -5,6 +5,15 @@ package com.dj.mall.model.base;
 public interface SystemConstant {
 
     /**
+     * 角色不匹配
+     */
+    String USER_NOT_ROLE = "角色不匹配";
+
+    /**
+     * 用户角色：商户-1
+     */
+    Integer USER_ROLE_BUYER_ID = 1;
+    /**
      * String方法调用：-
      */
     String PARENT_NAME  = "-";
@@ -249,5 +258,10 @@ public interface SystemConstant {
      * 该商品已下架，不能设为默认
      */
     String NOT_UPDATE_PRODUCT_SKU_IS_DEFAULT = "该商品已下架，不能设为默认";
+
+    /**
+     * 用户已激活
+     */
+    String ACTIVE = "ACTIVE";
 
 }

@@ -7,6 +7,7 @@
         <module>djmall_service</module>
         <module>djmall_model</module>
         <module>djmall_admin</module>
+        <module>djmall_platform</module>
     </modules>
 
     <parent>

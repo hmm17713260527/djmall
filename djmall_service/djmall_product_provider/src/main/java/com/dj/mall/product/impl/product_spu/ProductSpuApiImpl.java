@@ -1,7 +1,6 @@
 package com.dj.mall.product.impl.product_spu;
 
 import com.alibaba.dubbo.config.annotation.Service;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -10,10 +9,10 @@ import com.dj.mall.api.product.product_sku.ProductSkuApi;
 import com.dj.mall.api.product.product_spu.ProductSpuApi;
 import com.dj.mall.entity.product.product_spu.ProductSpu;
 import com.dj.mall.mapper.bo.product.ProductSpuBO;
-import com.dj.mall.mapper.product.product_sku.ProductSkuMapper;
 import com.dj.mall.mapper.product.product_spu.ProductSpuMapper;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.product.product_sku.ProductSkuDTOReq;
+import com.dj.mall.model.dto.product.product_sku.ProductSkuDTOResp;
 import com.dj.mall.model.dto.product.product_spu.ProductSpuDTOReq;
 import com.dj.mall.model.dto.product.product_spu.ProductSpuDTOResp;
 import com.dj.mall.model.util.DozerUtil;
@@ -102,6 +101,12 @@ public class ProductSpuApiImpl extends ServiceImpl<ProductSpuMapper, ProductSpu>
                 product.setProductDescribe(product.getProductDescribe().replace(s, split1[i]));
             }
 
+            if (product.getSkuRate() == 0 || product.getSkuRate() == 100) {
+                product.setSkuRateShow("无");
+            } else {
+                product.setSkuRateShow(product.getSkuRate() + "%");
+            }
+
         });
 
         return PageResult.builder().list(DozerUtil.mapList(pageInfo.getRecords(), ProductSpuDTOResp.class)).pages(pageInfo.getPages()).build();
@@ -156,6 +161,38 @@ public class ProductSpuApiImpl extends ServiceImpl<ProductSpuMapper, ProductSpu>
 
         QiniuUtils.uploadByByteArray(bytes, productSpuDTOReq.getImg());
         this.updateById(DozerUtil.map(productSpuDTOReq, ProductSpu.class));
+    }
+
+    /**
+     * 通过id查商品
+     * @param productSpuDTOReq
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public ProductSpuDTOResp findProductById(ProductSpuDTOReq productSpuDTOReq) throws Exception {
+        ProductSpuBO productSpuBO = this.baseMapper.findProById(DozerUtil.map(productSpuDTOReq, ProductSpuBO.class));
+        //折扣
+        if (productSpuBO.getSkuRate() == 0 || productSpuBO.getSkuRate() == 100) {
+            productSpuBO.setSkuRateShow("无，按照原价");
+        } else {
+            productSpuBO.setSkuRateShow(productSpuBO.getSkuRate() + "%");
+        }
+
+        //描述
+        String[] split = productSpuBO.getSkuAttrNames().split(",");
+        String[] split1 = productSpuBO.getSkuAttrValueNames().split(",");
+        for (int i = 0; i < split.length; i++) {
+            String s = split[i] + "1";
+            productSpuBO.setProductDescribe(productSpuBO.getProductDescribe().replace(s, split1[i]));
+        }
+
+        ProductSpuDTOResp productSpuDTOResp = DozerUtil.map(productSpuBO, ProductSpuDTOResp.class);
+
+        //sku属性值
+        List<ProductSkuDTOResp> productSkuList = productSkuApi.findListByProductId(productSpuBO.getProductId());
+        productSpuDTOResp.setProductSkuList(productSkuList);
+        return productSpuDTOResp;
     }
 
 

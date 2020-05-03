@@ -1,11 +1,14 @@
 package com.dj.mall.model.dto.product.product_spu;
 
+import com.dj.mall.model.dto.product.product_sku.ProductSkuDTOResp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @ProjectName: djmall
@@ -97,7 +100,10 @@ public class ProductSpuDTOResp implements Serializable {
      */
     private String attrValues;
 
-
+    /**
+     * sku属性值
+     */
+    private List<ProductSkuDTOResp> productSkuList;
 
 
 
@@ -131,6 +137,33 @@ public class ProductSpuDTOResp implements Serializable {
      * 属性值
      */
     private String skuAttrValueNames;
+
+
+    /**
+     * 价格
+     */
+    private BigDecimal skuPrice;
+
+    /**
+     * 库存
+     */
+    private Integer skuCount;
+
+    /**
+     * 折扣展示
+     */
+    private String skuRateShow;
+
+    /**
+     * 折扣
+     */
+    private Integer skuRate;
+
+    /**
+     * 快递名
+     */
+    private String freName;
+
 
 
 }

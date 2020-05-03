@@ -5,6 +5,7 @@ import com.dj.mall.model.base.BusinessException;
 import com.dj.mall.model.base.ResultModel;
 import com.dj.mall.model.dto.auth.user.UserDTOReq;
 import com.dj.mall.model.dto.auth.user.UserDTOResp;
+import com.dj.mall.model.dto.auth.user.UserTokenDTOResp;
 import com.dj.mall.model.util.PageResult;
 
 import java.util.HashMap;
@@ -132,4 +133,12 @@ public interface UserApi {
      * @throws Exception
      */
     void resetPwd(Integer userId, Integer isDel, UserDTOResp userDTOResp) throws Exception;
+
+    /**
+     * 登陆-token
+     * @param userDTOReq
+     * @return
+     * @throws Exception
+     */
+    UserTokenDTOResp platformLogin(UserDTOReq userDTOReq) throws Exception, BusinessException;
 }

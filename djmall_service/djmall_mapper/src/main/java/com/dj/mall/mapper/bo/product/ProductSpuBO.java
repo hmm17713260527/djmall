@@ -1,10 +1,10 @@
 package com.dj.mall.mapper.bo.product;
+import	java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.dozer.Mapping;
 
 import java.util.List;
 
@@ -22,6 +22,23 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductSpuBO {
+
+
+    /**
+     * ID
+     */
+    private Integer productSpuId;
+
+    /**
+     * 商品SKUid
+     */
+    private Integer productSkuId;
+
+    /**
+     * 是否默认[0默认,1不默认]
+     */
+    private Integer isDefault;
+
 
     /**
      * 属性ID
@@ -123,5 +140,45 @@ public class ProductSpuBO {
      * 属性值
      */
     private String skuAttrValueNames;
+
+    /**
+     * 价格
+     */
+    private BigDecimal skuPrice;
+
+    /**
+     * 库存
+     */
+    private Integer skuCount;
+
+    /**
+     * 折扣
+     */
+    private Integer skuRate;
+
+    /**
+     * 折扣展示
+     */
+    private String skuRateShow;
+
+    /**
+     * 快递名
+     */
+    private String freName;
+
+
+    /**
+     * 商品价格区间
+     */
+    private BigDecimal skuPriceMax;
+
+    /**
+     * 商品价格区间
+     */
+    private BigDecimal skuPriceMin;
+
+
+
+
 
 }

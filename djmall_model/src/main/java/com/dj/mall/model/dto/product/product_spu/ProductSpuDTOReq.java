@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -28,6 +29,17 @@ public class ProductSpuDTOReq implements Serializable {
      * ID
      */
     private Integer productSpuId;
+
+    /**
+     * 商品SKUid
+     */
+    private Integer productSkuId;
+
+    /**
+     * 是否默认[0默认,1不默认]
+     */
+    private Integer isDefault;
+
 
     /**
      * 当前页
@@ -92,5 +104,25 @@ public class ProductSpuDTOReq implements Serializable {
      * 商品类型集合
      */
     private List<String> types;
+
+
+
+
+
+
+
+
+    /**
+     * 商品价格区间
+     */
+    private BigDecimal skuPriceMax;
+
+    /**
+     * 商品价格区间
+     */
+    private BigDecimal skuPriceMin;
+
+
+
 
 }

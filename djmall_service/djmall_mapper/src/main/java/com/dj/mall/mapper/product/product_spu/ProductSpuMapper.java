@@ -26,4 +26,6 @@ public interface ProductSpuMapper extends BaseMapper<ProductSpu> {
     IPage<ProductSpuBO> findProductList(@Param("page") Page<ProductSpuBO> page, @Param("product") ProductSpuBO productSpuBO) throws DataAccessException;
 
     ProductSpuBO findProductById(@Param("id") Integer id) throws DataAccessException;
+
+    ProductSpuBO findProById(@Param("product") ProductSpuBO productSpu) throws DataAccessException;
 }

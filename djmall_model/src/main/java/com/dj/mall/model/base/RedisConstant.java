@@ -20,4 +20,9 @@ public interface RedisConstant {
      * redis-角色资源-key前缀
      */
     String ROLE_RESOURCE = "ROLE_RESOURCE_";
+
+    /**
+     * 商户登陆-token前缀
+     */
+    String USER_TOKEN = "USER_TOKEN_";
 }

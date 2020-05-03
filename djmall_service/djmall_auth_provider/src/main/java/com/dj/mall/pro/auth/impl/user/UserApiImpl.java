@@ -2,6 +2,7 @@ package com.dj.mall.pro.auth.impl.user;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -9,6 +10,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dj.mall.api.auth.user.UserApi;
+import com.dj.mall.api.cmpt.RedisApi;
 import com.dj.mall.entity.auth.resource.Resource;
 import com.dj.mall.entity.auth.role.Role;
 import com.dj.mall.entity.auth.user.User;
@@ -20,18 +22,21 @@ import com.dj.mall.mapper.auth.user.UserMapper;
 import com.dj.mall.mapper.auth.user.UserRoleMapper;
 import com.dj.mall.mapper.bo.auth.user.UserBo;
 import com.dj.mall.model.base.BusinessException;
+import com.dj.mall.model.base.RedisConstant;
 import com.dj.mall.model.base.ResultModel;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.resource.ResourceDTOResp;
 import com.dj.mall.model.dto.auth.role.RoleDTOResp;
 import com.dj.mall.model.dto.auth.user.UserDTOReq;
 import com.dj.mall.model.dto.auth.user.UserDTOResp;
+import com.dj.mall.model.dto.auth.user.UserTokenDTOResp;
 import com.dj.mall.model.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @ProjectName: djmall
@@ -53,6 +58,9 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
 
     @Autowired
     private UserLoginEndTimeMapper userLoginEndTimeMapper;
+
+    @Reference
+    private RedisApi redisApi;
 
 
     /**
@@ -220,7 +228,9 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
     public void addUser(UserDTOReq userDTOReq) throws Exception {
         User user = DozerUtil.map(userDTOReq, User.class);
         user.setCreateTime(LocalDateTime.now());
-        EmailUtil.sendEmail(user.getEmail(), SystemConstant.STRING_EMAIL, SystemConstant.EMAIL_ADD_CODE, 0);
+        if (!userDTOReq.getStatus().equals(SystemConstant.ACTIVE)) {
+            EmailUtil.sendEmail(user.getEmail(), SystemConstant.STRING_EMAIL, SystemConstant.EMAIL_ADD_CODE, 0);
+        }
         this.save(user);
 
         userRoleMapper.insert(UserRole.builder().userId(user.getId()).roleId(user.getType()).isDel(SystemConstant.IS_DEL).build());
@@ -354,6 +364,46 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         user.setIsDel(0);
         this.updateById(user);
 
+    }
+
+    /**
+     * 登陆-token
+     * @param userDTOReq
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public UserTokenDTOResp platformLogin(UserDTOReq userDTOReq) throws Exception, BusinessException {
+        QueryWrapper<User> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("user_name", userDTOReq.getUserName());
+        queryWrapper.or().eq("email", userDTOReq.getUserName());
+        queryWrapper.or().eq("phone", userDTOReq.getUserName());
+        User user = this.getOne(queryWrapper);
+        if (user == null || user.getIsDel().equals(SystemConstant.NOT_IS_DEL)) {
+            throw new BusinessException(-2, SystemConstant.USER_NOT_Z);
+        }
+        if (!PasswordSecurityUtil.checkPassword(userDTOReq.getPassword(), user.getPassword(), user.getSalt())) {
+            throw new BusinessException(-3, SystemConstant.IS_DEL_NOT);
+        }
+        QueryWrapper<UserRole> userRoleQueryWrapper = new QueryWrapper<>();
+        userRoleQueryWrapper.eq("user_id", user.getId());
+        UserRole userRole = userRoleMapper.selectOne(userRoleQueryWrapper);
+        if (!userRole.getRoleId().equals(SystemConstant.USER_ROLE_BUYER_ID)) {
+            throw new BusinessException(-4, SystemConstant.USER_NOT_ROLE);
+        }
+
+        userLoginEndTimeMapper.insert(UserLoginEndTime.builder().userId(user.getId()).endTime(LocalDateTime.now()).isDel(SystemConstant.IS_DEL).build());
+
+        //生成token
+        String token = UUID.randomUUID().toString().replace("-", "");
+
+        redisApi.set(RedisConstant.USER_TOKEN + token, DozerUtil.map(user, UserDTOResp.class), 22 * 24 * 60 * 60);
+        UserTokenDTOResp userTokenDTOResp = new UserTokenDTOResp();
+        userTokenDTOResp.setToken(token);
+        userTokenDTOResp.setNickName(user.getNickName());
+        userTokenDTOResp.setUserName(user.getUserName());
+        userTokenDTOResp.setUserId(user.getId());
+        return userTokenDTOResp;
     }
 
 
