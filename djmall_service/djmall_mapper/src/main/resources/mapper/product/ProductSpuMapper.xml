@@ -105,6 +105,7 @@
             ddf.freight,
             dps.img,
             dps.product_describe,
+            dsk.id as product_sku_id,
             dsk.sku_attr_names,
             dsk.sku_attr_value_names,
             dps.praise,

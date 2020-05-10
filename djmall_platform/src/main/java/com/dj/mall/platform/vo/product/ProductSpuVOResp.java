@@ -30,6 +30,11 @@ public class ProductSpuVOResp implements Serializable {
      */
     private String productName;
 
+    /**
+     * 商品SKUid
+     */
+    private Integer productSkuId;
+
 
     /**
      * 商品ID

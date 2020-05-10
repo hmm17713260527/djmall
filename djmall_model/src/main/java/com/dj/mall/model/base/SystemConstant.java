@@ -4,6 +4,54 @@ package com.dj.mall.model.base;
 
 public interface SystemConstant {
 
+
+    /**
+     * 请点击短信验证码发送
+     */
+    String SEND_LOAD = "请点击短信验证码发送";
+
+    /**
+     * 验证码超时，请重新发送
+     */
+    String AUTH_RRROR = "验证码超时，请重新发送";
+
+    /**
+     * "无，按照原价"
+     */
+    String SKU_RATE_SHOW = "无，按照原价";
+
+    /**
+     * "手机号不能为空"
+     */
+    String PHONE_NULL = "手机号不能为空";
+
+    /**
+     * 短信验证码不能为空
+     */
+    String SEND_NULL = "短信验证码不能为空";
+
+    /**
+     * 图形验证码输入错误
+     */
+    String NOT_IMG_AUTH = "图形验证码输入错误";
+
+    /**
+     * 图形验证码不能为空
+     */
+    String IMG_AUTH_NULL = "图形验证码不能为空";
+
+
+
+    /**
+     * 已达上限
+     */
+    String CODE_ERROR = "已达上限";
+
+    /**
+     * 验证码
+     */
+    String SESSION_VERIFY_CODE = "VERIFY_CODE";
+
     /**
      * 角色不匹配
      */

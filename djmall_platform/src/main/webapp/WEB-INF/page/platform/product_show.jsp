@@ -31,7 +31,11 @@
                 $("#login").html(nickName);
                 $("#login").attr("href", "<%=request.getContextPath()%>/platform/auth/toIndex?TOKEN=" + getToken());
             }
-        })
+        });
+
+        function toFindUserShopping() {
+            window.location.href = "<%=request.getContextPath()%>/platform/auth/toFindUserShopping?TOKEN=" + getToken();
+        }
 
         $(function() {
             search();
@@ -114,6 +118,8 @@
             });
         }
 
+
+
     </script>
 </head>
 <body>
@@ -122,7 +128,7 @@
     <a  href="javascript:toIndex()">首页</a>&nbsp;
     <a id="login" href="javascript:toLogin()">登陆</a>&nbsp;
     <a  href="javascript:toAdd()">注册</a>&nbsp;
-    <input type = "button" value = "我的购物车"/><br/>
+    <a  href="javascript:toFindUserShopping()">我的购物车</a><br/>
     <input type="hidden" value="1" id="pageNo" name="pageNo">
     <input type="hidden" value="1" name="spuStatus">
     名称：<input type = "text" name = "productName" />

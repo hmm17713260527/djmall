@@ -14,15 +14,19 @@
     <script type="text/javascript" src="<%=request.getContextPath()%>\static\layer-v3.1.1\layer\layer.js"></script>
     <script src="<%=request.getContextPath()%>\static\js\jquery.validate.js"></script>
     <script src="https://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>\static\js\token.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>\static\js\cookie.js"></script>
     <script type="text/javascript">
 
 
         $(function() {
             var skuCount = ${product.skuCount};
+
             findCount(skuCount);
-        })
+        });
 
         function findCount(count) {
+            $("#skuCount").val(count);
             if (count > 0) {
                 $("#count").html("有货")
             } else {
@@ -37,15 +41,16 @@
                 function(data) {
                     $("#skuPrice").html(data.data.skuPrice);
                     $("#skuRate").html(data.data.skuRateShow);
+                    $("#rate").html(data.data.skuRate);
                     $("#productDescribe").html(data.data.productDescribe);
+
                     findCount(data.data.skuCount);
                 }
             )
         }
 
-        function number(a) {
-
-            if (a == "+") {
+        function jsNumber(a) {
+            if (a == 2) {
                 var count = ${product.skuCount};
                 var addNumber = parseInt($("#number").val()) + 1;
                 if (addNumber > 200) {
@@ -58,7 +63,7 @@
                 }
                 $("#number").val(parseInt($("#number").val()) + 1);
             }
-            if (a == "-") {
+            if (a == 1) {
                 var minusNumber = parseInt($("#number").val());
                 if (minusNumber <= 1) {
                     layer.msg("购买不能小于0件", {icon: 5});
@@ -67,15 +72,67 @@
                 $("#number").val(parseInt($("#number").val()) - 1);
             }
 
-
         }
 
+
+
+        function addUserShopping() {
+
+            if ($("#skuCount").val() == 0) {
+                layer.msg("无货");
+                return;
+            }
+            var index = layer.load(1,{shade:0.5});
+            var userId = cookie.get("USER_ID");
+            $("#userId").val(userId);
+            token_post("<%=request.getContextPath() %>/platform/auth/addUserShopping?TOKEN=" + getToken(),
+                $("#fm").serialize(),
+                function(data){
+                    if(data.code == -1){
+                        layer.close(index);
+                        layer.msg(data.msg, {icon: 5});
+                        return
+                    }
+                    layer.msg(data.msg, {
+                        icon: 6,
+                        time: 2000
+                    }, function(){
+                        window.location.href = "<%=request.getContextPath()%>/platform/toShow";
+                    });
+                }
+            )
+        }
+
+
+        function userShopping() {
+            if ($("#skuCount").val() == 0) {
+                layer.msg("无货");
+                return;
+            }
+
+            var index = layer.load(1,{shade:0.5});
+            var userId = cookie.get("USER_ID");
+            $("#userId").val(userId);
+            token_post("<%=request.getContextPath() %>/platform/auth/addUserShopping?TOKEN=" + getToken(),
+                $("#fm").serialize(),
+                function(data){
+                    layer.close(index);
+                    window.location.href = "<%=request.getContextPath()%>/platform/auth/toUserOrder?TOKEN="+getToken()+"&id="+data.data+"&userId="+userId;
+                }
+            )
+        }
 
     </script>
 </head>
 <body>
 
-<div>
+<form id="fm">
+    <input type="hidden" id="userId" name="userId">
+    <input type="hidden" name="productSpuId" value="${product.productId}">
+    <input type="hidden" name="isDel" value="1">
+    <input type="hidden" id="skuCount">
+    <input type="hidden" name="skuPrice" value="${product.skuPrice}">
+    <input type="hidden" id = "rate" name="skuRate" value="${product.skuRate}">
     <img src="http://q9cgmldxi.bkt.clouddn.com/${product.img}" width="100px" height="100px"><br>
     名称:${product.productName}&nbsp;
     原价:<span id="skuPrice">${product.skuPrice}</span><br>
@@ -90,13 +147,13 @@
     </c:forEach><br>
     <input type="hidden" name="skuCount" value="${product.skuCount}">
     购买数量:
-    <input type="button" value="-" onclick="number(this)">
-    <input type="text" value="1" id="number">
-    <input type="button" value="+" onclick="number(this)"><br>
+    <input type="button" value="-" onclick="jsNumber(1)">
+    <input type="text" value="1" name="productCount" id="number">
+    <input type="button" value="+" onclick="jsNumber(2)"><br>
     <span id="count" style="color: red"></span><br>
-    <input type="button" value="加入购物车">
-    <input type="button" value="立即购买">
-</div>
+    <input type="button" value="加入购物车" onclick="addUserShopping()">
+    <input type="button" value="立即购买" onclick="userShopping()">
+</form>
 
 </body>
 </html>

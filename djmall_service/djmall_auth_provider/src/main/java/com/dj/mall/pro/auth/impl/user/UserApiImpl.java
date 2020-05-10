@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dj.mall.api.auth.user.UserApi;
+import com.dj.mall.api.cmpt.EMailApi;
 import com.dj.mall.api.cmpt.RedisApi;
 import com.dj.mall.entity.auth.resource.Resource;
 import com.dj.mall.entity.auth.role.Role;
@@ -61,6 +62,9 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
 
     @Reference
     private RedisApi redisApi;
+
+    @Reference
+    private EMailApi eMailApi;
 
 
     /**
@@ -229,7 +233,13 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         User user = DozerUtil.map(userDTOReq, User.class);
         user.setCreateTime(LocalDateTime.now());
         if (!userDTOReq.getStatus().equals(SystemConstant.ACTIVE)) {
-            EmailUtil.sendEmail(user.getEmail(), SystemConstant.STRING_EMAIL, SystemConstant.EMAIL_ADD_CODE, 0);
+
+
+
+            String content = "<a href='"+"http://127.0.0.1:8081/admin"+"/auth/user/toActivate/"+user.getEmail()+"'>"+SystemConstant.EMAIL_ADD_CODE+"</a>";
+            eMailApi.sendMail(user.getEmail(), SystemConstant.STRING_EMAIL, content);
+
+            //EmailUtil.sendEmail(user.getEmail(), SystemConstant.STRING_EMAIL, SystemConstant.EMAIL_ADD_CODE, 0);
         }
         this.save(user);
 
@@ -356,7 +366,12 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
 
         String str = SystemConstant.EMAIL_RESET_PWD_CODE_1 + user.getUserName() + SystemConstant.EMAIL_RESET_PWD_CODE_2
                 + userDTOResp.getUserName() + SystemConstant.EMAIL_RESET_PWD_CODE_3 + DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now()) + SystemConstant.EMAIL_RESET_PWD_CODE_5 + s + SystemConstant.EMAIL_RESET_PWD_CODE_4;
-        EmailUtil.sendEmail(user.getEmail(), SystemConstant.RESET_PWD, str, 1);
+
+        String content = "<a href='"+"http://127.0.0.1:8081/admin"+"/auth/user/toShow'>"+str+"</a>";
+
+        eMailApi.sendMail(user.getEmail(), SystemConstant.RESET_PWD, content);
+
+        //EmailUtil.sendEmail(user.getEmail(), SystemConstant.RESET_PWD, str, 1);
 
         String s1 = PasswordSecurityUtil.enCode32(s);
         String s2 = PasswordSecurityUtil.enCode32(s1 + user.getSalt());
@@ -384,6 +399,41 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         }
         if (!PasswordSecurityUtil.checkPassword(userDTOReq.getPassword(), user.getPassword(), user.getSalt())) {
             throw new BusinessException(-3, SystemConstant.IS_DEL_NOT);
+        }
+        QueryWrapper<UserRole> userRoleQueryWrapper = new QueryWrapper<>();
+        userRoleQueryWrapper.eq("user_id", user.getId());
+        UserRole userRole = userRoleMapper.selectOne(userRoleQueryWrapper);
+        if (!userRole.getRoleId().equals(SystemConstant.USER_ROLE_BUYER_ID)) {
+            throw new BusinessException(-4, SystemConstant.USER_NOT_ROLE);
+        }
+
+        userLoginEndTimeMapper.insert(UserLoginEndTime.builder().userId(user.getId()).endTime(LocalDateTime.now()).isDel(SystemConstant.IS_DEL).build());
+
+        //生成token
+        String token = UUID.randomUUID().toString().replace("-", "");
+
+        redisApi.set(RedisConstant.USER_TOKEN + token, DozerUtil.map(user, UserDTOResp.class), 22 * 24 * 60 * 60);
+        UserTokenDTOResp userTokenDTOResp = new UserTokenDTOResp();
+        userTokenDTOResp.setToken(token);
+        userTokenDTOResp.setNickName(user.getNickName());
+        userTokenDTOResp.setUserName(user.getUserName());
+        userTokenDTOResp.setUserId(user.getId());
+        return userTokenDTOResp;
+    }
+
+    /**
+     * 手机短信验证登陆
+     * @param phoneNumber
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public UserTokenDTOResp phoneLogin(String phoneNumber) throws Exception, BusinessException {
+        QueryWrapper<User> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("phone", phoneNumber);
+        User user = this.getOne(queryWrapper);
+        if (user == null || user.getIsDel().equals(SystemConstant.NOT_IS_DEL)) {
+            throw new BusinessException(-2, SystemConstant.USER_NOT_Z);
         }
         QueryWrapper<UserRole> userRoleQueryWrapper = new QueryWrapper<>();
         userRoleQueryWrapper.eq("user_id", user.getId());

@@ -25,4 +25,9 @@ public interface RedisConstant {
      * 商户登陆-token前缀
      */
     String USER_TOKEN = "USER_TOKEN_";
+
+    /**
+     * 手机验证码前缀
+     */
+    String LOGIN_PHONE_SMS = "VC_";
 }

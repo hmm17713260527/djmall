@@ -29,5 +29,10 @@ public class PageResult implements Serializable {
      */
     private List<?> paramList;
 
+    /**
+     * 数据3
+     */
+    private List<?> baseList;
+
 
 }

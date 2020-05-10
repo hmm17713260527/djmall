@@ -141,4 +141,12 @@ public interface UserApi {
      * @throws Exception
      */
     UserTokenDTOResp platformLogin(UserDTOReq userDTOReq) throws Exception, BusinessException;
+
+    /**
+     * 手机短信验证登陆
+     * @param phoneNumber
+     * @return
+     * @throws Exception
+     */
+    UserTokenDTOResp phoneLogin(String phoneNumber) throws Exception, BusinessException;
 }

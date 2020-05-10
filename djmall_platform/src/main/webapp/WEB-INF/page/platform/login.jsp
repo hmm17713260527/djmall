@@ -17,8 +17,10 @@
     <script type="text/javascript" src="<%=request.getContextPath()%>\static\js\md5-min.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>\static\js\token.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>\static\js\cookie.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>\static\slideVerify\js\jq-slideVerify.js" charset="utf-8"></script>
     <script type="text/javascript">
-
+        //验证码时间
+        var countdown = 90;
 
         layui.use('element', function () {
             var element = layui.element;
@@ -38,6 +40,7 @@
                         // 存cookie
                         cookie.set("TOKEN", result.data.token, 22);
                         cookie.set("NICK_NAME", result.data.nickName, 22);
+                        cookie.set("USER_ID", result.data.userId, 22);
                         // 刷新父页面
                         parent.window.location.reload();
                     } else {
@@ -47,6 +50,63 @@
                 });
             });
         });
+
+        function sendSms(v) {
+            settime(v);
+            $.get("<%=request.getContextPath()%>/platform/sendSms",
+                {"phoneNumber" : $("#phoneNumber").val(), "verifyCode" : $("#verifyCode").val()},
+                function(data){
+                    layer.msg(data.msg);
+                }
+            )
+        }
+
+        function loginPhone() {
+            var index = layer.load(1,{shade:0.5});
+            $.get("<%=request.getContextPath()%>/platform/loginPhone",
+                {"phoneNumber" : $("#phoneNumber").val(), "smsCode" : $("#smsCode").val()},
+                function(result){
+                    layer.close(index);
+                    if (result.code == '200') {
+                        // 存cookie
+                        cookie.set("TOKEN", result.data.token, 22);
+                        cookie.set("NICK_NAME", result.data.nickName, 22);
+                        cookie.set("USER_ID", result.data.userId, 22);
+                        // 刷新父页面
+                        parent.window.location.reload();
+                    } else {
+                        alert(result.msg);
+                        $(":password").val("");
+                    }
+                }
+            )
+        }
+
+
+
+        function settime(val) {
+            if (countdown == 0) {
+                val.removeAttribute("disabled");
+                val.value="免费获取验证码";
+                countdown = 90;
+                return;
+            } else {
+                val.setAttribute("disabled", true);
+                val.value="重新发送(" + countdown + ")";
+                countdown--;
+            }
+            setTimeout(function() {
+                settime(val)
+            },1000)
+        }
+
+
+
+        function imgrefload() {
+            $("img").attr("src", "<%=request.getContextPath()%>/platform/getVerifCode?" + Math.random());
+        }
+
+
 
     </script>
 </head>
@@ -66,13 +126,13 @@
             </form>
         </div>
         <div class="layui-tab-item">
-            <form id="">
-                手机号:<input type="text" name="userName" placeholder="手机号"/><br>
-                图形验证码:<img src="" alt="" width="100px" height="30px"/><input type="password" name="password"/><br>
-                短信验证码:<input type="text" name="password"/>
-                <button type="button">发送短信验证码</button>
+            <form id="aa">
+                手机号:<input type="text" id="phoneNumber" name="userName" placeholder="手机号"/><br>
+                图形验证码:<img src="<%=request.getContextPath()%>/platform/getVerifCode" id="codeImg" onclick="imgrefload()" alt="" width="100px" height="30px"/><input type="password" id="verifyCode"/><br>
+                短信验证码:<input type="text" name="password" id="smsCode"/>
+                <input type="button" onclick="sendSms(this)" value="发送短信验证码"/>
                 <br>
-                <input id="phoneBtn" type="button" value="登录"/>
+                <input id="phoneBtn" type="button" value="登录" onclick="loginPhone()"/>
             </form>
         </div>
     </div>

@@ -44,6 +44,7 @@ public class TokenInterceptor implements HandlerInterceptor {
             }
             // 状态码随意 但是不能是Http预设的状态码
             httpServletResponse.setStatus(666);
+            httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/platform/toShow");
             return false;
         } else {
             // 获取请求中的token
@@ -51,7 +52,7 @@ public class TokenInterceptor implements HandlerInterceptor {
             if (checkToken(token)) {
                 return true;
             }
-            httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/");
+            httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/platform/toShow");
             return false;
         }
     }

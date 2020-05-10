@@ -16,7 +16,13 @@ dubbo:
     timeout: 180000
 
 spring:
-#   redis集群配置
+  mail:
+    host: smtp.qq.com
+    username: 2101265151@qq.com
+    password: cuekzsehpjyvbdij
+    properties:
+      from: 2101265151@qq.com
+  #   redis集群配置
 #  redis:
 #    sentinel:
 #      master: mymaster

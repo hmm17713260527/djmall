@@ -31,6 +31,11 @@ public class ProductSpuDTOResp implements Serializable {
     private Integer productSpuId;
 
     /**
+     * 商品SKUid
+     */
+    private Integer productSkuId;
+
+    /**
      * 商品名
      */
     private String productName;
