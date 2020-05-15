@@ -149,4 +149,28 @@ public interface UserApi {
      * @throws Exception
      */
     UserTokenDTOResp phoneLogin(String phoneNumber) throws Exception, BusinessException;
+
+    /**
+     * 通过id查询
+     * @param userId
+     * @return
+     * @throws Exception
+     */
+    UserDTOResp findUserById(Integer userId) throws Exception;
+
+    /**
+     * 买家注册
+     * @param userDTOReq
+     * @param bytes
+     * @throws Exception
+     */
+    void platAddUser(UserDTOReq userDTOReq, byte[] bytes) throws Exception;
+
+    /**
+     * 个人信息修改
+     * @param map
+     * @param bytes
+     * @throws Exception
+     */
+    void updatePlatUser(UserDTOReq map, byte[] bytes) throws Exception;
 }

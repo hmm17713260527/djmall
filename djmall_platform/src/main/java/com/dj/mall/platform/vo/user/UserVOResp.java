@@ -31,6 +31,11 @@ public class UserVOResp implements Serializable {
      */
     private Integer pageNo;
 
+    /**
+     * 头像
+     */
+    private String img;
+
 
     /**
      * 用户名

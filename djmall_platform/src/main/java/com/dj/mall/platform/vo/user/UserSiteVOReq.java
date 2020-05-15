@@ -1,38 +1,31 @@
-package com.dj.mall.entity.auth.user;
+package com.dj.mall.platform.vo.user;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.dozer.Mapping;
 
 import java.io.Serializable;
 
 /**
  * @ProjectName: djmall
- * @Package: com.dj.mall.entity.auth.user
- * @ClassName: UserSite
+ * @Package: com.dj.mall.platform.vo.user
+ * @ClassName: UserSiteVOResp
  * @Author: Administrator
  * @Description:
- * @Date: 2020/5/7 16:38
+ * @Date: 2020/5/7 18:02
  * @Version: 1.0
  */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("djmall_user_site")
-public class UserSite implements Serializable {
+public class UserSiteVOReq implements Serializable {
 
     /**
      * ID
      */
-    @TableId(type = IdType.AUTO)
-    @Mapping("siteId")
-    private Integer id;
+    private Integer siteId;
 
     /**
      * 用户ID
@@ -68,6 +61,5 @@ public class UserSite implements Serializable {
      * 收货人
      */
     private String consignee;
-
 
 }

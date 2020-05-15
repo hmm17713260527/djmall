@@ -68,7 +68,7 @@
     收货人信息
     <select name="siteId">
         <c:forEach items="${userSiteList}" var="site">
-            <option value="${site.siteId}">${site.consignee}-${site.phone}-${site.province}${site.city}${site.county}${site.site}</option>
+            <option value="${site.siteId}">${site.consignee}-${site.phone}-${site.provinceShow}${site.cityShow}${site.countyShow}${site.site}</option>
         </c:forEach>
     </select>
 

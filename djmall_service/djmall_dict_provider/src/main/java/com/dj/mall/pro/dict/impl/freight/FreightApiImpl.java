@@ -10,7 +10,6 @@ import com.dj.mall.mapper.dict.freight.FreightMapper;
 import com.dj.mall.model.dto.dict.freight.FreightDTOReq;
 import com.dj.mall.model.dto.dict.freight.FreightDTOResp;
 import com.dj.mall.model.util.DozerUtil;
-import com.dj.mall.model.util.PageResult;
 
 import java.util.List;
 
@@ -24,7 +23,7 @@ import java.util.List;
  * @Version: 1.0
  */
 @Service
-public class FreightApiImpl  extends ServiceImpl<FreightMapper, Freight> implements FreightApi {
+public class FreightApiImpl extends ServiceImpl<FreightMapper, Freight> implements FreightApi {
 
     /**
      * 新增

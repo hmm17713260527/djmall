@@ -1,8 +1,5 @@
-package com.dj.mall.entity.auth.user;
+package com.dj.mall.mapper.bo.auth.user;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,24 +10,22 @@ import java.io.Serializable;
 
 /**
  * @ProjectName: djmall
- * @Package: com.dj.mall.entity.auth.user
- * @ClassName: UserSite
+ * @Package: com.dj.mall.platform.vo.user
+ * @ClassName: UserSiteVOResp
  * @Author: Administrator
  * @Description:
- * @Date: 2020/5/7 16:38
+ * @Date: 2020/5/7 18:02
  * @Version: 1.0
  */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("djmall_user_site")
-public class UserSite implements Serializable {
+public class UserSiteBO implements Serializable {
 
     /**
      * ID
      */
-    @TableId(type = IdType.AUTO)
     @Mapping("siteId")
     private Integer id;
 
@@ -48,6 +43,21 @@ public class UserSite implements Serializable {
      * 省
      */
     private Integer province;
+
+    /**
+     * 省份展示
+     */
+    private String provinceShow;
+
+    /**
+     * 市-展示
+     */
+    private String cityShow;
+
+    /**
+     * 县-展示
+     */
+    private String countyShow;
 
     /**
      * 市
@@ -68,6 +78,5 @@ public class UserSite implements Serializable {
      * 收货人
      */
     private String consignee;
-
 
 }

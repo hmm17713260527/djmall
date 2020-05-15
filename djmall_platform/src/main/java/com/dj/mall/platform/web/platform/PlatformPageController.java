@@ -1,12 +1,18 @@
 package com.dj.mall.platform.web.platform;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.dj.mall.api.auth.role.RoleApi;
+import com.dj.mall.api.auth.user.UserApi;
 import com.dj.mall.api.auth.user.UserShoppingApi;
 import com.dj.mall.api.auth.user.UserSiteApi;
+import com.dj.mall.api.cmpt.RedisApi;
 import com.dj.mall.api.dict.base_data.BaseDataApi;
 import com.dj.mall.api.product.product_spu.ProductSpuApi;
+import com.dj.mall.model.base.RedisConstant;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.base.BaseDataDTOResp;
+import com.dj.mall.model.dto.auth.role.RoleDTOResp;
+import com.dj.mall.model.dto.auth.user.UserDTOResp;
 import com.dj.mall.model.dto.auth.user.UserSiteDTOResp;
 import com.dj.mall.model.dto.product.product_spu.ProductSpuDTOReq;
 import com.dj.mall.model.dto.product.product_spu.ProductSpuDTOResp;
@@ -17,6 +23,7 @@ import com.dj.mall.platform.vo.dict.BaseDataVOResp;
 import com.dj.mall.platform.vo.product.ProductSpuVOReq;
 import com.dj.mall.platform.vo.product.ProductSpuVOResp;
 import com.dj.mall.platform.vo.user.UserSiteVOResp;
+import com.dj.mall.platform.vo.user.UserVOResp;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,7 +61,69 @@ public class PlatformPageController {
     @Reference
     private UserSiteApi userSiteApi;
 
+    @Reference
+    private UserApi userApi;
 
+    @Reference
+    private RedisApi redisApi;
+
+
+    /**
+     * 去新增
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("auth/toAdd")
+    public String toAdd() throws Exception {
+        return "platform/user_site_add";
+    }
+
+
+    /**
+     * 去修改
+     * @param siteId
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("auth/toUpdateSite")
+    public String toUpdateSite(Integer siteId, Model model) throws Exception {
+        UserSiteDTOResp userSiteDTOResp = userSiteApi.findById(siteId);
+        model.addAttribute("userSite", DozerUtil.map(userSiteDTOResp, UserSiteVOResp.class));
+        return "platform/user_site_update";
+    }
+
+
+    /**
+     * 去地址展示
+     * @param TOKEN
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("auth/toUserSiteShow")
+    public String toUserSiteShow(String TOKEN, Model model) throws Exception {
+        UserDTOResp user = redisApi.get(RedisConstant.USER_TOKEN + TOKEN);
+        model.addAttribute("userId", user.getUserId());
+        return "platform/site_show";
+    }
+
+    /**
+     * 个人消息，去修改
+     * @param TOKEN
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("auth/toUpdateUser")
+    public String toUpdateUser(String TOKEN, Model model) throws Exception {
+        UserDTOResp user = redisApi.get(RedisConstant.USER_TOKEN + TOKEN);
+        UserDTOResp userDTOResp = userApi.findUserById(user.getUserId());
+        model.addAttribute("user", DozerUtil.map(userDTOResp, UserVOResp.class));
+        List<BaseDataDTOResp> baseDataSexList = baseDataApi.findBaseListByParentCode("SEX");
+        model.addAttribute("baseDataList", DozerUtil.mapList(baseDataSexList, BaseDataVOResp.class));
+        return "platform/user_update";
+    }
 
 
     /**
@@ -174,22 +243,27 @@ public class PlatformPageController {
     }
 
     @GetMapping("auth/toIndex")
-    public String toIndex() {
+    public String toIndex(String TOKEN, Model model) {
+        model.addAttribute("TOKEN", TOKEN);
         return "dex/index";
     }
 
     @GetMapping("toTop")
-    public String toTop() {
+    public String toTop(String TOKEN, Model model) {
+        model.addAttribute("TOKEN", TOKEN);
         return "dex/top";
     }
 
     @GetMapping("toLeft")
-    public String toLeft() {
+    public String toLeft(String TOKEN, Model model) {
+
+        model.addAttribute("TOKEN", TOKEN);
         return "dex/left";
     }
 
     @GetMapping("toRight")
-    public String toRight() {
+    public String toRight(String TOKEN, Model model) {
+        model.addAttribute("TOKEN", TOKEN);
         return "dex/right";
     }
 

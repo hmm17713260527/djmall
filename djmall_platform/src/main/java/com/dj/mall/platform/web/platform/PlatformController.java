@@ -4,28 +4,35 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSONObject;
 import com.dj.mall.api.auth.user.UserApi;
 import com.dj.mall.api.auth.user.UserShoppingApi;
+import com.dj.mall.api.auth.user.UserSiteApi;
 import com.dj.mall.api.cmpt.RedisApi;
+import com.dj.mall.api.dict.area.AreaApi;
 import com.dj.mall.api.product.product_sku.ProductSkuApi;
 import com.dj.mall.api.product.product_spu.ProductSpuApi;
 import com.dj.mall.model.base.RedisConstant;
 import com.dj.mall.model.base.ResultModel;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.user.*;
+import com.dj.mall.model.dto.dict.area.AreaDTOResp;
 import com.dj.mall.model.dto.product.product_spu.ProductSpuDTOReq;
 import com.dj.mall.model.dto.product.product_spu.ProductSpuDTOResp;
 import com.dj.mall.model.util.DozerUtil;
 import com.dj.mall.model.util.MessageVerifyUtils;
 import com.dj.mall.model.util.PageResult;
+import com.dj.mall.platform.vo.dict.AreaVOResp;
 import com.dj.mall.platform.vo.product.ProductSpuVOReq;
 import com.dj.mall.platform.vo.product.ProductSpuVOResp;
 import com.dj.mall.platform.vo.user.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @ProjectName: djmall
@@ -56,6 +63,98 @@ public class PlatformController {
     @Reference
     private UserShoppingApi userShoppingApi;
 
+    @Reference
+    private UserSiteApi userSiteApi;
+
+    @Reference
+    private AreaApi areaApi;
+
+
+    /**
+     * 搜索地址
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("findAreaByPid")
+    public ResultModel<Object> findAreaByPid(String areaParentId) throws Exception {
+        List<AreaDTOResp> list = areaApi.findAreaListByPid(areaParentId);
+        return new ResultModel<>().success(DozerUtil.mapList(list, AreaVOResp.class));
+
+    }
+
+
+    /**
+     * 地址新增
+     * @param userSiteVOReq
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("auth/addUserSite")
+    public ResultModel<Object> addUserSite(UserSiteVOReq userSiteVOReq) throws Exception {
+        userSiteApi.addUserSite(DozerUtil.map(userSiteVOReq, UserSiteDTOReq.class));
+        return new ResultModel<>().success(SystemConstant.REQ_YES);
+
+    }
+
+
+    /**
+     * 地址修改
+     * @param userSiteVOReq
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("auth/updateSite")
+    public ResultModel<Object> updateSite(UserSiteVOReq userSiteVOReq) throws Exception {
+        userSiteApi.updateSite(DozerUtil.map(userSiteVOReq, UserSiteDTOReq.class));
+        return new ResultModel<>().success(SystemConstant.REQ_YES);
+
+    }
+
+
+    /**
+     * 地址删除
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("auth/delUserSiteById")
+    public ResultModel<Object> delUserSiteById(Integer id) throws Exception {
+        userSiteApi.delUserSiteById(id);
+        return new ResultModel<>().success(SystemConstant.REQ_YES);
+
+    }
+
+
+    /**
+     * 地址展示
+     * @param userId
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("auth/userSiteShow")
+    public ResultModel<Object> userSiteShow(Integer userId) throws Exception {
+        List<UserSiteDTOResp> list = userSiteApi.findList(userId);
+        return new ResultModel<>().success(DozerUtil.mapList(list, UserSiteVOResp.class));
+
+    }
+
+    /**
+     * 个人信息修改
+     * @param userVOReq
+     * @param file
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("auth/platUpdateUser")
+    public ResultModel<Object> update(UserVOReq userVOReq, MultipartFile file) throws Exception {
+        if (!StringUtils.isEmpty(file.getOriginalFilename())) {
+            String fileName = UUID.randomUUID().toString().replace(SystemConstant.PARENT_NAME, SystemConstant.EXCEPTION)
+                    + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(SystemConstant.SYMBOL));
+            userVOReq.setImg(fileName);
+        }
+        userApi.updatePlatUser(DozerUtil.map(userVOReq, UserDTOReq.class), file.getBytes());
+        return new ResultModel<>().success(SystemConstant.REQ_YES);
+    }
 
     /**
      * 判断是否勾选
@@ -146,7 +245,7 @@ public class PlatformController {
     public ResultModel<Object> loginPhone(String phoneNumber, String smsCode) throws Exception {
         Assert.hasText(phoneNumber, SystemConstant.PHONE_NULL);
         Assert.hasText(smsCode, SystemConstant.SEND_NULL);
-        // 短信验证码有效性验证
+        // 短信验证码有效性
         String checkSmsCode = redisApi.get(RedisConstant.LOGIN_PHONE_SMS + phoneNumber);
         if (checkSmsCode == null) {
             return new ResultModel<>().error(SystemConstant.SEND_LOAD);
@@ -246,9 +345,16 @@ public class PlatformController {
      * @throws Exception
      */
     @PostMapping("add")
-    public ResultModel<Object> addUser(UserVOReq userVOReq) throws Exception {
+    public ResultModel<Object> addUser(UserVOReq userVOReq, MultipartFile file) throws Exception {
+
+        String fileName = UUID.randomUUID().toString().replace(SystemConstant.PARENT_NAME, SystemConstant.EXCEPTION)
+                + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(SystemConstant.SYMBOL));
+
+        userVOReq.setNickName("DJ" + (int)((Math.random()*9+1)*100000));
+        userVOReq.setImg(fileName);
+
         UserDTOReq userDTOReq = DozerUtil.map(userVOReq, UserDTOReq.class);
-        userApi.addUser(userDTOReq);
+        userApi.platAddUser(userDTOReq, file.getBytes());
         return new ResultModel<>().success(SystemConstant.REQ_YES);
 
     }

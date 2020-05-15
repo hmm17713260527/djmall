@@ -6,4 +6,22 @@
 <mapper namespace="com.dj.mall.mapper.auth.user.UserSiteMapper">
 
 
+    <select id="findListByUserId" resultType="com.dj.mall.mapper.bo.auth.user.UserSiteBO">
+
+        SELECT
+            dus.id,
+            dus.consignee,
+            dus.phone,
+            da.area_name AS province_show,
+            daa.area_name AS city_show,
+            daaa.area_name AS county_show,
+            dus.site
+        FROM
+            djmall_user_site dus
+        LEFT JOIN djmall_area da ON dus.province = da.id
+        LEFT JOIN djmall_area daa ON dus.city = daa.id
+        LEFT JOIN djmall_area daaa ON dus.county = daaa.id
+        WHERE dus.user_id = #{userId}
+
+    </select>
 </mapper>

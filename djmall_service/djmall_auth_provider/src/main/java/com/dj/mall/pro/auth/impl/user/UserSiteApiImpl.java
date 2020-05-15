@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dj.mall.api.auth.user.UserSiteApi;
 import com.dj.mall.entity.auth.user.UserSite;
 import com.dj.mall.mapper.auth.user.UserSiteMapper;
+import com.dj.mall.mapper.bo.auth.user.UserSiteBO;
+import com.dj.mall.model.dto.auth.user.UserSiteDTOReq;
 import com.dj.mall.model.dto.auth.user.UserSiteDTOResp;
 import com.dj.mall.model.util.DozerUtil;
 
@@ -30,8 +32,50 @@ public class UserSiteApiImpl extends ServiceImpl<UserSiteMapper, UserSite> imple
      */
     @Override
     public List<UserSiteDTOResp> findList(Integer userId) throws Exception {
-        QueryWrapper<UserSite> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_id", userId);
-        return DozerUtil.mapList(this.list(queryWrapper), UserSiteDTOResp.class);
+       List<UserSiteBO> list = this.baseMapper.findListByUserId(userId);
+        return DozerUtil.mapList(list, UserSiteDTOResp.class);
+    }
+
+    /**
+     * 删除
+     * @param id
+     * @throws Exception
+     */
+    @Override
+    public void delUserSiteById(Integer id) throws Exception {
+        this.removeById(id);
+    }
+
+    /**
+     * 地址修改
+     * @param map
+     * @throws Exception
+     */
+    @Override
+    public void updateSite(UserSiteDTOReq map) throws Exception {
+        this.updateById(DozerUtil.map(map, UserSite.class));
+    }
+
+
+    /**
+     * 地址新增
+     * @param map
+     * @throws Exception
+     */
+    @Override
+    public void addUserSite(UserSiteDTOReq map) throws Exception {
+        this.save(DozerUtil.map(map, UserSite.class));
+    }
+
+
+    /**
+     * 根据ID查询
+     * @param siteId
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public UserSiteDTOResp findById(Integer siteId) throws Exception {
+        return DozerUtil.map(this.getById(siteId), UserSiteDTOResp.class);
     }
 }

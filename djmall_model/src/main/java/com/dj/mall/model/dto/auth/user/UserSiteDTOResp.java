@@ -41,17 +41,17 @@ public class UserSiteDTOResp implements Serializable {
     /**
      * 省
      */
-    private String province;
+    private Integer province;
 
     /**
      * 市
      */
-    private String city;
+    private Integer city;
 
     /**
      * 县
      */
-    private String county;
+    private Integer county;
 
     /**
      * 详细地址
@@ -62,4 +62,19 @@ public class UserSiteDTOResp implements Serializable {
      * 收货人
      */
     private String consignee;
+
+    /**
+     * 省份展示
+     */
+    private String provinceShow;
+
+    /**
+     * 市-展示
+     */
+    private String cityShow;
+
+    /**
+     * 县-展示
+     */
+    private String countyShow;
 }

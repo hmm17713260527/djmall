@@ -18,6 +18,7 @@ import com.dj.mall.model.dto.product.product_spu.ProductSpuDTOResp;
 import com.dj.mall.model.util.DozerUtil;
 import com.dj.mall.model.util.PageResult;
 import com.dj.mall.model.util.QiniuUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -152,14 +153,15 @@ public class ProductSpuApiImpl extends ServiceImpl<ProductSpuMapper, ProductSpu>
     @Override
     public void update(ProductSpuDTOReq productSpuDTOReq, byte[] bytes) {
 
-
         ProductSpu productSpu = this.getById(productSpuDTOReq.getProductSpuId());
 
         String[] split = productSpu.getProductDescribe().split(SystemConstant.SPLIT);
         String productDescribe = productSpuDTOReq.getProductDescribe() + SystemConstant.SPLIT + split[1];
         productSpuDTOReq.setProductDescribe(productDescribe);
-
-        QiniuUtils.uploadByByteArray(bytes, productSpuDTOReq.getImg());
+        if (!StringUtils.isEmpty(productSpuDTOReq.getImg())) {
+            QiniuUtils.uploadByByteArray(bytes, productSpuDTOReq.getImg());
+        }
+//        QiniuUtils.uploadByByteArray(bytes, productSpuDTOReq.getImg());
         this.updateById(DozerUtil.map(productSpuDTOReq, ProductSpu.class));
     }
 

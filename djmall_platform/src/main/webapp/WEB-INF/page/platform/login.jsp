@@ -107,6 +107,10 @@
         }
 
 
+        function toAdd() {
+            window.location.href = "<%=request.getContextPath()%>/platform/toAdd";
+        }
+
 
     </script>
 </head>
@@ -123,16 +127,20 @@
                 用户名:<input type="text" name="userName" placeholder="用户名/手机号/邮箱"/><br>
                 密码:<input type="password" id="pwd" name="password"/><br>
                 <input id="loginBtn" type="button" value="登录"/>
+                <input type="button" value="去注册" onclick="toAdd()"/>
+
             </form>
         </div>
         <div class="layui-tab-item">
-            <form id="aa">
+            <form id="">
                 手机号:<input type="text" id="phoneNumber" name="userName" placeholder="手机号"/><br>
-                图形验证码:<img src="<%=request.getContextPath()%>/platform/getVerifCode" id="codeImg" onclick="imgrefload()" alt="" width="100px" height="30px"/><input type="password" id="verifyCode"/><br>
+                图形验证码:<img src="<%=request.getContextPath()%>/platform/getVerifCode" id="codeImg" onclick="imgrefload()" alt="" width="100px" height="30px"/>
+                <input type="password" id="verifyCode"/><br>
                 短信验证码:<input type="text" name="password" id="smsCode"/>
                 <input type="button" onclick="sendSms(this)" value="发送短信验证码"/>
                 <br>
                 <input id="phoneBtn" type="button" value="登录" onclick="loginPhone()"/>
+                <input type="button" value="去注册" onclick="toAdd()"/>
             </form>
         </div>
     </div>

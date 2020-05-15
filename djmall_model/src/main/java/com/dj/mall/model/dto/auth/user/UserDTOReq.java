@@ -30,6 +30,11 @@ public class UserDTOReq implements Serializable {
     private Integer roleId;
 
     /**
+     * 头像
+     */
+    private String img;
+
+    /**
      * 当前页
      */
     private Integer pageNo;

@@ -61,6 +61,11 @@ public interface SystemConstant {
      * 用户角色：商户-1
      */
     Integer USER_ROLE_BUYER_ID = 1;
+
+    /**
+     * 用户角色：买家-3
+     */
+    Integer USER_ROLE_USER_ID = 3;
     /**
      * String方法调用：-
      */

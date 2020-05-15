@@ -14,6 +14,8 @@
     <script type="text/javascript" src="<%=request.getContextPath()%>\static\js\md5-min.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>\static\layer-v3.1.1\layer\layer.js"></script>
     <script src="<%=request.getContextPath()%>\static\js\jquery.validate.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>\static\js\token.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>\static\js\cookie.js"></script>
     <script src="https://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
     <script type="text/javascript">
 
@@ -55,10 +57,6 @@
                                 }
                             }
                         }
-                    },
-                    nickName:{
-                        required:true,
-                        minlength:2
                     },
                     password:{
                         required:true,
@@ -120,10 +118,6 @@
                         required:"请填写名字",
                         minlength:"最少两个字"
                     },
-                    nickName:{
-                        required:"请填写昵称",
-                        minlength:"最少两个字"
-                    },
                     password:{
                         required:"请填写密码",
                         minlength:"最少1个字",
@@ -143,8 +137,8 @@
                     email:{
                         required:"请填写你的邮箱",
                         email:"邮箱格式不对"
-                    },
-                },
+                    }
+                }
             })
         })
 
@@ -155,22 +149,25 @@
                 var salt = $("#salt").val();
                 var md5pwd = md5(pwd + salt);
                 $("#pwd").val(md5pwd);
-                $.post("<%=request.getContextPath()%>/platform/add",
-                    $("#fm").serialize(),
-                    function(data){
-                        if(data.code == -1){
+                var formData = new FormData($("#fm")[0]);
+                $.ajax({
+                    url:'<%=request.getContextPath()%>/platform/add',
+                    dataType:'json',
+                    type:'POST',
+                    // data: $("#fm").serialize(),
+                    data: formData,
+                    processData : false, // 使数据不做处理
+                    contentType : false, // 不要设置Content-Type请求头信息
+                    success: function(data){
+                        layer.msg(data.msg,function () {
                             layer.close(index);
-                            layer.msg(data.msg, {icon: 5});
-                            return
-                        }
-                        layer.msg(data.msg, {
-                            icon: 6,
-                            time: 2000
-                        }, function(){
+                            if (data.code != 200) {
+                                return;
+                            }
                             window.location.href = "<%=request.getContextPath()%>/platform/toShow";
-                        });
+                        })
                     }
-                )
+                });
             }
         });
 
@@ -187,11 +184,9 @@
 <form id="fm">
     <input type="hidden" name="isDel" value="1">
     <input type="hidden" name="status" value="ACTIVE">
-    <input type = "hidden" name = "type" value = "1">
+    <input type = "hidden" name = "type" value = "3">
     <input type="hidden" name="salt" value="${salt}" id="salt">
-    <input type="hidden" name = "_method" value = "POST">
     用户名:<input type="text" name="userName" id="userName"><br />
-    昵称:<input type="text" name="nickName" id="nickName"><br />
     密码:<input type="password" name="password" id="pwd"><br />
     确认密码:<input type="password" name="password2"><br />
     手机:<input type="text" name="phone" id="phone"><br />
@@ -201,6 +196,7 @@
         <input type = "radio" name = "sex" value = "${s.code}">${s.name}
     </c:forEach>
     <br/>
+    头像：<input type = "file" name = "file"/><br/>
     <br/>
     <input type="submit" value="注册">
 </form>

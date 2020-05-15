@@ -95,6 +95,11 @@ public class UserDTOResp implements Serializable {
     private List<ResourceDTOResp> ResourceList;
 
     /**
+     * 头像
+     */
+    private String img;
+
+    /**
      * 注册时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")//返回前台格式

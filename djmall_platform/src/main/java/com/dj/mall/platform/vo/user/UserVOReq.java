@@ -29,6 +29,11 @@ public class UserVOReq implements Serializable {
      */
     private Integer pageNo;
 
+    /**
+     * 头像
+     */
+    private String img;
+
 
     /**
      * 用户名

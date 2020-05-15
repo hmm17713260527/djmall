@@ -17,6 +17,7 @@ import com.dj.mall.entity.auth.role.Role;
 import com.dj.mall.entity.auth.user.User;
 import com.dj.mall.entity.auth.user.UserLoginEndTime;
 import com.dj.mall.entity.auth.user.UserRole;
+import com.dj.mall.entity.product.product_spu.ProductSpu;
 import com.dj.mall.mapper.auth.role.RoleMapper;
 import com.dj.mall.mapper.auth.user.UserLoginEndTimeMapper;
 import com.dj.mall.mapper.auth.user.UserMapper;
@@ -233,16 +234,10 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         User user = DozerUtil.map(userDTOReq, User.class);
         user.setCreateTime(LocalDateTime.now());
         if (!userDTOReq.getStatus().equals(SystemConstant.ACTIVE)) {
-
-
-
             String content = "<a href='"+"http://127.0.0.1:8081/admin"+"/auth/user/toActivate/"+user.getEmail()+"'>"+SystemConstant.EMAIL_ADD_CODE+"</a>";
             eMailApi.sendMail(user.getEmail(), SystemConstant.STRING_EMAIL, content);
-
-            //EmailUtil.sendEmail(user.getEmail(), SystemConstant.STRING_EMAIL, SystemConstant.EMAIL_ADD_CODE, 0);
         }
         this.save(user);
-
         userRoleMapper.insert(UserRole.builder().userId(user.getId()).roleId(user.getType()).isDel(SystemConstant.IS_DEL).build());
     }
 
@@ -403,7 +398,7 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         QueryWrapper<UserRole> userRoleQueryWrapper = new QueryWrapper<>();
         userRoleQueryWrapper.eq("user_id", user.getId());
         UserRole userRole = userRoleMapper.selectOne(userRoleQueryWrapper);
-        if (!userRole.getRoleId().equals(SystemConstant.USER_ROLE_BUYER_ID)) {
+        if (!userRole.getRoleId().equals(SystemConstant.USER_ROLE_USER_ID)) {
             throw new BusinessException(-4, SystemConstant.USER_NOT_ROLE);
         }
 
@@ -438,7 +433,7 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         QueryWrapper<UserRole> userRoleQueryWrapper = new QueryWrapper<>();
         userRoleQueryWrapper.eq("user_id", user.getId());
         UserRole userRole = userRoleMapper.selectOne(userRoleQueryWrapper);
-        if (!userRole.getRoleId().equals(SystemConstant.USER_ROLE_BUYER_ID)) {
+        if (!userRole.getRoleId().equals(SystemConstant.USER_ROLE_USER_ID)) {
             throw new BusinessException(-4, SystemConstant.USER_NOT_ROLE);
         }
 
@@ -454,6 +449,46 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         userTokenDTOResp.setUserName(user.getUserName());
         userTokenDTOResp.setUserId(user.getId());
         return userTokenDTOResp;
+    }
+
+    /**
+     * 通过id查询
+     * @param userId
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public UserDTOResp findUserById(Integer userId) throws Exception {
+        return DozerUtil.map(this.getById(userId), UserDTOResp.class);
+    }
+
+    /**
+     * 买家注册
+     * @param userDTOReq
+     * @param bytes
+     * @throws Exception
+     */
+    @Override
+    public void platAddUser(UserDTOReq userDTOReq, byte[] bytes) throws Exception {
+        User user = DozerUtil.map(userDTOReq, User.class);
+        user.setCreateTime(LocalDateTime.now());
+        QiniuUtils.uploadByByteArray(bytes, userDTOReq.getImg());
+        this.save(user);
+        userRoleMapper.insert(UserRole.builder().userId(user.getId()).roleId(user.getType()).isDel(SystemConstant.IS_DEL).build());
+    }
+
+    /**
+     * 个人信息修改
+     * @param map
+     * @param bytes
+     * @throws Exception
+     */
+    @Override
+    public void updatePlatUser(UserDTOReq map, byte[] bytes) throws Exception {
+        if (!StringUtils.isEmpty(map.getImg())) {
+            QiniuUtils.uploadByByteArray(bytes, map.getImg());
+        }
+        this.updateById(DozerUtil.map(map, User.class));
     }
 
 

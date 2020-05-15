@@ -89,6 +89,11 @@ public class User implements Serializable {
     private String status;
 
     /**
+     * 头像
+     */
+    private String img;
+
+    /**
      * 7男，8女
      */
     private String sex;
