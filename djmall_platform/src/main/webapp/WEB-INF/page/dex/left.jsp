@@ -21,7 +21,7 @@
 
 <a href="<%=request.getContextPath()%>/platform/auth/toUserSiteShow?TOKEN=${TOKEN}" target="right">收货地址</a><br/>
 
-<a href="javascript:delUserShoppingAll()" target="right">我的订单</a>　
+<a href="<%=request.getContextPath()%>/platform/auth/toUserOrderShow?TOKEN=${TOKEN}" target="right">我的订单</a>　
 
 
 </body>

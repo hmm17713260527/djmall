@@ -24,4 +24,21 @@
         WHERE dus.user_id = #{userId}
 
     </select>
+    <select id="findSiteDetailById" resultType="com.dj.mall.mapper.bo.auth.user.UserSiteBO">
+
+        SELECT
+            dus.phone,
+            dus.site,
+            dus.consignee,
+            da.area_name AS province_show,
+            daa.area_name AS city_show,
+            daaa.area_name AS county_show
+        FROM
+            djmall_user_site dus
+        LEFT JOIN djmall_area da ON da.id = dus.province
+        LEFT JOIN djmall_area daa ON daa.id = dus.city
+        LEFT JOIN djmall_area daaa ON daaa.id = dus.county
+        WHERE
+            dus.id = #{siteId}
+    </select>
 </mapper>

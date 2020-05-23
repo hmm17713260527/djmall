@@ -65,4 +65,9 @@ public class UserShoppingDTOReq implements Serializable {
      */
     private Integer[] ids;
 
+    /**
+     * sku库存
+     */
+    private Integer skuCount;
+
 }

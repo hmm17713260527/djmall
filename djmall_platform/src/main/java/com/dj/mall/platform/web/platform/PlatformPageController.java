@@ -8,6 +8,7 @@ import com.dj.mall.api.auth.user.UserSiteApi;
 import com.dj.mall.api.cmpt.RedisApi;
 import com.dj.mall.api.dict.base_data.BaseDataApi;
 import com.dj.mall.api.product.product_spu.ProductSpuApi;
+import com.dj.mall.model.base.OrderMessage;
 import com.dj.mall.model.base.RedisConstant;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.base.BaseDataDTOResp;
@@ -67,6 +68,16 @@ public class PlatformPageController {
     @Reference
     private RedisApi redisApi;
 
+
+    /**
+     * 订单展示
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("auth/toUserOrderShow")
+    public String toUserOrderShow() throws Exception {
+        return "order/user_order_show";
+    }
 
     /**
      * 去新增
@@ -155,10 +166,11 @@ public class PlatformPageController {
      * @throws Exception
      */
     @RequestMapping("auth/toUserOrder")
-    public String toUserOrder(Integer userId, Integer id, Model model) throws Exception {
+    public String toUserOrder(Integer userId, Integer id, OrderMessage orderMessage, Model model) throws Exception {
         if (id != null) {
             model.addAttribute("id", id);
         }
+        model.addAttribute("orderMessage", orderMessage);
         List<BaseDataDTOResp> baseDataSexList = baseDataApi.findBaseListByParentCode("PAY_TYPE");
         model.addAttribute("baseDataList", DozerUtil.mapList(baseDataSexList, BaseDataVOResp.class));
         List<UserSiteDTOResp> userSiteDTORespList = userSiteApi.findList(userId);
@@ -236,7 +248,9 @@ public class PlatformPageController {
      */
     @RequestMapping("toProductShow")
     public String toProductShow(ProductSpuVOReq productSpuVOReq, Model model) throws Exception {
-        productSpuVOReq.setIsDefault(0);
+        if (productSpuVOReq.getProductSkuId() == null) {
+            productSpuVOReq.setIsDefault(0);
+        }
         ProductSpuDTOResp productSpuDTOResp = productSpuApi.findProductById(DozerUtil.map(productSpuVOReq, ProductSpuDTOReq.class));
         model.addAttribute("product", DozerUtil.map(productSpuDTOResp, ProductSpuVOResp.class));
         return "platform/product";

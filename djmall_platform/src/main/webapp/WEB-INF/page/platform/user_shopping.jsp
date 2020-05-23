@@ -31,6 +31,7 @@
                         layer.msg(data.msg);
                         return;
                     }
+                    jisuan();
             })
         }
 
@@ -43,7 +44,7 @@
                 $(".c").prop("checked", false);
                 updByIds();
             }
-
+            jisuan();
         }
 
         function updByIds() {
@@ -280,15 +281,19 @@
                 }
             }
             a1.innerHTML=sum;
+            $("#sumNumber").val(sum);
             if (oldMoney !== undefined){
                 a2.innerHTML = oldPrice;
+                $("#oldPrice").val(oldPrice);
                 a3.innerHTML = ratePrice;
+                $("#ratePrice").val(ratePrice);
                 a4.innerHTML = freightPrice;
+                $("#freightPrice").val(freightPrice);
             }
             var sumMoney = 0;
             sumMoney = numAdd(ratePrice, freightPrice);
-            // sumRateMoney = parseInt(ratePrice + freightPrice);
             a5.innerHTML= "￥" + sumMoney
+            $("#sumPrice").val(sumMoney);
         }
 
         function delUserShoppingAll() {
@@ -343,13 +348,23 @@
             var userId = cookie.get("USER_ID");
             cookie.set("IDS", str, 22);
 
-            window.location.href = "<%=request.getContextPath()%>/platform/auth/toUserOrder?TOKEN="+getToken()+"&userId="+userId;
+            window.location.href = "<%=request.getContextPath()%>/platform/auth/toUserOrder?TOKEN="+getToken()+"&orderMessage="+$("#fm").serialize()+"&userId="+userId;
 
         }
 
     </script>
 </head>
 <body>
+
+<form id="fm">
+    <input type="hidden" name="noExist">
+    <input type="hidden" name="sumNumber" id="sumNumber">
+    <input type="hidden" name="oldPrice" id="oldPrice">
+    <input type="hidden" name="ratePrice" id="ratePrice">
+    <input type="hidden" name="freightPrice" id="freightPrice">
+    <input type="hidden" name="sumPrice" id="sumPrice">
+</form>
+
 <input type="checkbox" onclick="checkShopCar(this)"/>全选
 <a href="javascript:delUserShoppingAll()">删除所选商品</a>　
 <div id = "tbd"></div>

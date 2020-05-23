@@ -78,4 +78,20 @@ public class UserShoppingDTOResp implements Serializable {
 
     private List<BaseDataDTOResp> baseDataDTORespList;
 
+
+    /**
+     * 商品spu_id
+     */
+    private Integer productSpuId;
+
+    /***
+     * 商品skuz_id
+     */
+    private Integer productSkuId;
+
+    /**
+     * 商户ID
+     */
+    private Integer buyerId;
+
 }

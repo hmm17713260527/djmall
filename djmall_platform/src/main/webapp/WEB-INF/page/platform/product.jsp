@@ -43,6 +43,7 @@
                     $("#skuRate").html(data.data.skuRateShow);
                     $("#rate").html(data.data.skuRate);
                     $("#productDescribe").html(data.data.productDescribe);
+                    $("#skuCount").val(data.data.skuCount);
 
                     findCount(data.data.skuCount);
                 }
@@ -50,8 +51,9 @@
         }
 
         function jsNumber(a) {
+            var count = $("#skuCount").val();
             if (a == 2) {
-                var count = ${product.skuCount};
+
                 var addNumber = parseInt($("#number").val()) + 1;
                 if (addNumber > 200) {
                     layer.msg("不能超过200", {icon: 5});
@@ -71,7 +73,7 @@
                 }
                 $("#number").val(parseInt($("#number").val()) - 1);
             }
-
+            findCount(count);
         }
 
 
@@ -104,6 +106,30 @@
         }
 
 
+        function jisuan() {
+            //个数
+            var sumNumber = $("#number").val();
+            //原价
+            var skuPrice = $("#skuPrice").val();
+            //折扣
+            var rate = $("#rate").val();
+            //邮费
+            var freight;
+            if ('${product.freight}' == '包邮') {
+                freight = 0;
+            } else {
+                freight = ${product.freight};
+            }
+
+            $("#sumNumber").val(sumNumber);
+            $("#oldPrice").val(sumNumber * skuPrice);
+            $("#ratePrice").val(rate / 100 * skuPrice * sumNumber);
+            $("#freightPrice").val(freight);
+            $("#sumPrice").val(rate / 100 * skuPrice * sumNumber + freight);
+
+        }
+
+
         function userShopping() {
             if ($("#skuCount").val() == 0) {
                 layer.msg("无货");
@@ -117,7 +143,8 @@
                 $("#fm").serialize(),
                 function(data){
                     layer.close(index);
-                    window.location.href = "<%=request.getContextPath()%>/platform/auth/toUserOrder?TOKEN="+getToken()+"&id="+data.data+"&userId="+userId;
+                    jisuan();
+                    window.location.href = "<%=request.getContextPath()%>/platform/auth/toUserOrder?TOKEN="+getToken()+"&id="+data.data+"&orderMessage="+$("#frm").serialize()+"&userId="+userId;
                 }
             )
         }
@@ -126,12 +153,22 @@
 </head>
 <body>
 
+<form id="frm">
+    <input type="hidden" name="noExist">
+    <input type="hidden" name="sumNumber" id="sumNumber">
+    <input type="hidden" name="oldPrice" id="oldPrice">
+    <input type="hidden" name="ratePrice" id="ratePrice">
+    <input type="hidden" name="freightPrice" id="freightPrice">
+    <input type="hidden" name="sumPrice" id="sumPrice">
+
+</form>
+
 <form id="fm">
     <input type="hidden" id="userId" name="userId">
     <input type="hidden" name="productSpuId" value="${product.productId}">
     <input type="hidden" name="isDel" value="1">
-    <input type="hidden" id="skuCount">
-    <input type="hidden" name="skuPrice" value="${product.skuPrice}">
+<%--    <input type="hidden" id="skuCount">--%>
+    <input type="hidden" id="skuPrice" name="skuPrice" value="${product.skuPrice}">
     <input type="hidden" id = "rate" name="skuRate" value="${product.skuRate}">
     <img src="http://q9cgmldxi.bkt.clouddn.com/${product.img}" width="100px" height="100px"><br>
     名称:${product.productName}&nbsp;
@@ -143,9 +180,9 @@
     点赞量:${product.praise}&nbsp;评论量:0<br>
     选择商品系信息
     <c:forEach items="${product.productSkuList}" var="p">
-        <input type="radio" name="productSkuId" value="${p.productSkuId}"<c:if test="${p.isDefault == 0}">checked</c:if> onclick="getProSku(this.value)">${p.skuAttrValueNames}
+        <input type="radio" name="productSkuId" value="${p.productSkuId}"<c:if test="${p.productSkuId == product.productSkuId}">checked</c:if> onclick="getProSku(this.value)">${p.skuAttrValueNames}
     </c:forEach><br>
-    <input type="hidden" name="skuCount" value="${product.skuCount}">
+    <input type="hidden" id="skuCount" name="skuCount">
     购买数量:
     <input type="button" value="-" onclick="jsNumber(1)">
     <input type="text" value="1" name="productCount" id="number">

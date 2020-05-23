@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace:用于隔离SQL全局唯一（采用接口和XML开发时为接口的全路径）
+ -->
+<mapper namespace="com.dj.mall.mapper.order.OrderDetailMapper">
+
+
+    <select id="findOrderDetailList" resultType="com.dj.mall.mapper.bo.order.OrderDetailBO">
+        SELECT
+            dps.product_name,
+            dod.sku_info,
+            dod.buy_count,
+            dod.sku_price,
+            dod.sku_rate
+        FROM
+            djmall_order_detail dod
+        LEFT JOIN djmall_product_spu dps ON dod.product_id = dps.id
+        <where>
+            <if test="orderNo != null and orderNo != ''">
+                dod.parent_order_no = #{orderNo}
+            </if>
+        </where>
+
+
+    </select>
+</mapper>

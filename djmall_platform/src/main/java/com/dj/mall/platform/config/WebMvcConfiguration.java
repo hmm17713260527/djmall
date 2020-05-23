@@ -26,5 +26,6 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         InterceptorRegistration interceptorRegistration = registry.addInterceptor(tokenInterceptor);
         // 拦截请求
         interceptorRegistration.addPathPatterns("/platform/auth/**");
+        interceptorRegistration.addPathPatterns("/order/**");
     }
 }

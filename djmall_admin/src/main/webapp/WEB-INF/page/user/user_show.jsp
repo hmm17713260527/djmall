@@ -18,7 +18,7 @@
 
     $(function() {
         search();
-    })
+    });
 
 
     function search() {

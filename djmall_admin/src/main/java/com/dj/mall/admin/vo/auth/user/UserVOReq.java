@@ -24,6 +24,12 @@ public class UserVOReq implements Serializable {
      */
     private Integer userId;
 
+
+    /**
+     * 角色ID
+     */
+    private Integer roleId;
+
     /**
      * 当前页
      */

@@ -20,4 +20,6 @@ import java.util.List;
 public interface UserSiteMapper extends BaseMapper<UserSite> {
 
     List<UserSiteBO> findListByUserId(@Param("userId") Integer userId) throws DataAccessException;
+
+    UserSiteBO findSiteDetailById(@Param("siteId") Integer siteId) throws DataAccessException;
 }

@@ -76,4 +76,9 @@ public class UserShoppingVOReq implements Serializable {
      */
     private Integer[] ids;
 
+    /**
+     * sku库存
+     */
+    private Integer skuCount;
+
 }

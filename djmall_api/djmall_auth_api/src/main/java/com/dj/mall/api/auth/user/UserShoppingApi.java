@@ -1,10 +1,7 @@
 package com.dj.mall.api.auth.user;
 
-import com.dj.mall.model.base.ResultModel;
-import com.dj.mall.model.dto.auth.user.UserDTOReq;
 import com.dj.mall.model.dto.auth.user.UserShoppingDTOReq;
 import com.dj.mall.model.dto.auth.user.UserShoppingDTOResp;
-import com.dj.mall.model.util.PageResult;
 
 import java.util.List;
 
@@ -62,4 +59,12 @@ public interface UserShoppingApi {
      * @throws Exception
      */
     void updByIds(UserShoppingDTOReq map) throws Exception;
+
+
+    /**
+     * 订单取消修改库存
+     * @param orderNo
+     * @throws Exception
+     */
+    void updateCountByOrderNo(String orderNo) throws Exception;
 }

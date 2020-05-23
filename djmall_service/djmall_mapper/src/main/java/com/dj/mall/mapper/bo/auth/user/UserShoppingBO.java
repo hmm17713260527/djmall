@@ -90,6 +90,11 @@ public class UserShoppingBO implements Serializable {
      */
     private Integer productSkuId;
 
+    /**
+     * 商户ID
+     */
+    private Integer buyerId;
+
 
     /**
      * 用户ID

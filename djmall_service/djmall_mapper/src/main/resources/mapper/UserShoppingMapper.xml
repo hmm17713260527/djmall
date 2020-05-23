@@ -18,7 +18,10 @@
             dus.product_count,
             dus.rate_price,
             ddf.freight,
-            dus.is_del
+            dus.is_del,
+            dps.user_id AS buyerId,
+            dps.id AS productSpuId,
+            dsk.id AS productSkuId
         FROM
             djmall_user_shopping dus
         LEFT JOIN djmall_product_spu dps ON dus.product_spu_id = dps.id

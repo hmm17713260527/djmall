@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace:用于隔离SQL全局唯一（采用接口和XML开发时为接口的全路径）
+ -->
+<mapper namespace="com.dj.mall.mapper.order.OrderMapper">
+
+
+    <select id="findOrderList" resultType="com.dj.mall.mapper.bo.order.OrderBO">
+
+        SELECT
+            dor.order_no,
+            dor.product_name,
+            dor.total_buy_count,
+            dor.total_pay_money,
+            dabd.`name`,
+            dor.total_freight,
+            dor.create_time
+        FROM
+            djmall_order dor
+        LEFT JOIN djmall_auth_base_data dabd ON dabd.`code` = dor.pay_type
+        WHERE
+        dor.order_status = #{order.orderStatus}
+        <if test="order.buyerId != null">
+            and dor.buyer_id = #{order.buyerId}
+        </if>
+
+
+
+    </select>
+    <select id="findOrderDetailList" resultType="com.dj.mall.mapper.bo.order.OrderDetailBO">
+
+        SELECT
+            dod.child_order_no,
+            dps.product_name,
+            dod.sku_info,
+            dod.buy_count,
+            dod.sku_rate,
+            dod.pay_money,
+            dabd.`name`,
+            dor.total_freight,
+            dor.create_time,
+            dor.pay_time,
+            doi.order_status,
+            dor.update_time,
+            dod.product_id,
+            dod.sku_id
+        FROM
+            djmall_order_detail dod
+        LEFT JOIN djmall_product_spu dps ON dps.id = dod.product_id
+        LEFT JOIN djmall_order dor ON dor.order_no = dod.parent_order_no
+        LEFT JOIN djmall_auth_base_data dabd ON dor.pay_type = dabd.`code`
+        LEFT JOIN djmall_order_info doi ON doi.order_no = dod.child_order_no
+        WHERE
+        dod.buyer_id = #{order.buyerId}
+        <if test="order.orderStatus == '待收货'">
+            and (doi.order_status = '待发货' or doi.order_status = '已发货' or doi.order_status = '确认收货')
+        </if>
+        <if test="order.orderStatus == '已完成'">
+            and doi.order_status = '已完成'
+        </if>
+        <if test="order.orderStatus == '已取消'">
+            and doi.order_status = '已取消'
+        </if>
+
+
+
+    </select>
+    <select id="findOrderDetail" resultType="com.dj.mall.mapper.bo.order.OrderBO">
+
+        SELECT
+            dor.order_no,
+            dor.receiver_name,
+            dor.receiver_phone,
+            dor.receiver_province,
+            dor.receiver_city,
+            dor.receiver_county,
+            dor.receiver_detail,
+            dor.create_time,
+            dabd.`name`,
+            dor.pay_time,
+            dor.total_money,
+            dor.total_freight,
+            dor.total_pay_money
+        FROM
+            djmall_order dor
+        LEFT JOIN djmall_auth_base_data dabd ON dabd.`code` = dor.pay_type
+        <where>
+            <if test="order.orderNo != null and order.orderNo != ''">
+                dor.order_no = #{order.orderNo}
+            </if>
+        </where>
+
+
+    </select>
+    <select id="findOrder" resultType="com.dj.mall.mapper.bo.order.OrderBO">
+
+        SELECT
+            doi.parent_order_no,
+            doi.order_no,
+            doi.receiver_name,
+            doi.receiver_phone,
+            doi.receiver_province,
+            doi.receiver_city,
+            doi.receiver_county,
+            doi.receiver_detail,
+            doi.create_time,
+            dabd.`name`,
+            pay_time,
+            doi.total_money,
+            doi.total_freight,
+            doi.total_pay_money,
+            dps.product_name,
+            dod.sku_info,
+            dod.buy_count,
+            dod.sku_price,
+            dod.sku_rate
+        FROM
+            djmall_order_info doi
+        LEFT JOIN djmall_auth_base_data dabd ON dabd.`code` = doi.pay_type
+        LEFT JOIN djmall_product_spu dps ON dps.id = doi.product_id
+        LEFT JOIN djmall_order_detail dod ON dod.child_order_no = doi.order_no
+        <where>
+            <if test="order.childOrderNo != null and order.childOrderNo != ''">
+                doi.order_no = #{order.childOrderNo}
+            </if>
+        </where>
+
+    </select>
+</mapper>
