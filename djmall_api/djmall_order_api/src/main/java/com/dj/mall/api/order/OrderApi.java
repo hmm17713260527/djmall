@@ -53,7 +53,7 @@ public interface OrderApi {
 
 
     /**
-     * 提交，取消订单
+     * 提交订单
      * @param map
      * @throws Exception
      */

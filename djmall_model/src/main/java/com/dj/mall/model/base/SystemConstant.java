@@ -322,4 +322,14 @@ public interface SystemConstant {
      */
     String ACTIVE = "ACTIVE";
 
+
+    /**
+     * 订单前缀-DJ
+     */
+    String DJ_CODE = "DJ";
+
+    /**
+     * 库存不足
+     */
+    String PRODUCT_COUNT_IS_NULL = "库存不足";
 }

@@ -1,5 +1,6 @@
 package com.dj.mall.api.order;
 
+import com.dj.mall.entity.order.OrderInfo;
 import com.dj.mall.model.dto.order.OrderInfoDTOReq;
 import com.dj.mall.model.dto.order.OrderInfoDTOResp;
 
@@ -38,4 +39,5 @@ public interface OrderInfoApi {
      * @throws Exception
      */
     List<OrderInfoDTOResp> findOrderList(Integer userId, Integer roleId) throws Exception;
+
 }

@@ -15,6 +15,8 @@ import com.dj.mall.mapper.auth.user.UserShoppingMapper;
 import com.dj.mall.mapper.bo.auth.user.UserShoppingBO;
 import com.dj.mall.mapper.order.OrderInfoMapper;
 import com.dj.mall.mapper.product.product_sku.ProductSkuMapper;
+import com.dj.mall.model.base.BusinessException;
+import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.user.UserShoppingDTOReq;
 import com.dj.mall.model.dto.auth.user.UserShoppingDTOResp;
 import com.dj.mall.model.dto.product.product_sku.ProductSkuDTOReq;
@@ -22,6 +24,7 @@ import com.dj.mall.model.dto.product.product_sku.ProductSkuDTOResp;
 import com.dj.mall.model.util.DozerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -97,18 +100,18 @@ public class UserShoppingApiImpl extends ServiceImpl<UserShoppingMapper, UserSho
             int i = one.getProductCount() + userShoppingDTOReq.getProductCount();
             one.setProductCount(i);
             this.updateById(one);
-            ProductSkuDTOReq productSkuDTOReq = new ProductSkuDTOReq();
-            productSkuDTOReq.setProductSkuId(userShoppingDTOReq.getProductSkuId());
-            productSkuDTOReq.setSkuCount(userShoppingDTOReq.getSkuCount() - userShoppingDTOReq.getProductCount());
-            productSkuApi.updateCount(productSkuDTOReq);
+//            ProductSkuDTOReq productSkuDTOReq = new ProductSkuDTOReq();
+//            productSkuDTOReq.setProductSkuId(userShoppingDTOReq.getProductSkuId());
+//            productSkuDTOReq.setSkuCount(userShoppingDTOReq.getSkuCount() - userShoppingDTOReq.getProductCount());
+//            productSkuApi.updateCount(productSkuDTOReq);
             return one.getId();
         } else {
             UserShopping map = DozerUtil.map(userShoppingDTOReq, UserShopping.class);
             this.save(map);
-            ProductSkuDTOReq productSkuDTOReq = new ProductSkuDTOReq();
-            productSkuDTOReq.setProductSkuId(userShoppingDTOReq.getProductSkuId());
-            productSkuDTOReq.setSkuCount(userShoppingDTOReq.getSkuCount() - userShoppingDTOReq.getProductCount());
-            productSkuApi.updateCount(productSkuDTOReq);
+//            ProductSkuDTOReq productSkuDTOReq = new ProductSkuDTOReq();
+//            productSkuDTOReq.setProductSkuId(userShoppingDTOReq.getProductSkuId());
+//            productSkuDTOReq.setSkuCount(userShoppingDTOReq.getSkuCount() - userShoppingDTOReq.getProductCount());
+//            productSkuApi.updateCount(productSkuDTOReq);
             return map.getId();
         }
 
@@ -143,24 +146,32 @@ public class UserShoppingApiImpl extends ServiceImpl<UserShoppingMapper, UserSho
 
 
     /**
-     * 订单取消修改库存
+     * 订单修改库存
      * @param orderNo
      * @throws Exception
      */
     @Override
-    public void updateCountByOrderNo(String orderNo) throws Exception {
+    public void updateCountByOrderNo(String orderNo, String orderStatus) throws Exception, BusinessException {
         QueryWrapper<OrderInfo> objectQueryWrapper = new QueryWrapper<>();
         objectQueryWrapper.eq("parent_order_no", orderNo);
         List<OrderInfo> orderInfos = orderInfoMapper.selectList(objectQueryWrapper);
+        ArrayList<Integer> ids = new ArrayList<>();
         for (OrderInfo order : orderInfos) {
-
-            ProductSkuDTOResp byId = productSkuApi.findById(order.getProductSkuId());
-            int i = byId.getSkuCount() + order.getTotalBuyCount();
-            byId.setSkuCount(i);
-            productSkuApi.updateCount(DozerUtil.map(byId, ProductSkuDTOReq.class));
-
-
+            ids.add(order.getProductSkuId());
         }
+        List<ProductSkuDTOResp> list = productSkuApi.findByIds(ids);
+
+        if (orderStatus.equals("待发货")) {
+            for (int i = 0; i < list.size(); i++) {
+                int s = list.get(i).getSkuCount() - orderInfos.get(i).getTotalBuyCount();
+                if (s < 0) {
+                    throw new BusinessException(SystemConstant.PRODUCT_COUNT_IS_NULL);
+                } else {
+                    list.get(i).setSkuCount(s);
+                }
+            }
+        }
+        productSkuApi.updateCounts(DozerUtil.mapList(list, ProductSkuDTOReq.class));
     }
 
 }

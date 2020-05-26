@@ -5,6 +5,7 @@ import com.dj.mall.model.base.BusinessException;
 import com.dj.mall.model.dto.product.product_sku.ProductSkuDTOReq;
 import com.dj.mall.model.dto.product.product_sku.ProductSkuDTOResp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -75,4 +76,18 @@ public interface ProductSkuApi {
      */
     void updateCount(ProductSkuDTOReq productSkuDTOReq) throws Exception;
 
+    /**
+     * 通过ids查询
+     * @param ids
+     * @return
+     * @throws Exception
+     */
+    List<ProductSkuDTOResp> findByIds(ArrayList<Integer> ids) throws Exception;
+
+    /**
+     * 批量修改库存
+     * @param mapList
+     * @throws Exception
+     */
+    void updateCounts(List<ProductSkuDTOReq> mapList) throws Exception;
 }

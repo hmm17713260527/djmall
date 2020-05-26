@@ -35,7 +35,7 @@ public class OrderController {
     private OrderApi orderApi;
 
     /**
-     * 提交，取消订单
+     * 提交订单
      * @param orderVOReq
      * @return
      * @throws Exception

@@ -11,6 +11,7 @@ import com.dj.mall.api.order.OrderApi;
 import com.dj.mall.api.order.OrderDetailApi;
 import com.dj.mall.api.order.OrderInfoApi;
 import com.dj.mall.entity.order.Order;
+import com.dj.mall.entity.order.OrderInfo;
 import com.dj.mall.mapper.auth.user.UserRoleMapper;
 import com.dj.mall.mapper.auth.user.UserSiteMapper;
 import com.dj.mall.mapper.bo.auth.user.UserSiteBO;
@@ -110,10 +111,7 @@ public class OrderApiImpl extends ServiceImpl<OrderMapper, Order> implements Ord
             orderInfoDTOReq.setParentOrderNo(orderDTOReq.getOrderNo());
             orderInfoApi.update(orderInfoDTOReq);
 
-            if (orderDTOReq.getOrderStatus().equals("已取消")) {
-                userShoppingApi.updateCountByOrderNo(orderDTOReq.getOrderNo());
-            }
-
+            userShoppingApi.updateCountByOrderNo(orderDTOReq.getOrderNo(), orderDTOReq.getOrderStatus());
         } else {
             //修改子订单
             OrderInfoDTOReq orderInfoDTOReq = new OrderInfoDTOReq();
@@ -151,7 +149,7 @@ public class OrderApiImpl extends ServiceImpl<OrderMapper, Order> implements Ord
 
 
     /**
-     * 提交，取消订单
+     * 提交订单
      * @param map
      * @throws Exception
      */
@@ -163,7 +161,7 @@ public class OrderApiImpl extends ServiceImpl<OrderMapper, Order> implements Ord
 
         //总订单
         Order order = DozerUtil.map(map, Order.class);
-        order.setOrderNo("DJ" + new SimpleDateFormat("yyyyMMddHHmmSSS").format(new Date()) + (int) ((Math.random() * 9 + 1) * 100));
+        order.setOrderNo(SystemConstant.DJ_CODE + new SimpleDateFormat("yyyyMMddHHmmSSS").format(new Date()) + (int) ((Math.random() * 9 + 1) * 100));
 
         String productName = "";
         for (String o : map.getProductNames()) {
@@ -182,7 +180,7 @@ public class OrderApiImpl extends ServiceImpl<OrderMapper, Order> implements Ord
 
         //子订单
         for (OrderInfoDTOReq orderInfo : map.getInfoList()) {
-            orderInfo.setOrderNo("DJ" + new SimpleDateFormat("yyyyMMddHHmmSSS").format(new Date()) + (int) ((Math.random() * 9 + 1) * 100));
+            orderInfo.setOrderNo(SystemConstant.DJ_CODE + new SimpleDateFormat("yyyyMMddHHmmSSS").format(new Date()) + (int) ((Math.random() * 9 + 1) * 100));
             orderInfo.setParentOrderNo(order.getOrderNo());
             orderInfo.setBuyerId(map.getBuyerId());
             orderInfo.setTotalMoney(orderInfo.getSkuPrice().multiply(new BigDecimal(orderInfo.getTotalBuyCount())));

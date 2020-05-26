@@ -1,5 +1,6 @@
 package com.dj.mall.api.auth.user;
 
+import com.dj.mall.model.base.BusinessException;
 import com.dj.mall.model.dto.auth.user.UserShoppingDTOReq;
 import com.dj.mall.model.dto.auth.user.UserShoppingDTOResp;
 
@@ -62,9 +63,9 @@ public interface UserShoppingApi {
 
 
     /**
-     * 订单取消修改库存
+     * 订单修改库存
      * @param orderNo
      * @throws Exception
      */
-    void updateCountByOrderNo(String orderNo) throws Exception;
+    void updateCountByOrderNo(String orderNo, String orderStatus) throws Exception, BusinessException;
 }

@@ -79,4 +79,6 @@ public class ProductSkuDTOReq implements Serializable {
      */
     private Integer isDefault;
 
+
+
 }

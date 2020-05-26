@@ -120,6 +120,51 @@ public class OrderInfoDTOResp implements Serializable {
 
 
 
+    /**
+     * 父订单号
+     */
+    private String parentOrderNo;
+
+    /**
+     * 买家ID
+     */
+    private Integer buyerId;
+
+    /**
+     * 商户ID
+     */
+    private Integer businessId;
+
+    /**
+     * 商品ID
+     */
+    private Integer productId;
+
+    /**
+     * 商品_SKU_ID
+     */
+    private Integer productSkuId;
+
+    /**
+     * 订单总金额
+     */
+    private BigDecimal totalMoney;
+
+    /**
+     * 实付总金额
+     */
+    private BigDecimal totalPayMoney;
+
+    /**
+     * 支付方式
+     */
+    private String payType;
+
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updateTime;
+
 
 
 

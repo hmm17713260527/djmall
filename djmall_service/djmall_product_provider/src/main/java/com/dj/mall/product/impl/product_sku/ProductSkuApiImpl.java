@@ -16,6 +16,7 @@ import com.dj.mall.model.dto.product.product_sku.ProductSkuDTOResp;
 import com.dj.mall.model.util.DozerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -157,5 +158,29 @@ public class ProductSkuApiImpl extends ServiceImpl<ProductSkuMapper, ProductSku>
     @Override
     public void updateCount(ProductSkuDTOReq productSkuDTOReq) throws Exception {
         this.updateById(DozerUtil.map(productSkuDTOReq, ProductSku.class));
+    }
+
+
+    /**
+     * 通过ids查询
+     * @param ids
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<ProductSkuDTOResp> findByIds(ArrayList<Integer> ids) throws Exception {
+        QueryWrapper<ProductSku> QueryWrapper = new QueryWrapper<>();
+        QueryWrapper.in("id", ids);
+        return DozerUtil.mapList(this.list(QueryWrapper), ProductSkuDTOResp.class);
+    }
+
+    /**
+     * 批量修改库存
+     * @param mapList
+     * @throws Exception
+     */
+    @Override
+    public void updateCounts(List<ProductSkuDTOReq> mapList) throws Exception {
+        this.updateBatchById(DozerUtil.mapList(mapList, ProductSku.class));
     }
 }

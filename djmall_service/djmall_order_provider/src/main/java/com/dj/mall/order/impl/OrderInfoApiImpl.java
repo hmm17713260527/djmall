@@ -1,6 +1,7 @@
 package com.dj.mall.order.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dj.mall.api.order.OrderInfoApi;
@@ -69,4 +70,5 @@ public class OrderInfoApiImpl extends ServiceImpl<OrderInfoMapper, OrderInfo> im
         List<OrderInfoBO> orderList = this.baseMapper.findOrderList(userId, roleId);
         return DozerUtil.mapList(orderList, OrderInfoDTOResp.class);
     }
+
 }
