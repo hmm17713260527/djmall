@@ -22,6 +22,19 @@
         });
 
 
+        function updateCountById(id, count) {
+            token_post(
+                "<%=request.getContextPath() %>/platform/auth/updateCountById?TOKEN=" + getToken(),
+                {"userShoppingId" : id, "productCount" : count},
+                function (data) {
+                    if (data.code != 200) {
+                        layer.msg(data.msg);
+                        return;
+                    }
+                    jisuan();
+                })
+        }
+
         function updById(id) {
             token_post(
                 "<%=request.getContextPath() %>/platform/auth/updById?TOKEN=" + getToken(),
@@ -72,7 +85,7 @@
                 })
         }
 
-        function jiaNumber(i) {
+        function jiaNumber(i, id) {
 
             var productCount = parseInt($("#number_" + i).val()) + 1;
             if (productCount > 200) {
@@ -86,18 +99,19 @@
                 return;
             }
             $("#number_" + i).val(parseInt($("#number_" + i).val()) + 1);
-            jisuan();
+            updateCountById(id, $("#number_" + i).val());
+
 
         }
 
-        function jianNumber(i) {
+        function jianNumber(i, id) {
             var productCount = parseInt($("#number_" + i).val());
             if (productCount <= 1) {
                 layer.msg("购买不能小于0件", {icon: 5});
                 return;
             }
             $("#number_" + i).val(parseInt($("#number_" + i).val()) - 1);
-            jisuan();
+            updateCountById(id, $("#number_" + i).val());
         }
 
         function chang(skuCount, i) {
@@ -149,10 +163,10 @@
                         html += '<input type="hidden" value='+data.data[i].skuPrice+' name="oldMoney">';
 
                         html += '<td>';
-                        html += '<input type="button" value="-" onclick="jianNumber('+i+')">';
+                        html += '<input type="button" value="-" onclick="jianNumber('+i+','+data.data[i].userShoppingId+')">';
                         html += '<input type="hidden" name="skuCount" value='+data.data[i].skuCount+' id = "skuCount_'+i+'">';
                         html += '<input type="text" name="productCount" value='+data.data[i].productCount+' id = "number_'+i+'" onchange="chang('+data.data[i].skuCount+','+i+')">';
-                        html += '<input type="button" value="+" onclick="jiaNumber('+i+')">';
+                        html += '<input type="button" value="+" onclick="jiaNumber('+i+','+data.data[i].userShoppingId+')">';
                         html += '</td>';
 
                         html += '</tr>';

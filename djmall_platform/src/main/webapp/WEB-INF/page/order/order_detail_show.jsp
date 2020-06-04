@@ -36,7 +36,7 @@
             <td>折扣</td>
         </tr>
 
-        <c:if test="${order.parentOrderNo == null}">
+<%--        <c:if test="${order.parentOrderNo == null}">--%>
             <c:forEach var="orderDetail" items="${order.orderDetailList}" varStatus="i">
                 <tr>
                     <td>${i.index + 1}</td>
@@ -53,30 +53,37 @@
                     </td>
                 </tr>
             </c:forEach>
-        </c:if>
-        <c:if test="${order.parentOrderNo != null}">
-            <tr>
-                <td>1</td>
-                <td>${order.productName}-${order.skuIfo}</td>
-                <td>${order.buyCount}</td>
-                <td>${order.skuPrice}</td>
-                <td>
-                    <c:if test="${order.skuRate == 0}">
-                        无
-                    </c:if>
-                    <c:if test="${order.skuRate != 0}">
-                        ${order.skuRate}%
-                    </c:if>
-                </td>
-            </tr>
-        </c:if>
+<%--        </c:if>--%>
+<%--        <c:if test="${order.parentOrderNo != null}">--%>
+<%--            <tr>--%>
+<%--                <td>1</td>--%>
+<%--                <td>${order.productName}-${order.skuIfo}</td>--%>
+<%--                <td>${order.buyCount}</td>--%>
+<%--                <td>${order.skuPrice}</td>--%>
+<%--                <td>--%>
+<%--                    <c:if test="${order.skuRate == 0}">--%>
+<%--                        无--%>
+<%--                    </c:if>--%>
+<%--                    <c:if test="${order.skuRate != 0}">--%>
+<%--                        ${order.skuRate}%--%>
+<%--                    </c:if>--%>
+<%--                </td>--%>
+<%--            </tr>--%>
+<%--        </c:if>--%>
 
 
     </table><br/>
 
     下单时间:${order.createTime}<br/>
     支付方式:${order.name}<br/>
-    支付时间:${order.payTime}<br/>
+    支付时间:
+    <c:if test="${order.payTime != null}">
+        ${order.payTime}<br/>
+    </c:if>
+    <c:if test="${order.payTime == null}">
+        暂无<br/>
+    </c:if>
+
     商品总金额:${order.totalMoney}<br/>
     运费:${order.totalFreight}<br/>
     实付金额:${order.totalPayMoney}<br/>

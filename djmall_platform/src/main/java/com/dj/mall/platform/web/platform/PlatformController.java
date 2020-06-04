@@ -71,6 +71,19 @@ public class PlatformController {
 
 
     /**
+     * 修改购物车购买数量
+     * @param userShoppingVOReq
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("auth/updateCountById")
+    public ResultModel<Object> updateCountById(UserShoppingVOReq userShoppingVOReq) throws Exception {
+        userShoppingApi.updById(DozerUtil.map(userShoppingVOReq, UserShoppingDTOReq.class));
+
+        return new ResultModel<>().success(SystemConstant.REQ_YES);
+    }
+
+    /**
      * 搜索地址
      * @return
      * @throws Exception

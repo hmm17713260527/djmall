@@ -119,8 +119,8 @@
                 html += "<tr id = 'tr_"+i+"'>";
                 html += "<td>"+c+"</td>";
                 html += "<td>"+attrValueNames[i]+"</td>";
-                html += "<td><input type='text' name='productSkuList["+i+"].skuCount' value='10' /></td>";
-                html += "<td><input type='text' name='productSkuList["+i+"].skuPrice' value='10'/></td>";
+                html += "<td><input type='text' name='productSkuList["+i+"].skuCount' value='100' /></td>";
+                html += "<td><input type='text' name='productSkuList["+i+"].skuPrice' value='1000'/></td>";
                 html += "<td>";
                 html += "<input type='text' name ='productSkuList["+i+"].skuRate' value='90'/>";
                 html += "</td>";

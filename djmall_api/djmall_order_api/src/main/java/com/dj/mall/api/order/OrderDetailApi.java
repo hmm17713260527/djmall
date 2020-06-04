@@ -1,5 +1,7 @@
 package com.dj.mall.api.order;
 
+import com.dj.mall.entity.order.OrderDetail;
+import com.dj.mall.model.dto.order.OrderDTOReq;
 import com.dj.mall.model.dto.order.OrderDetailDTOReq;
 import com.dj.mall.model.dto.order.OrderDetailDTOResp;
 
@@ -19,16 +21,24 @@ public interface OrderDetailApi {
 
     /**
      * 根据订单号查询
-     * @param orderNo
+     * @param order
      * @return
      * @throws Exception
      */
-    List<OrderDetailDTOResp> findOrderDetailList(String orderNo) throws Exception;
+    List<OrderDetailDTOResp> findOrderDetailList(OrderDTOReq order) throws Exception;
 
     /**
      * 批量新增
      * @param objects
      * @throws Exception
      */
-    void addList(ArrayList<OrderDetailDTOReq> objects) throws Exception;
+    void addList(List<OrderDetail> objects) throws Exception;
+
+    /**
+     * 根据子订单号查询
+     * @param childOrderNoList
+     * @return
+     * @throws Exception
+     */
+    List<OrderDetailDTOResp> findOrderBychildOrderNoList(List<String> childOrderNoList) throws Exception;
 }

@@ -12,16 +12,36 @@
             dod.sku_info,
             dod.buy_count,
             dod.sku_price,
-            dod.sku_rate
+            dod.sku_rate,
+            dod.product_id,
+            dod.sku_id
         FROM
             djmall_order_detail dod
         LEFT JOIN djmall_product_spu dps ON dod.product_id = dps.id
         <where>
-            <if test="orderNo != null and orderNo != ''">
-                dod.parent_order_no = #{orderNo}
+            <if test="order.orderNo != null and order.orderNo != ''">
+                dod.parent_order_no = #{order.orderNo}
+            </if>
+            <if test="order.childOrderNo != null and order.childOrderNo != ''">
+                dod.child_order_no = #{order.childOrderNo}
             </if>
         </where>
 
+
+    </select>
+    <select id="findOrderBychildOrderNoList" resultType="com.dj.mall.mapper.bo.order.OrderDetailBO">
+
+        SELECT
+            dod.child_order_no,
+            dps.product_name
+        FROM
+            djmall_order_detail dod
+        LEFT JOIN djmall_product_spu dps ON dod.product_id = dps.id
+        WHERE
+            dod.child_order_no in
+        <foreach collection="childOrderNoList" item="childOrderNo" open="(" close=")" separator=",">
+            #{childOrderNo}
+        </foreach>
 
     </select>
 </mapper>

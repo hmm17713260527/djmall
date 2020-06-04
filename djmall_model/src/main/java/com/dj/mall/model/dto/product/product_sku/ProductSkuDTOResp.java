@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.dozer.Mapping;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -54,6 +55,13 @@ public class ProductSkuDTOResp implements Serializable {
     private Integer skuStatus;
 
     /**
+     * 购买数量
+     */
+    private Integer buyCount;
+
+
+
+    /**
      * SKU属性ID集合[id1:id2],-1代表自定
      */
     private String skuAttrIds;
@@ -78,4 +86,20 @@ public class ProductSkuDTOResp implements Serializable {
      */
     private Integer isDefault;
 
+
+    /**
+     * ID
+     */
+    private Integer productSpuId;
+
+
+    /**
+     * 商户
+     */
+    private Integer userId;
+
+    /**
+     * 邮费
+     */
+    private String freight;
 }

@@ -1,5 +1,6 @@
 package com.dj.mall.api.auth.user;
 
+import com.dj.mall.entity.auth.user.UserShopping;
 import com.dj.mall.model.base.BusinessException;
 import com.dj.mall.model.dto.auth.user.UserShoppingDTOReq;
 import com.dj.mall.model.dto.auth.user.UserShoppingDTOResp;
@@ -62,10 +63,39 @@ public interface UserShoppingApi {
     void updByIds(UserShoppingDTOReq map) throws Exception;
 
 
+//    /**
+//     * 订单修改库存
+//     * @param orderNo
+//     * @throws Exception
+//     */
+//    void updateCountByOrderNo(String orderNo, String orderStatus) throws Exception, BusinessException;
+
     /**
-     * 订单修改库存
-     * @param orderNo
+     * 根据id集合查询
+     * @param ids
+     * @return
      * @throws Exception
      */
-    void updateCountByOrderNo(String orderNo, String orderStatus) throws Exception, BusinessException;
+    List<UserShoppingDTOResp> findList(Integer[] ids) throws Exception;
+
+    /**
+     * 根据userid查询
+     * @param buyerId
+     * @return
+     */
+    List<UserShoppingDTOResp> findUserShoppingListByUserId(Integer buyerId) throws Exception;
+
+    /**
+     * 批量新增
+     * @param addUserShoppingList
+     * @throws Exception
+     */
+    void adds(List<UserShopping> addUserShoppingList) throws Exception;
+
+    /**
+     * 批量修改
+     * @param updateUserShoppingList
+     * @throws Exception
+     */
+    void updates(List<UserShopping> updateUserShoppingList) throws Exception;
 }

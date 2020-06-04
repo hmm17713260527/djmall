@@ -48,15 +48,6 @@ public class OrderInfo implements Serializable {
      */
     private Integer businessId;
 
-    /**
-     * 商品ID
-     */
-    private Integer productId;
-
-    /**
-     * 商品_SKU_ID
-     */
-    private Integer productSkuId;
 
     /**
      * 订单总金额

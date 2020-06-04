@@ -1,4 +1,4 @@
-package com.dj.mall.mapper.bo.order;
+package com.dj.mall.platform.vo.order;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -23,29 +23,8 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderInfoBO implements Serializable {
+public class OrderInfoVOResp implements Serializable {
 
-
-    /**
-     * 订单状态:[已取消/待支付/已支付]
-     */
-    private String orderStatus;
-
-    /**
-     * 子订单号
-     */
-    private String childOrderNo;
-
-
-    /**
-     * 父订单号
-     */
-    private String parentOrderNo;
-
-    /**
-     * 买家ID
-     */
-    private Integer buyerId;
 
     /**
      * 订单号
@@ -58,17 +37,26 @@ public class OrderInfoBO implements Serializable {
     private String productName;
 
 
+    /**
+     * 商户名
+     */
+    private String userName;
 
     /**
      * 购买数量
      */
     private Integer totalBuyCount;
 
+    /**
+     * 折扣
+     */
+    private Integer skuRate;
 
     /**
      * 付款金额（包含邮费）
      */
-    private BigDecimal totalPayMoney;
+    private BigDecimal payMoney;
+
 
     /**
      * 支付方式
@@ -79,26 +67,6 @@ public class OrderInfoBO implements Serializable {
      * 邮费
      */
     private BigDecimal totalFreight;
-
-    /**
-     * 下单时间
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    private LocalDateTime createTime;
-
-
-    /**
-     * 支付时间
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    private LocalDateTime payTime;
-
-
-    /**
-     * 修改时间
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    private LocalDateTime updateTime;
 
     /**
      * 收货信息-省
@@ -130,41 +98,73 @@ public class OrderInfoBO implements Serializable {
      */
     private String receiverDetail;
 
+
+    /**
+     * 订单状态:[已取消/待支付/已支付]
+     */
+    private String orderStatus;
+
+
+    /**
+     * 下单时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private LocalDateTime createTime;
+
+
+    /**
+     * 支付时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private LocalDateTime payTime;
+
+
+
+    /**
+     * 父订单号
+     */
+    private String parentOrderNo;
+
+    /**
+     * 买家ID
+     */
+    private Integer buyerId;
+
+    /**
+     * 商户ID
+     */
+    private Integer businessId;
+
+    /**
+     * 商品ID
+     */
+    private Integer productId;
+
+    /**
+     * 商品_SKU_ID
+     */
+    private Integer productSkuId;
+
     /**
      * 订单总金额
      */
     private BigDecimal totalMoney;
 
+    /**
+     * 实付总金额
+     */
+    private BigDecimal totalPayMoney;
 
     /**
-     * sku属性
+     * 支付方式
      */
-    private String skuInfo;
+    private String payType;
 
     /**
-     * 购买数量
+     * 更新时间
      */
-    private Integer buyCount;
+    private LocalDateTime updateTime;
 
-    /**
-     * 折扣
-     */
-    private Integer skuRate;
-
-    /**
-     * SKU价格
-     */
-    private BigDecimal skuPrice;
-
-    /**
-     * 商户名
-     */
-    private String userName;
-
-    /**
-     * 付款金额（包含邮费）
-     */
-    private BigDecimal payMoney;
 
 
 

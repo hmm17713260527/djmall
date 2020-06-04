@@ -1,5 +1,6 @@
 package com.dj.mall.api.order;
 
+import com.dj.mall.model.base.BusinessException;
 import com.dj.mall.model.dto.order.OrderDTOReq;
 import com.dj.mall.model.dto.order.OrderDTOResp;
 import com.dj.mall.model.dto.order.OrderDetailDTOReq;
@@ -32,7 +33,7 @@ public interface OrderApi {
      * @return
      * @throws Exception
      */
-    PageResult findOrderDetailList(OrderDetailDTOReq map) throws Exception;
+    PageResult findOrderInfoList(OrderDetailDTOReq map) throws Exception;
 
 
     /**
@@ -57,5 +58,11 @@ public interface OrderApi {
      * @param map
      * @throws Exception
      */
-    void commitOrder(OrderDTOReq map) throws Exception;
+    void commitOrder(OrderDTOReq map) throws Exception, BusinessException;
+
+    /**
+     * 再次购买
+     * @param map
+     */
+    void addUserShopping(OrderDTOReq map) throws Exception;
 }

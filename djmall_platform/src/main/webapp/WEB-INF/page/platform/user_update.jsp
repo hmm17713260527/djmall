@@ -91,7 +91,7 @@
     <input type="hidden" name = "userId" value="${user.userId}"/>
     <input type="hidden" id="userName" name = "userName" value="${user.userName}"/>
     昵称:<input type = "text" id="nickName" name = "nickName" value="${user.nickName}" onblur="authName()"/><br/>
-    头像：<img src="http://q9cgmldxi.bkt.clouddn.com/${user.img}" width="100px" height="100px">
+    头像：<img src="http://qazo01v5q.bkt.clouddn.com/${user.img}" width="100px" height="100px">
     <input type = "file" name = "file"/><br/>
     邮箱:<input type = "text" id="email" name = "email" value="${user.email}"/><br/>
     性别:<input type = "radio" name = "sex" value="MAN" <c:if test = "${user.sex == 'MAN'}">checked</c:if>/>男

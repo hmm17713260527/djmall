@@ -1,18 +1,22 @@
 package com.dj.mall.order.impl;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.dj.mall.api.order.OrderDetailApi;
 import com.dj.mall.api.order.OrderInfoApi;
 import com.dj.mall.entity.order.OrderInfo;
 import com.dj.mall.mapper.bo.order.OrderInfoBO;
 import com.dj.mall.mapper.order.OrderInfoMapper;
+import com.dj.mall.model.dto.order.OrderDetailDTOResp;
 import com.dj.mall.model.dto.order.OrderInfoDTOReq;
 import com.dj.mall.model.dto.order.OrderInfoDTOResp;
 import com.dj.mall.model.util.DozerUtil;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +30,10 @@ import java.util.List;
  */
 @Service
 public class OrderInfoApiImpl extends ServiceImpl<OrderInfoMapper, OrderInfo> implements OrderInfoApi {
+
+
+    @Reference
+    private OrderDetailApi orderDetailApi;
 
     /**
      * 修改订单状态
@@ -52,8 +60,9 @@ public class OrderInfoApiImpl extends ServiceImpl<OrderInfoMapper, OrderInfo> im
      * @throws Exception
      */
     @Override
-    public void addList(List<OrderInfoDTOReq> infoList) throws Exception {
-        this.saveBatch(DozerUtil.mapList(infoList, OrderInfo.class));
+    public void addList(List<OrderInfo> infoList) throws Exception {
+        //this.saveBatch(DozerUtil.mapList(infoList, OrderInfo.class));
+        this.saveBatch(infoList);
     }
 
 
@@ -68,6 +77,28 @@ public class OrderInfoApiImpl extends ServiceImpl<OrderInfoMapper, OrderInfo> im
     public List<OrderInfoDTOResp> findOrderList(Integer userId, Integer roleId) throws Exception {
 
         List<OrderInfoBO> orderList = this.baseMapper.findOrderList(userId, roleId);
+
+        List<String> childOrderNoList = new ArrayList<>();
+        orderList.forEach(order -> {
+            childOrderNoList.add(order.getOrderNo());
+        });
+
+        if (childOrderNoList != null && childOrderNoList.size() > 0) {
+            List<OrderDetailDTOResp> orList = orderDetailApi.findOrderBychildOrderNoList(childOrderNoList);
+
+            orderList.forEach(order -> {
+                String productName = "";
+                for (OrderDetailDTOResp o : orList) {
+                    if (o.getChildOrderNo().equals(order.getOrderNo())) {
+                        productName += o.getProductName() + ",";
+                    }
+                }
+                order.setProductName(productName.substring(0, productName.length()-1));
+            });
+        }
+
+
+
         return DozerUtil.mapList(orderList, OrderInfoDTOResp.class);
     }
 

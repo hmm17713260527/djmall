@@ -28,31 +28,23 @@
 
 
     </select>
-    <select id="findOrderDetailList" resultType="com.dj.mall.mapper.bo.order.OrderDetailBO">
+    <select id="findOrderDetailList" resultType="com.dj.mall.mapper.bo.order.OrderInfoBO">
 
         SELECT
-            dod.child_order_no,
-            dps.product_name,
-            dod.sku_info,
-            dod.buy_count,
-            dod.sku_rate,
-            dod.pay_money,
+            doi.order_no,
+            doi.total_buy_count,
+            doi.total_pay_money,
             dabd.`name`,
-            dor.total_freight,
-            dor.create_time,
-            dor.pay_time,
+            doi.total_freight,
+            doi.create_time,
+            doi.pay_time,
             doi.order_status,
-            dor.update_time,
-            dod.product_id,
-            dod.sku_id
+            doi.update_time
         FROM
-            djmall_order_detail dod
-        LEFT JOIN djmall_product_spu dps ON dps.id = dod.product_id
-        LEFT JOIN djmall_order dor ON dor.order_no = dod.parent_order_no
-        LEFT JOIN djmall_auth_base_data dabd ON dor.pay_type = dabd.`code`
-        LEFT JOIN djmall_order_info doi ON doi.order_no = dod.child_order_no
+            djmall_order_info doi
+        LEFT JOIN djmall_auth_base_data dabd ON doi.pay_type = dabd.`code`
         WHERE
-        dod.buyer_id = #{order.buyerId}
+        doi.buyer_id = #{order.buyerId}
         <if test="order.orderStatus == '待收货'">
             and (doi.order_status = '待发货' or doi.order_status = '已发货' or doi.order_status = '确认收货')
         </if>
@@ -96,7 +88,6 @@
     <select id="findOrder" resultType="com.dj.mall.mapper.bo.order.OrderBO">
 
         SELECT
-            doi.parent_order_no,
             doi.order_no,
             doi.receiver_name,
             doi.receiver_phone,
@@ -106,20 +97,13 @@
             doi.receiver_detail,
             doi.create_time,
             dabd.`name`,
-            pay_time,
+            doi.pay_time,
             doi.total_money,
-            doi.total_freight,
             doi.total_pay_money,
-            dps.product_name,
-            dod.sku_info,
-            dod.buy_count,
-            dod.sku_price,
-            dod.sku_rate
+            doi.total_freight
         FROM
             djmall_order_info doi
         LEFT JOIN djmall_auth_base_data dabd ON dabd.`code` = doi.pay_type
-        LEFT JOIN djmall_product_spu dps ON dps.id = doi.product_id
-        LEFT JOIN djmall_order_detail dod ON dod.child_order_no = doi.order_no
         <where>
             <if test="order.childOrderNo != null and order.childOrderNo != ''">
                 doi.order_no = #{order.childOrderNo}

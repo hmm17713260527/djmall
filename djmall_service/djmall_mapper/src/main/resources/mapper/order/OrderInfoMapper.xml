@@ -10,11 +10,9 @@
 
         SELECT
             doi.order_no,
-            dps.product_name,
             dau.user_name,
             doi.total_buy_count,
-            dod.sku_rate,
-            dod.pay_money,
+            doi.total_pay_money as pay_money,
             dabd.`name`,
             doi.total_freight,
             doi.receiver_name,
@@ -28,10 +26,8 @@
             doi.order_status
         FROM
             djmall_order_info doi
-        LEFT JOIN djmall_product_spu dps ON doi.product_id = dps.id
         LEFT JOIN djmall_auth_user dau ON dau.id = doi.business_id
-        LEFT JOIN djmall_order_detail dod ON dod.child_order_no = doi.order_no
-        LEFT JOIN djmall_auth_base_data dabd ON doi.pay_type = dabd.`code`
+        LEFT JOIN djmall_auth_base_data dabd ON dabd.`code` = doi.pay_type
         <where>
 
             <if test="roleId == 1">

@@ -48,6 +48,12 @@ public class OrderDetailBO implements Serializable {
      */
     private String childOrderNo;
 
+
+    /**
+     * 订单号
+     */
+    private String orderNo;
+
     /**
      * 商品名称
      */

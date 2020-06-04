@@ -7,6 +7,7 @@ import com.dj.mall.mapper.bo.order.OrderDetailBO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.dao.DataAccessException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,5 +20,7 @@ import java.util.List;
  * @Version: 1.0
  */
 public interface OrderDetailMapper extends BaseMapper<OrderDetail> {
-    List<OrderDetailBO> findOrderDetailList(@Param("orderNo") String orderNo) throws DataAccessException;
+    List<OrderDetailBO> findOrderDetailList(@Param("order") OrderDetailBO order) throws DataAccessException;
+
+    List<OrderDetailBO> findOrderBychildOrderNoList(@Param("childOrderNoList") List<String> childOrderNoList) throws DataAccessException;
 }

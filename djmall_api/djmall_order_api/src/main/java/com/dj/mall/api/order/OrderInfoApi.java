@@ -29,7 +29,7 @@ public interface OrderInfoApi {
      * @param infoList
      * @throws Exception
      */
-    void addList(List<OrderInfoDTOReq> infoList)  throws Exception;
+    void addList(List<OrderInfo> infoList)  throws Exception;
 
     /**
      * admin订单展示

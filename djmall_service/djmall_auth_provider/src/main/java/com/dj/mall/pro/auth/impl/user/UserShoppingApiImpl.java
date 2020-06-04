@@ -8,11 +8,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dj.mall.api.auth.user.UserShoppingApi;
 import com.dj.mall.api.product.product_sku.ProductSkuApi;
 import com.dj.mall.entity.auth.user.UserShopping;
+import com.dj.mall.entity.order.OrderDetail;
 import com.dj.mall.entity.order.OrderInfo;
 import com.dj.mall.entity.product.product_sku.ProductSku;
 import com.dj.mall.mapper.auth.user.UserRoleMapper;
 import com.dj.mall.mapper.auth.user.UserShoppingMapper;
 import com.dj.mall.mapper.bo.auth.user.UserShoppingBO;
+import com.dj.mall.mapper.order.OrderDetailMapper;
 import com.dj.mall.mapper.order.OrderInfoMapper;
 import com.dj.mall.mapper.product.product_sku.ProductSkuMapper;
 import com.dj.mall.model.base.BusinessException;
@@ -45,6 +47,9 @@ public class UserShoppingApiImpl extends ServiceImpl<UserShoppingMapper, UserSho
 
     @Autowired
     private OrderInfoMapper orderInfoMapper;
+
+    @Autowired
+    private OrderDetailMapper orderDetailMapper;
 
     /**
      * 查询商户购物车
@@ -145,33 +150,80 @@ public class UserShoppingApiImpl extends ServiceImpl<UserShoppingMapper, UserSho
 
 
 
+//    /**
+//     * 订单修改库存
+//     * @param orderNo
+//     * @throws Exception
+//     */
+//    @Override
+//    public void updateCountByOrderNo(String orderNo, String orderStatus) throws Exception, BusinessException {
+//        QueryWrapper<OrderDetail> objectQueryWrapper = new QueryWrapper<>();
+//        objectQueryWrapper.eq("parent_order_no", orderNo);
+//        List<OrderDetail> orderDetails = orderDetailMapper.selectList(objectQueryWrapper);
+//        ArrayList<Integer> ids = new ArrayList<>();
+//        for (OrderDetail order : orderDetails) {
+//            ids.add(order.getSkuId());
+//        }
+//        List<ProductSkuDTOResp> list = productSkuApi.findByIds(ids);
+//
+////        if (orderStatus.equals("已取消")) {
+////            for (int i = 0; i < list.size(); i++) {
+////                int s = list.get(i).getSkuCount() - orderInfos.get(i).getTotalBuyCount();
+////                if (s < 0) {
+////                    throw new BusinessException(SystemConstant.PRODUCT_COUNT_IS_NULL);
+////                } else {
+////                    list.get(i).setSkuCount(s);
+////                }
+////            }
+////        }
+//        productSkuApi.updateCounts(DozerUtil.mapList(list, ProductSkuDTOReq.class));
+//    }
+
+
     /**
-     * 订单修改库存
-     * @param orderNo
+     * 根据id集合查询
+     * @param ids
+     * @return
      * @throws Exception
      */
     @Override
-    public void updateCountByOrderNo(String orderNo, String orderStatus) throws Exception, BusinessException {
-        QueryWrapper<OrderInfo> objectQueryWrapper = new QueryWrapper<>();
-        objectQueryWrapper.eq("parent_order_no", orderNo);
-        List<OrderInfo> orderInfos = orderInfoMapper.selectList(objectQueryWrapper);
-        ArrayList<Integer> ids = new ArrayList<>();
-        for (OrderInfo order : orderInfos) {
-            ids.add(order.getProductSkuId());
-        }
-        List<ProductSkuDTOResp> list = productSkuApi.findByIds(ids);
-
-        if (orderStatus.equals("待发货")) {
-            for (int i = 0; i < list.size(); i++) {
-                int s = list.get(i).getSkuCount() - orderInfos.get(i).getTotalBuyCount();
-                if (s < 0) {
-                    throw new BusinessException(SystemConstant.PRODUCT_COUNT_IS_NULL);
-                } else {
-                    list.get(i).setSkuCount(s);
-                }
-            }
-        }
-        productSkuApi.updateCounts(DozerUtil.mapList(list, ProductSkuDTOReq.class));
+    public List<UserShoppingDTOResp> findList(Integer[] ids) throws Exception {
+        QueryWrapper<UserShopping> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("id", ids);
+        return DozerUtil.mapList(this.list(queryWrapper), UserShoppingDTOResp.class);
     }
+
+    /**
+     * 根据userid查询
+     * @param buyerId
+     * @return
+     */
+    @Override
+    public List<UserShoppingDTOResp> findUserShoppingListByUserId(Integer buyerId) {
+        QueryWrapper<UserShopping> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("user_id", buyerId);
+        return DozerUtil.mapList(this.list(queryWrapper), UserShoppingDTOResp.class);
+    }
+
+    /**
+     * 批量新增
+     * @param addUserShoppingList
+     * @throws Exception
+     */
+    @Override
+    public void adds(List<UserShopping> addUserShoppingList) throws Exception {
+        this.saveBatch(addUserShoppingList);
+    }
+
+    /**
+     * 批量修改
+     * @param updateUserShoppingList
+     * @throws Exception
+     */
+    @Override
+    public void updates(List<UserShopping> updateUserShoppingList) throws Exception {
+        this.updateBatchById(updateUserShoppingList);
+    }
+
 
 }

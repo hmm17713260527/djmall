@@ -6,4 +6,28 @@
 <mapper namespace="com.dj.mall.mapper.product.product_sku.ProductSkuMapper">
 
 
+    <select id="getProductList" resultType="com.dj.mall.mapper.bo.product.ProductSkuBO">
+
+
+        SELECT
+            dps.id,
+            dps.product_id as productSpuId,
+            dps.sku_price,
+            dps.sku_count,
+            dps.sku_rate,
+            dps.sku_attr_value_names,
+            dpd.user_id,
+            ddf.freight
+        FROM
+            djmall_product_sku dps
+        LEFT JOIN djmall_product_spu dpd ON dps.product_id = dpd.id
+        LEFT JOIN djmall_dict_freight ddf ON ddf.id = dpd.freight_id
+        where
+            dps.id in
+            <foreach collection="skuIdList" item="skuId" open="(" close=")" separator=",">
+                #{skuId}
+            </foreach>
+
+
+    </select>
 </mapper>

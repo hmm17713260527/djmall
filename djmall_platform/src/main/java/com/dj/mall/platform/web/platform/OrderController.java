@@ -8,10 +8,7 @@ import com.dj.mall.model.dto.order.OrderDTOReq;
 import com.dj.mall.model.dto.order.OrderDetailDTOReq;
 import com.dj.mall.model.util.DozerUtil;
 import com.dj.mall.model.util.PageResult;
-import com.dj.mall.platform.vo.order.OrderDetailVOReq;
-import com.dj.mall.platform.vo.order.OrderDetailVOResp;
-import com.dj.mall.platform.vo.order.OrderVOReq;
-import com.dj.mall.platform.vo.order.OrderVOResp;
+import com.dj.mall.platform.vo.order.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,6 +30,22 @@ public class OrderController {
 
     @Reference
     private OrderApi orderApi;
+
+
+    /**
+     * 再次购买
+     * @param orderVOReq
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("auth/addUserShopping")
+    public ResultModel<Object> addUserShopping(OrderVOReq orderVOReq) throws Exception {
+
+        orderApi.addUserShopping(DozerUtil.map(orderVOReq, OrderDTOReq.class));
+
+        return new ResultModel<>().success(SystemConstant.REQ_YES);
+
+    }
 
     /**
      * 提交订单
@@ -87,11 +100,10 @@ public class OrderController {
      * @return
      * @throws Exception
      */
-    @PostMapping("auth/findOrderDetailList")
+    @PostMapping("auth/findOrderInfoList")
     public ResultModel<Object> findOrderDetailList(OrderDetailVOReq orderVOReq) throws Exception {
-        PageResult pageResult = orderApi.findOrderDetailList(DozerUtil.map(orderVOReq, OrderDetailDTOReq.class));
-        PageResult.builder().list(DozerUtil.mapList(pageResult.getList(), OrderDetailVOResp.class));
-
+        PageResult pageResult = orderApi.findOrderInfoList(DozerUtil.map(orderVOReq, OrderDetailDTOReq.class));
+        PageResult.builder().list(DozerUtil.mapList(pageResult.getList(), OrderInfoVOResp.class));
         return new ResultModel<>().success(pageResult);
 
     }

@@ -22,12 +22,16 @@
     <script type="text/javascript">
 
         $(function () {
-            findOrder(1);
+            findOrder(1, 1);
         });
 
-        function findOrder(a) {
-            var s = "待支付";
+        function findOrder(a, v) {
 
+            var s = "待支付";
+            if (v == 1) {
+                $("#"+s).empty();
+                $("#pageNo_"+s).val(1);
+            }
             var buyerId = cookie.get("USER_ID");
             var pageNo = $("#pageNo_"+s).val();
             token_post(
@@ -84,9 +88,9 @@
             } else {
                 $("#pageNo_"+i).val(page);
                 if (a == 1) {
-                    findOrder(a);
+                    findOrder(a, 2);
                 } else {
-                    findOrderDetail(a);
+                    findOrderDetail(a, 2);
                 }
 
             }
@@ -105,7 +109,7 @@
             });
         }
 
-        function findOrderDetail(a) {
+        function findOrderDetail(a, v) {
             var s = "待支付";
             if (a == 1) {
                 s = "待支付";
@@ -116,11 +120,16 @@
             } else {
                 s = "已取消";
             }
+
+            if (v == 1) {
+               $("#"+s).empty();
+                $("#pageNo_"+s).val(1);
+            }
             var buyerId = cookie.get("USER_ID");
             var pageNo = $("#pageNo_"+s).val();
 
             token_post(
-                "<%=request.getContextPath()%>/order/auth/findOrderDetailList?TOKEN="+getToken(),
+                "<%=request.getContextPath()%>/order/auth/findOrderInfoList?TOKEN="+getToken(),
                 {"orderStatus": s, "buyerId": buyerId, "pageNo" : pageNo},
                 function (data) {
                     if (data.data == null) {
@@ -131,12 +140,11 @@
                         var o = data.data.list[i];
                         html += "<tr>";
                         html += "<td>";
-                        html += "<a href='javascript:toOrderDetailShow(&quot;"+o.childOrderNo+"&quot;)'>"+o.childOrderNo+"</a>";
+                        html += "<a href='javascript:toOrderDetailShow(&quot;"+o.orderNo+"&quot;)'>"+o.orderNo+"</a>";
                         html += "</td>";
-                        html += "<td>"+o.productName+":"+o.skuInfo+"</td>";
-                        html += "<td>"+o.buyCount+"</td>";
-                        html += o.skuRate == '0.00'?"<td>无</td>":"<td>"+o.skuRate+"%</td>";
-                        html += "<td>￥"+o.payMoney+"</td>";
+                        html += "<td>"+o.productName+"</td>";
+                        html += "<td>"+o.totalBuyCount+"</td>";
+                        html += "<td>￥"+o.totalPayMoney+"</td>";
                         html += "<td>"+o.name+"</td>";
                         html += o.totalFreight == '0.00' ? "<td>包邮</td>" : "<td>平邮-"+o.totalFreight+"元</td>";
                         html += "<td>"+o.createTime+"</td>";
@@ -149,17 +157,17 @@
                         if (s == '待收货') {
                             if (o.orderStatus == '待发货') {
                                 html += "<td>";
-                                html += "<a href='javascript:updateOrderStatus(&quot;"+o.childOrderNo+"&quot;, &quot;"+'已发货'+"&quot;)'>提醒卖家发货</a>";
+                                html += "<a href='javascript:updateOrderStatus(&quot;"+o.orderNo+"&quot;, &quot;"+'已发货'+"&quot;)'>提醒卖家发货</a>";
                                 html += "</td>";
                             } else if (o.orderStatus == '已发货') {
                                 html += "<td>已提醒</td>";
                             } else {
                                 html += "<td>";
-                                html += "<a href='javascript:updateOrderStatus(&quot;"+o.childOrderNo+"&quot;, &quot;"+'已完成'+"&quot;)'>确认收货</a>";
+                                html += "<a href='javascript:updateOrderStatus(&quot;"+o.orderNo+"&quot;, &quot;"+'已完成'+"&quot;)'>确认收货</a>";
                                 html += "</td>";
                             }
                         } else {
-                            html += "<td><a href = '/platform/toProductShow?productSpuId="+o.productId+"&productSkuId="+o.skuId+"'>再次购买</a></td>"
+                            html += "<td><a href = 'javascript:addUserShopping(&quot;"+o.orderNo+"&quot;)'>再次购买</a></td>"
                         }
 
                         html += "</tr>";
@@ -194,6 +202,17 @@
             )
         }
 
+        function addUserShopping(orderNo) {
+            var buyerId = cookie.get("USER_ID");
+            token_post(
+                "<%=request.getContextPath()%>/order/auth/addUserShopping?TOKEN="+getToken(),
+                {"buyerId": buyerId, "childOrderNo": orderNo},
+                function (data) {
+                    window.location.reload();
+                }
+            )
+        }
+
 
     </script>
 </head>
@@ -201,10 +220,10 @@
 
 <div class="layui-tab">
     <ul class="layui-tab-title" lay-filte="order">
-        <li class="layui-this" onclick="findOrder(this.value)" value="1">待支付</li>
-        <li onclick="findOrderDetail(this.value)" value="2">待收货</li>
-        <li onclick="findOrderDetail(this.value)" value="3">已完成</li>
-        <li onclick="findOrderDetail(this.value)" value="4">已取消</li>
+        <li class="layui-this" onclick="findOrder(this.value, 1)" value="1">待支付</li>
+        <li onclick="findOrderDetail(this.value, 1)" value="2">待收货</li>
+        <li onclick="findOrderDetail(this.value, 1)" value="3">已完成</li>
+        <li onclick="findOrderDetail(this.value, 1)" value="4">已取消</li>
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
@@ -238,7 +257,6 @@
                     <td>订单号</td>
                     <td>商品信息</td>
                     <td>购买数量</td>
-                    <td>折扣</td>
                     <td>付款金额（包含邮费）</td>
                     <td>支付方式</td>
                     <td>邮费</td>
@@ -263,7 +281,6 @@
                     <td>订单号</td>
                     <td>商品名称</td>
                     <td>购买数量</td>
-                    <td>折扣</td>
                     <td>付款金额（包含邮费）</td>
                     <td>支付方式</td>
                     <td>邮费</td>
@@ -288,7 +305,6 @@
                     <td>订单号</td>
                     <td>商品名称</td>
                     <td>购买数量</td>
-                    <td>折扣</td>
                     <td>付款金额（包含邮费）</td>
                     <td>支付方式</td>
                     <td>邮费</td>

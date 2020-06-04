@@ -43,11 +43,11 @@
                             html += "<td>"+data.data[i].userName+"</td>";
                         }
                         html += "<td>"+data.data[i].totalBuyCount+"</td>";
-                        if (data.data[i].skuRate == 0.00 || data.data[i].skuRate == 100.00) {
-                            html += "<td>无</td>";
-                        } else {
-                            html += "<td>"+data.data[i].skuRate+"%</td>";
-                        }
+                        // if (data.data[i].skuRate == 0.00 || data.data[i].skuRate == 100.00) {
+                        //     html += "<td>无</td>";
+                        // } else {
+                        //     html += "<td>"+data.data[i].skuRate+"%</td>";
+                        // }
                         html += "<td>￥"+data.data[i].payMoney+"</td>";
                         html += "<td>"+data.data[i].name+"</td>";
                         html += data.data[i].totalFreight == 0.00 ? "<td>包邮</td>" : "<td>"+data.data[i].totalFreight+"元</td>";
@@ -119,7 +119,6 @@
                 <th>商家</th>
             </c:if>
             <th>购买数量</th>
-            <th>折扣</th>
             <th>付款金额（包含邮费）</th>
             <th>支付方式</th>
             <th>邮费</th>

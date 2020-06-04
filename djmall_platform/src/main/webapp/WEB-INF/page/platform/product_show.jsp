@@ -39,7 +39,7 @@
 
         $(function() {
             search();
-        })
+        });
 
         function search() {
             var index = layer.load(0, {shade:0.5});
@@ -62,7 +62,7 @@
                         html += "<td>"+data.data.list[i].skuRateShow+"</td>";
                         html += "<td>"+data.data.list[i].freight+"</td>";
                         html += "<td>";
-                        html += "<img src=\"http://q9cgmldxi.bkt.clouddn.com/"+data.data.list[i].img+"\" width=\"80px\" height=\"60px\">"
+                        html += "<img src=\"http://qazo01v5q.bkt.clouddn.com/"+data.data.list[i].img+"\" width=\"80px\" height=\"60px\">"
                         html += "</td>";
                         html += "<td>"+data.data.list[i].productDescribe+"</td>";
                         html += "<td>小星星</td>";

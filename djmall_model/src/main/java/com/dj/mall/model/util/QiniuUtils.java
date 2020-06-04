@@ -24,13 +24,17 @@ public class QiniuUtils {
 
     /**
      * 存储空间名称
+     * 1975977946
+     *
      */
-    private static final String BUCKET = "1975977946";
+    private static final String BUCKET = "zjq01";
 
     /**
      * 下载链接
+     * http://q9cgmldxi.bkt.clouddn.com/
+     * http://qazo01v5q.bkt.clouddn.com/
      */
-    public static final String URL = "http://idv093d.qiniudns.com/";
+    public static final String URL = "http://qazo01v5q.bkt.clouddn.com/";
 
     /**
      * 构造一个带指定 Region 对象的配置类

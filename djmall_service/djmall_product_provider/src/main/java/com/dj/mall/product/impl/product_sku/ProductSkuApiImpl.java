@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dj.mall.api.product.product_sku.ProductSkuApi;
 import com.dj.mall.entity.product.product_sku.ProductSku;
 import com.dj.mall.entity.product.product_spu.ProductSpu;
+import com.dj.mall.mapper.bo.product.ProductSkuBO;
 import com.dj.mall.mapper.product.product_sku.ProductSkuMapper;
 import com.dj.mall.mapper.product.product_spu.ProductSpuMapper;
 import com.dj.mall.model.base.BusinessException;
@@ -182,5 +183,46 @@ public class ProductSkuApiImpl extends ServiceImpl<ProductSkuMapper, ProductSku>
     @Override
     public void updateCounts(List<ProductSkuDTOReq> mapList) throws Exception {
         this.updateBatchById(DozerUtil.mapList(mapList, ProductSku.class));
+    }
+
+
+    /**
+     * 通过ids查询
+     * @param skuIdList
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<ProductSkuDTOResp> getProduct(List<Integer> skuIdList) throws Exception {
+        List<ProductSkuBO> productList = this.getBaseMapper().getProductList(skuIdList);
+        return DozerUtil.mapList(productList, ProductSkuDTOResp.class);
+    }
+
+    /**
+     * 提交订单，库存修改
+     * @param productSkuList
+     * @throws Exception
+     */
+    @Override
+    public void updateCountByList(ArrayList<ProductSku> productSkuList) throws Exception, BusinessException {
+        List<Integer> skuIdList = new ArrayList<>();
+        productSkuList.forEach(product -> {
+            skuIdList.add(product.getId());
+        });
+        List<ProductSkuBO> productList = this.getBaseMapper().getProductList(skuIdList);
+
+        productSkuList.forEach(product -> {
+            for (ProductSkuBO pro : productList) {
+                if (product.getId().equals(pro.getId())) {
+                    if (pro.getSkuCount() < product.getSkuCount()) {
+                        throw new BusinessException(SystemConstant.PRODUCT_COUNT_IS_NULL);
+                    }
+                    int i = pro.getSkuCount() - product.getSkuCount();
+                    product.setSkuCount(i);
+                }
+            }
+        });
+
+        this.updateBatchById(productSkuList);
     }
 }

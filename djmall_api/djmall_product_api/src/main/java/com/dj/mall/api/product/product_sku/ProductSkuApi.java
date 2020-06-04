@@ -1,6 +1,6 @@
 package com.dj.mall.api.product.product_sku;
 
-import com.dj.mall.mapper.bo.product.ProductSpuBO;
+import com.dj.mall.entity.product.product_sku.ProductSku;
 import com.dj.mall.model.base.BusinessException;
 import com.dj.mall.model.dto.product.product_sku.ProductSkuDTOReq;
 import com.dj.mall.model.dto.product.product_sku.ProductSkuDTOResp;
@@ -90,4 +90,19 @@ public interface ProductSkuApi {
      * @throws Exception
      */
     void updateCounts(List<ProductSkuDTOReq> mapList) throws Exception;
+
+    /**
+     * 通过ids查询
+     * @param skuIdList
+     * @return
+     * @throws Exception
+     */
+    List<ProductSkuDTOResp> getProduct(List<Integer> skuIdList) throws Exception;
+
+    /**
+     * 提交订单，库存修改
+     * @param productSkuList
+     * @throws Exception
+     */
+    void updateCountByList(ArrayList<ProductSku> productSkuList) throws Exception, BusinessException;
 }

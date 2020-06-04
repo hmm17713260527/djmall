@@ -7,6 +7,7 @@ import com.dj.mall.entity.order.Order;
 import com.dj.mall.mapper.bo.auth.user.UserBo;
 import com.dj.mall.mapper.bo.order.OrderBO;
 import com.dj.mall.mapper.bo.order.OrderDetailBO;
+import com.dj.mall.mapper.bo.order.OrderInfoBO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.dao.DataAccessException;
 
@@ -24,7 +25,7 @@ import java.util.List;
 public interface OrderMapper extends BaseMapper<Order> {
     IPage<OrderBO> findOrderList(@Param("page") Page<OrderBO> page, @Param("order") OrderBO map) throws DataAccessException;
 
-    IPage<OrderDetailBO> findOrderDetailList(@Param("page") Page<OrderDetailBO> page, @Param("order") OrderDetailBO map) throws DataAccessException;
+    IPage<OrderInfoBO> findOrderDetailList(@Param("page") Page<OrderDetailBO> page, @Param("order") OrderDetailBO map) throws DataAccessException;
 
     OrderBO findOrderDetail(@Param("order") OrderBO map) throws DataAccessException;
 
