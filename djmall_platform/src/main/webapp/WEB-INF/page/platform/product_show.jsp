@@ -42,6 +42,10 @@
         });
 
         function search() {
+
+            var userId = cookie.get("USER_ID");
+            $("#userLikeId").val(userId);
+
             var index = layer.load(0, {shade:0.5});
             $.get("<%=request.getContextPath() %>/platform/show",
                 $("#frm").serialize(),
@@ -65,7 +69,19 @@
                         html += "<img src=\"http://qazo01v5q.bkt.clouddn.com/"+data.data.list[i].img+"\" width=\"80px\" height=\"60px\">"
                         html += "</td>";
                         html += "<td>"+data.data.list[i].productDescribe+"</td>";
-                        html += "<td>小星星</td>";
+
+                        if (userId == null) {
+                            html += "<td><a href='javascript:like("+2+","+data.data.list[i].productId+")'  style='color: #8D8D8D'>♥</a></td>";
+                        } else {
+                            html += data.data.list[i].status == 2 ? "<td><a href='javascript:like("+1+","+data.data.list[i].productId+")'  style='color: #8D8D8D'>♥"+data.data.list[i].count+"</a></td>" : "<td><a href='javascript:like("+2+","+data.data.list[i].productId+")'  style='color: red'>♥"+data.data.list[i].count+"</a></td>";
+
+                        }
+                        // if (data.data.list[i].status == 1) {
+                        //     html += "<td><a href='javascript:like("+userId+")'  style='color: #8D8D8D'>♥</a></td>";
+                        // } else {
+                        //     html += "<td><a href='javascript:like("+userId+")'  style='color: #8D8D8D'>♥</a></td>";
+                        //
+                        // }
                         html += "</tr>";
                     }
                     $("#tbd").html(html);
@@ -76,6 +92,24 @@
                     $("#pageInfo").html(pageHtml);
 
                 });
+        }
+
+
+        function like(status, productId) {
+            var userId = cookie.get("USER_ID");
+            if (userId == null) {
+                layer.msg('未登陆');
+                return;
+            }
+
+            token_post(
+                "<%=request.getContextPath()%>/platform/auth/updateProductLike?TOKEN="+getToken(),
+                {"userId": userId, "status": status, "productId" : productId},
+                function (data) {
+                    search();
+                }
+            )
+
         }
 
         function toSearch() {
@@ -131,6 +165,7 @@
     <a  href="javascript:toFindUserShopping()">我的购物车</a><br/>
     <input type="hidden" value="1" id="pageNo" name="pageNo">
     <input type="hidden" value="1" name="spuStatus">
+    <input type="hidden" id="userLikeId" name="userLikeId">
     名称：<input type = "text" name = "productName" />
     <input type = "button" value = "search" onclick = "toSearch()"/><br/>
 

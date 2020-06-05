@@ -116,4 +116,15 @@ public class ProductSpuVOResp implements Serializable {
      * sku属性值
      */
     private List<ProductSkuDTOResp> productSkuList;
+
+
+    /**
+     * 1赞，2无
+     */
+    private Integer status;
+
+    /**
+     * 点赞个数
+     */
+    private Integer count;
 }

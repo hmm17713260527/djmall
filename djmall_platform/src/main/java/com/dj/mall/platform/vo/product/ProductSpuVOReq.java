@@ -72,6 +72,14 @@ public class ProductSpuVOReq implements Serializable {
      */
     private Integer isDefault;
 
+    /**
+     * 登陆人id
+     */
+    private Integer userId;
 
+    /**
+     * 登陆人id
+     */
+    private Integer userLikeId;
 
 }

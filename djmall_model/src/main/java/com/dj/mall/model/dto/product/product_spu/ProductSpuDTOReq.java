@@ -111,7 +111,6 @@ public class ProductSpuDTOReq implements Serializable {
 
 
 
-
     /**
      * 商品价格区间
      */
@@ -123,6 +122,10 @@ public class ProductSpuDTOReq implements Serializable {
     private BigDecimal skuPriceMin;
 
 
+    /**
+     * 登陆人id
+     */
+    private Integer userLikeId;
 
 
 }

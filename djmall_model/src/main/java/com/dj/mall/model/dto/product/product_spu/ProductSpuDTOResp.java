@@ -170,5 +170,15 @@ public class ProductSpuDTOResp implements Serializable {
     private String freName;
 
 
+    /**
+     * 1赞，2无
+     */
+    private Integer status;
+
+    /**
+     * 点赞个数
+     */
+    private Integer count;
+
 
 }

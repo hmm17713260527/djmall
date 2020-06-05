@@ -178,7 +178,21 @@ public class ProductSpuBO {
     private BigDecimal skuPriceMin;
 
 
+    /**
+     * 1赞，2无
+     */
+    private Integer status;
 
+    /**
+     * 点赞个数
+     */
+    private Integer count;
+
+
+    /**
+     * 登陆人id
+     */
+    private Integer userLikeId;
 
 
 }

@@ -7,6 +7,7 @@ import com.dj.mall.api.auth.user.UserShoppingApi;
 import com.dj.mall.api.auth.user.UserSiteApi;
 import com.dj.mall.api.cmpt.RedisApi;
 import com.dj.mall.api.dict.area.AreaApi;
+import com.dj.mall.api.product.like.UserLikeApi;
 import com.dj.mall.api.product.product_sku.ProductSkuApi;
 import com.dj.mall.api.product.product_spu.ProductSpuApi;
 import com.dj.mall.model.base.RedisConstant;
@@ -14,6 +15,7 @@ import com.dj.mall.model.base.ResultModel;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.user.*;
 import com.dj.mall.model.dto.dict.area.AreaDTOResp;
+import com.dj.mall.model.dto.product.like.UserLikeDTOReq;
 import com.dj.mall.model.dto.product.product_spu.ProductSpuDTOReq;
 import com.dj.mall.model.dto.product.product_spu.ProductSpuDTOResp;
 import com.dj.mall.model.util.DozerUtil;
@@ -22,6 +24,7 @@ import com.dj.mall.model.util.PageResult;
 import com.dj.mall.platform.vo.dict.AreaVOResp;
 import com.dj.mall.platform.vo.product.ProductSpuVOReq;
 import com.dj.mall.platform.vo.product.ProductSpuVOResp;
+import com.dj.mall.platform.vo.product.UserLikeVOReq;
 import com.dj.mall.platform.vo.user.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.Assert;
@@ -68,6 +71,25 @@ public class PlatformController {
 
     @Reference
     private AreaApi areaApi;
+
+
+    @Reference
+    private UserLikeApi userLikeApi;
+
+
+    /**
+     * 点赞，取消赞
+     * @param userLikeVOReq
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("auth/updateProductLike")
+    public ResultModel<Object> updateProductLike(UserLikeVOReq userLikeVOReq) throws Exception {
+        userLikeApi.updateProductLike(DozerUtil.map(userLikeVOReq, UserLikeDTOReq.class));
+        return new ResultModel<>().success(SystemConstant.REQ_YES);
+
+    }
+
 
 
     /**

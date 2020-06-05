@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace:用于隔离SQL全局唯一（采用接口和XML开发时为接口的全路径）
+ -->
+<mapper namespace="com.dj.mall.mapper.product.like.UserLikeMapper">
+
+
+    <select id="findLikeCount" resultType="com.dj.mall.mapper.bo.product.UserLikeBO">
+
+        SELECT
+            ul.product_id,
+            COUNT(0) as count
+        FROM
+            user_like ul
+        WHERE
+            ul.status = 1
+        and
+            ul.product_id IN
+        <foreach collection="userLike.productIds" item="productId" open="(" close=")" separator=",">
+            #{productId}
+        </foreach>
+        GROUP BY
+            ul.product_id
+
+    </select>
+</mapper>

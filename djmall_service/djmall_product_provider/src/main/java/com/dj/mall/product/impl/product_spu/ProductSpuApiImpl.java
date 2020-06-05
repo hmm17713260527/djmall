@@ -5,12 +5,15 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.dj.mall.api.product.like.UserLikeApi;
 import com.dj.mall.api.product.product_sku.ProductSkuApi;
 import com.dj.mall.api.product.product_spu.ProductSpuApi;
 import com.dj.mall.entity.product.product_spu.ProductSpu;
 import com.dj.mall.mapper.bo.product.ProductSpuBO;
 import com.dj.mall.mapper.product.product_spu.ProductSpuMapper;
 import com.dj.mall.model.base.SystemConstant;
+import com.dj.mall.model.dto.product.like.UserLikeDTOReq;
+import com.dj.mall.model.dto.product.like.UserLikeDTOResp;
 import com.dj.mall.model.dto.product.product_sku.ProductSkuDTOReq;
 import com.dj.mall.model.dto.product.product_sku.ProductSkuDTOResp;
 import com.dj.mall.model.dto.product.product_spu.ProductSpuDTOReq;
@@ -21,6 +24,7 @@ import com.dj.mall.model.util.QiniuUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,6 +41,9 @@ public class ProductSpuApiImpl extends ServiceImpl<ProductSpuMapper, ProductSpu>
 
     @Autowired
     private ProductSkuApi productSkuApi;
+
+    @Autowired
+    private UserLikeApi userLikeApi;
 
     /**
      * 通过商品类型查询属性
@@ -109,6 +116,49 @@ public class ProductSpuApiImpl extends ServiceImpl<ProductSpuMapper, ProductSpu>
             }
 
         });
+
+        if (productSpuBO.getUserLikeId() != null) {
+            //赞
+            UserLikeDTOReq userLikeDTOReq = new UserLikeDTOReq();
+
+            List<Integer> productIds = new ArrayList<>();
+            productList.forEach(product -> {
+                productIds.add(product.getProductId());
+            });
+
+            userLikeDTOReq.setProductIds(productIds);
+            userLikeDTOReq.setUserId(productSpuBO.getUserLikeId());
+            List<UserLikeDTOResp> userLikeList = userLikeApi.findLike(userLikeDTOReq);
+
+            productList.forEach(product -> {
+
+                for (UserLikeDTOResp userLike : userLikeList) {
+
+                    if (product.getProductId().equals(userLike.getProductId())) {
+                        product.setStatus(userLike.getStatus());
+                        return;
+                    }
+
+                }
+
+                product.setStatus(2);
+
+            });
+
+            //各个商品的点赞量
+            List<UserLikeDTOResp> userLikeCount = userLikeApi.findLikeCount(userLikeDTOReq);
+
+            productList.forEach(product -> {
+                for (UserLikeDTOResp userLike : userLikeCount) {
+                    if (product.getProductId().equals(userLike.getProductId())) {
+                        product.setCount(userLike.getCount());
+                        return;
+                    }
+                }
+                product.setCount(0);
+            });
+
+        }
 
         return PageResult.builder().list(DozerUtil.mapList(pageInfo.getRecords(), ProductSpuDTOResp.class)).pages(pageInfo.getPages()).build();
     }
