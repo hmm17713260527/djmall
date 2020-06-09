@@ -167,5 +167,15 @@ public class OrderInfoBO implements Serializable {
     private BigDecimal payMoney;
 
 
+    /**
+     * 是否完成评论
+     */
+    private Boolean commentStatus = false;
+
+
+    /**
+     * 商品id概述
+     */
+    private Integer count;
 
 }

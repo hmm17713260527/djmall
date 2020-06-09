@@ -33,6 +33,10 @@ public class OrderDetailVOReq implements Serializable {
      */
     private String orderStatus;
 
+    /**
+     * 子订单号
+     */
+    private String childOrderNo;
 
     /**
      * 买家ID

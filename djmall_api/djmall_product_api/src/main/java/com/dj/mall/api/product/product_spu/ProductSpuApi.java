@@ -69,4 +69,13 @@ public interface ProductSpuApi {
      * @throws Exception
      */
     ProductSpuDTOResp findProductById(ProductSpuDTOReq productSpuDTOReq) throws Exception;
+
+    /**
+     * 查询每个商品的点赞量及当前用户点赞状态
+     * @param productIds
+     * @param userLikeId
+     * @return
+     * @throws Exception
+     */
+    List<ProductSpuDTOResp> findProductUserLike(List<Integer> productIds, Integer userLikeId) throws Exception;
 }

@@ -63,7 +63,8 @@
                         html += "<td>"+data.data.list[i].skuPrice+"</td>";
                         html += "<td>"+data.data.list[i].skuCount+"</td>";
                         html += "<td>"+data.data.list[i].name+"</td>";
-                        html += "<td>"+data.data.list[i].skuRateShow+"</td>";
+                        // html += "<td>"+data.data.list[i].skuRateShow+"</td>";
+                        html += "<td>"+data.data.list[i].skuRate+"%</td>";
                         html += "<td>"+data.data.list[i].freight+"</td>";
                         html += "<td>";
                         html += "<img src=\"http://qazo01v5q.bkt.clouddn.com/"+data.data.list[i].img+"\" width=\"80px\" height=\"60px\">"
@@ -74,7 +75,6 @@
                             html += "<td><a href='javascript:like("+2+","+data.data.list[i].productId+")'  style='color: #8D8D8D'>♥</a></td>";
                         } else {
                             html += data.data.list[i].status == 2 ? "<td><a href='javascript:like("+1+","+data.data.list[i].productId+")'  style='color: #8D8D8D'>♥"+data.data.list[i].count+"</a></td>" : "<td><a href='javascript:like("+2+","+data.data.list[i].productId+")'  style='color: red'>♥"+data.data.list[i].count+"</a></td>";
-
                         }
                         // if (data.data.list[i].status == 1) {
                         //     html += "<td><a href='javascript:like("+userId+")'  style='color: #8D8D8D'>♥</a></td>";
@@ -113,17 +113,17 @@
         }
 
         function toSearch() {
-            $("#pageNo").val(1);
+            $("#pageNo").val(0);
             search();
         }
 
         function page(totalNum, page) {
 
-            if (page < 1) {
+            if (page < 0) {
                 layer.msg('已经到首页啦!', {icon:0});
                 return;
             }
-            if (page > totalNum) {
+            if (totalNum <= page) {
                 layer.msg('已经到尾页啦!!', {icon:0});
                 return;
             }
@@ -163,7 +163,7 @@
     <a id="login" href="javascript:toLogin()">登陆</a>&nbsp;
     <a  href="javascript:toAdd()">注册</a>&nbsp;
     <a  href="javascript:toFindUserShopping()">我的购物车</a><br/>
-    <input type="hidden" value="1" id="pageNo" name="pageNo">
+    <input type="hidden" value="0" id="pageNo" name="pageNo">
     <input type="hidden" value="1" name="spuStatus">
     <input type="hidden" id="userLikeId" name="userLikeId">
     名称：<input type = "text" name = "productName" />
@@ -172,7 +172,8 @@
     价格：<input type = "text" name = "skuPriceMin" /> - <input type = "text" name = "skuPriceMax" /><br/>
     分类：
     <c:forEach var="baseData" items="${baseDataList}">
-        <input type="checkbox" name="types" value="${baseData.code}"/>${baseData.name}
+<%--        <input type="checkbox" name="types" value="${baseData.code}"/>${baseData.name}--%>
+        <input type="radio" name="type" value="${baseData.code}"/>${baseData.name}
     </c:forEach><br/>
 
     <table cellpadding='12px' cellspacing='0px' border='1px'  bordercolor='gray' bgcolor='pink'>

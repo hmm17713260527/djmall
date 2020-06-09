@@ -5,11 +5,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dj.mall.api.product.like.UserLikeApi;
 import com.dj.mall.entity.product.like.UserLike;
+import com.dj.mall.entity.product.product_spu.ProductSpu;
 import com.dj.mall.mapper.bo.product.UserLikeBO;
 import com.dj.mall.mapper.product.like.UserLikeMapper;
+import com.dj.mall.mapper.product.product_spu.ProductSpuMapper;
 import com.dj.mall.model.dto.product.like.UserLikeDTOReq;
 import com.dj.mall.model.dto.product.like.UserLikeDTOResp;
 import com.dj.mall.model.util.DozerUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -24,6 +27,10 @@ import java.util.List;
  */
 @Service
 public class UserLikeApiImpl extends ServiceImpl<UserLikeMapper, UserLike> implements UserLikeApi {
+
+
+    @Autowired
+    private ProductSpuMapper productSpuMapper;
 
 
     /**
@@ -66,12 +73,23 @@ public class UserLikeApiImpl extends ServiceImpl<UserLikeMapper, UserLike> imple
         if (userLike1 != null) {
             userLike1.setStatus(userLike.getStatus());
             this.updateById(userLike1);
-            return;
+        } else {
+            this.save(userLike);
         }
 
-        this.save(userLike);
+        ProductSpu productSpu = productSpuMapper.selectById(userLike.getProductId());
 
+        if (userLike.getStatus() == 1) {
+            int i = productSpu.getPraise() + 1;
+            productSpu.setPraise(i);
+        } else {
+            if (productSpu.getPraise() > 0) {
+                int i = productSpu.getPraise() - 1;
+                productSpu.setPraise(i);
+            }
 
+        }
+        productSpuMapper.updateById(productSpu);
 
     }
 }

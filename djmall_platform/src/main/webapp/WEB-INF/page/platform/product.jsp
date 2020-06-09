@@ -11,7 +11,9 @@
 <head>
     <title>Title</title>
     <script type="text/javascript" src="<%=request.getContextPath()%>\static\js\jquery-1.12.4.min.js"></script>
+    <link rel="stylesheet" href="<%=request.getContextPath()%>\static\layui-v2.5.5\layui\css\layui.css"  media="all">
     <script type="text/javascript" src="<%=request.getContextPath()%>\static\layer-v3.1.1\layer\layer.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>\static\layui-v2.5.5\layui\layui.js"></script>
     <script src="<%=request.getContextPath()%>\static\js\jquery.validate.js"></script>
     <script src="https://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>\static\js\token.js"></script>
@@ -23,7 +25,136 @@
             var skuCount = ${product.skuCount};
 
             findCount(skuCount);
+
+
+            search();
+
+            findReq();
+
         });
+
+
+        function search() {
+            var index = layer.load(0, {shade:0.5});
+            token_post("<%=request.getContextPath()%>/plat/comment/show",
+                $("#fr").serialize(),
+                function(data){
+                    layer.close(index);
+
+
+
+                    var html = "";
+                    for (var i = 0; i < data.data.list.length; i++) {
+                        html +="<div style='border:solid;height: 130px;width: 400px'>";
+                        // html +="<div class='lf_rate' lay-data='{value:"+data.data.list[i].commentType+",half:true, readonly:true,theme: '#F70808'}' style='margin:0px, 160px'></div><br/>";
+                        html +="<table>";
+                        html +="<div id='rate_"+i+"'><div/><br/>";
+
+                        html +="<tr>";
+                        html +="<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+data.data.list[i].userName+"</td>";
+                        html += "<td colspan='2'>"+data.data.list[i].comment+"</td>";
+                        html +="</tr>";
+
+                        html +="<tr align='center'>";
+                        html +="<td>"+data.data.list[i].createTime+"</td>";
+                        html +="<td></td>";
+                        html +="<td>";
+                        html +="</td>";
+                        html +="</tr>";
+                        if (data.data.list[i].commentDTOResp != null) {
+                            html +="<tr>";
+                            html +="<td style='color:red;'>商家回复：</td>";
+                            html += "<td colspan='2' style='color: red'>"+data.data.list[i].commentDTOResp.comment+"</td>";
+                            html +="</tr>";
+
+                            html +="<tr align='center'>";
+                            html +="<td>"+data.data.list[i].commentDTOResp.createTime+"</td>";
+                            html +="<td></td>";
+                            html +="<td>";
+                            html +="</td>";
+                            html +="</tr>";
+
+                        }
+                        html +="</table><br/>";
+                        html +="</div>";
+
+
+                    }
+                    $("#tbd").append(html);
+
+
+                    var pageNo = $("#pageNo").val();
+                    var pageHtml = "<input type='button' id='page' value='加载更多' onclick='page("+data.data.pages+", "+(parseInt(pageNo) + 1)+")'>";
+                    $("#pageInfo").html(pageHtml);
+
+                    layui.use('rate', function(){
+                        var rate = layui.rate;
+
+                        for (var i = 0; i < data.data.list.length; i++) {
+                            //渲染
+                            rate.render({
+                                elem: '#rate_'+i  //绑定元素
+                                ,value: data.data.list[i].commentType
+                                ,readonly: true
+                            });
+                        }
+
+                    });
+
+
+                    // layui.use(['rate','jquery'], function(){
+                    //     var rate = layui.rate;
+                    //     var $ = layui.jquery;
+                    //     //多个评分
+                    //     layui.each( $('.lf_rate'), function (index, elem) {
+                    //         var configTemp = $(elem).attr('lay-data');
+                    //         try{
+                    //             configTemp = eval('(' + configTemp + ')');
+                    //         }catch(e){
+                    //             configTemp  = {};
+                    //         }
+                    //         rate.render($.extend(true,{
+                    //             elem:elem
+                    //         }, configTemp));
+                    //     });
+                    //
+                    // });
+
+                });
+        }
+
+        function findReq() {
+            var productId = $("#proId").val();
+            $.get(
+                "<%=request.getContextPath()%>/plat/comment/findReq",
+                {"productId": productId},
+                function (data) {
+                    $("#rep").html(data.data + "%");
+                }
+            )
+        }
+
+
+        function page(totalNum, page) {
+
+            if (page > totalNum) {
+                $("#page").val("我是有限度的！！！");
+                return;
+            }
+            $("#pageNo").val(page);
+            search();
+            findReq();
+        }
+
+        function searchs() {
+            $("#pageNo").val(1);
+            $("#tbd").empty();
+
+            search();
+        }
+
+
+
 
         function findCount(count) {
             $("#skuCount").val(count);
@@ -177,7 +308,7 @@
     <span id="skuRate">${product.skuRateShow}</span>
     邮费:${product.freight}<br>
     商品描述:<span id="productDescribe">${product.productDescribe}</span><br>
-    点赞量:${product.praise}&nbsp;评论量:0<br>
+    点赞量:${product.praise}&nbsp;评论量:${product.productOrder}<br>
     选择商品系信息
     <c:forEach items="${product.productSkuList}" var="p">
         <input type="radio" name="productSkuId" value="${p.productSkuId}"<c:if test="${p.productSkuId == product.productSkuId}">checked</c:if> onclick="getProSku(this.value)">${p.skuAttrValueNames}
@@ -191,6 +322,24 @@
     <input type="button" value="加入购物车" onclick="addUserShopping()">
     <input type="button" value="立即购买" onclick="userShopping()">
 </form>
+
+
+<h2>好评率：<span id="rep" style="color: red"></span></h2>
+<form id="fr">
+    <input type="radio" name="commentType" value="0" onclick="searchs()" checked/>所有评论
+    <input type="radio" name="commentType" value="1" onclick="searchs()" />好评
+    <input type="radio" name="commentType" value="2" onclick="searchs()"/>中评
+    <input type="radio" name="commentType" value="3" onclick="searchs()"/>差评
+    <input type="hidden" value="1" id="pageNo" name="pageNo">
+    <input type="hidden" id="proId" name="productId" value="${product.productId}">
+
+</form>
+<div id="tbd"></div>
+<div id="pageInfo">
+
+</div>
+
+
 
 </body>
 </html>

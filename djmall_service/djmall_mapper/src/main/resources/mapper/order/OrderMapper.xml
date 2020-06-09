@@ -111,4 +111,33 @@
         </where>
 
     </select>
+    <select id="findOrderCommentList" resultType="com.dj.mall.mapper.bo.order.OrderDetailBO">
+
+        SELECT
+            c.product_id,
+            dps.product_name,
+            c.user_id,
+            c.comment_type
+        FROM
+            `comment` c
+        LEFT JOIN djmall_product_spu dps ON dps.id = c.product_id
+        WHERE
+            c.order_no = #{order.childOrderNo}
+        and c.user_id = #{order.buyerId}
+
+    </select>
+    <select id="findOrderDetailProductByChildOrderNo" resultType="com.dj.mall.mapper.bo.order.OrderDetailBO">
+
+
+        SELECT
+            dod.product_id,
+            dps.product_name
+        FROM
+            djmall_order_detail dod
+        LEFT JOIN djmall_product_spu dps ON dps.id = dod.product_id
+        WHERE
+            dod.child_order_no = #{childOrderNo}
+        GROUP BY dod.product_id
+
+    </select>
 </mapper>

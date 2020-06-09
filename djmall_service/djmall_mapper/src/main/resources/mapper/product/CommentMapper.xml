@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace:用于隔离SQL全局唯一（采用接口和XML开发时为接口的全路径）
+ -->
+<mapper namespace="com.dj.mall.mapper.product.comment.CommentMapper">
+
+
+    <select id="findListByBusinessId" resultType="com.dj.mall.mapper.bo.product.CommentBO">
+
+        SELECT
+            c.id,
+            dau.user_name,
+            c.create_time,
+            c.`comment`,
+            c.comment_type
+        FROM
+            `comment` c
+        LEFT JOIN djmall_product_spu dps ON c.product_id = dps.id
+        LEFT JOIN djmall_auth_user dau ON c.user_id = dau.id
+        WHERE
+            dps.user_id = #{comment.businessId}
+        <if test="comment.commentType == 0">
+        </if>
+        <if test="comment.commentType == 1">
+            and c.comment_type > 3
+        </if>
+        <if test="comment.commentType == 2">
+            and c.comment_type = 3
+        </if>
+        <if test="comment.commentType == 3">
+            and 3 > c.comment_type
+        </if>
+
+
+
+    </select>
+    <select id="findCommentCount" resultType="java.lang.Integer">
+
+        SELECT
+            COUNT(0)
+        FROM
+            `comment` c
+        LEFT JOIN djmall_product_spu dps ON c.product_id = dps.id
+        WHERE
+            dps.user_id = #{comment.businessId}
+        GROUP BY dps.user_id
+
+    </select>
+    <select id="findCommentGootCount" resultType="java.lang.Integer">
+
+        SELECT
+            COUNT(0)
+        FROM
+            `comment` c
+        LEFT JOIN djmall_product_spu dps ON c.product_id = dps.id
+        WHERE
+            dps.user_id = #{comment.businessId}
+        and c.comment_type > 3
+        GROUP BY dps.user_id
+
+
+    </select>
+    <select id="findPlatListByBusinessId" resultType="com.dj.mall.mapper.bo.product.CommentBO">
+
+        SELECT
+        c.id,
+        dau.user_name,
+        c.create_time,
+        c.`comment`,
+        c.comment_type
+        FROM
+        `comment` c
+        LEFT JOIN djmall_auth_user dau ON c.user_id = dau.id
+        WHERE
+        c.product_id = #{comment.productId}
+        <if test="comment.commentType == 0">
+        </if>
+        <if test="comment.commentType == 1">
+            and c.comment_type > 3
+        </if>
+        <if test="comment.commentType == 2">
+            and c.comment_type = 3
+        </if>
+        <if test="comment.commentType == 3">
+            and 3 > c.comment_type
+        </if>
+
+    </select>
+    <select id="findPlatCommentCount" resultType="java.lang.Integer">
+        SELECT
+            COUNT(0)
+        FROM
+            `comment` c
+        WHERE
+            c.product_id = #{comment.productId}
+        GROUP BY
+            c.product_id
+
+    </select>
+    <select id="findPlatCommentGootCount" resultType="java.lang.Integer">
+        SELECT
+            COUNT(0)
+        FROM
+            `comment` c
+        WHERE
+            c.product_id = #{comment.productId}
+        and
+            c.comment_type > 3
+        GROUP BY
+            c.product_id
+
+    </select>
+</mapper>

@@ -44,4 +44,88 @@
         </foreach>
 
     </select>
+    <select id="findOrderCommentByChildOrderNoList" resultType="com.dj.mall.mapper.bo.order.OrderDetailBO">
+
+        SELECT
+        cd.order_no as child_order_no,
+        COUNT(0) AS count
+        FROM
+        (
+        SELECT
+        *
+        FROM
+        `comment` c
+        WHERE
+        c.order_no IN
+        <foreach collection="childOrderNoList" item="childOrderNo" open="(" close=")" separator=",">
+            #{childOrderNo}
+        </foreach>
+        GROUP BY
+        c.order_no,
+        c.product_id
+        ) AS cd
+        GROUP BY
+        cd.order_no
+
+
+
+
+<!--        SELECT-->
+<!--            dod.child_order_no,-->
+<!--            c.order_no AS comment_child_order_no,-->
+<!--            c.comment_type,-->
+<!--            c.user_id,-->
+<!--            ct.product_id-->
+<!--        FROM-->
+<!--        djmall_order_detail dod-->
+<!--        LEFT JOIN `comment` c ON c.order_no = dod.child_order_no-->
+<!--        LEFT JOIN `comment` ct ON ct.product_id = dod.product_id-->
+<!--        WHERE-->
+<!--        dod.child_order_no IN-->
+<!--        <foreach collection="childOrderNoList" item="childOrderNo" open="(" close=")" separator=",">-->
+<!--            #{childOrderNo}-->
+<!--        </foreach>-->
+
+
+<!--        SELECT-->
+<!--            dod.child_order_no,-->
+<!--            c.comment_type,-->
+<!--            c.user_id-->
+<!--        FROM-->
+<!--            djmall_order_detail dod-->
+<!--        LEFT JOIN `comment` c ON c.product_id = dod.product_id-->
+<!--        WHERE-->
+<!--            dod.child_order_no IN-->
+<!--        <foreach collection="childOrderNoList" item="childOrderNo" open="(" close=")" separator=",">-->
+<!--            #{childOrderNo}-->
+<!--        </foreach>-->
+
+
+
+    </select>
+    <select id="findOrderCommentCount" resultType="com.dj.mall.mapper.bo.order.OrderDetailBO">
+
+        SELECT
+            cd.child_order_no,
+            COUNT(0) AS count
+        FROM
+            (
+                SELECT
+                    *
+                FROM
+                    djmall_order_detail dod
+                WHERE
+                    dod.child_order_no IN
+                <foreach collection="childOrderNoList" item="childOrderNo" open="(" close=")" separator=",">
+                    #{childOrderNo}
+                </foreach>
+                GROUP BY
+                    dod.child_order_no,
+                    dod.product_id
+            ) AS cd
+        GROUP BY
+            cd.child_order_no
+
+
+    </select>
 </mapper>

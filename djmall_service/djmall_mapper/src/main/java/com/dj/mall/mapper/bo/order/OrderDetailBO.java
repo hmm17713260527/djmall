@@ -129,4 +129,26 @@ public class OrderDetailBO implements Serializable {
      */
     private BigDecimal totalFreight;
 
+
+    /**
+     * 评论等级
+     */
+    private Integer commentType;
+
+
+    /**
+     * 点赞人ID
+     */
+    private Integer userId;
+
+    /**
+     * 评论订单号
+     */
+    private String commentChildOrderNo;
+
+
+    /**
+     * 商品id概述
+     */
+    private Integer count;
 }

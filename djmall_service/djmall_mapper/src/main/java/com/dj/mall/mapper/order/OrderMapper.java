@@ -30,4 +30,8 @@ public interface OrderMapper extends BaseMapper<Order> {
     OrderBO findOrderDetail(@Param("order") OrderBO map) throws DataAccessException;
 
     OrderBO findOrder(@Param("order") OrderBO map) throws DataAccessException;
+
+    List<OrderDetailBO> findOrderCommentList(@Param("order") OrderDetailBO orderDetailBO) throws DataAccessException;
+
+    List<OrderDetailBO> findOrderDetailProductByChildOrderNo(@Param("childOrderNo") String childOrderNo) throws DataAccessException;
 }

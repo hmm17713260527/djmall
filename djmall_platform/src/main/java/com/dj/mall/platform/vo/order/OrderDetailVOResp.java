@@ -114,6 +114,14 @@ public class OrderDetailVOResp implements Serializable {
      */
     private BigDecimal skuPrice;
 
+    /**
+     * 评论等级
+     */
+    private Integer commentType;
 
+    /**
+     * 点赞人ID
+     */
+    private Integer userId;
 
 }

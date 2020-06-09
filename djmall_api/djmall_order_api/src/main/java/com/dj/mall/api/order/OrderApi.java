@@ -4,7 +4,10 @@ import com.dj.mall.model.base.BusinessException;
 import com.dj.mall.model.dto.order.OrderDTOReq;
 import com.dj.mall.model.dto.order.OrderDTOResp;
 import com.dj.mall.model.dto.order.OrderDetailDTOReq;
+import com.dj.mall.model.dto.order.OrderDetailDTOResp;
 import com.dj.mall.model.util.PageResult;
+
+import java.util.List;
 
 
 /**
@@ -65,4 +68,12 @@ public interface OrderApi {
      * @param map
      */
     void addUserShopping(OrderDTOReq map) throws Exception;
+
+    /**
+     * 订单评论展示
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    List<OrderDetailDTOResp> findOrderCommentList(OrderDetailDTOReq map) throws Exception;
 }

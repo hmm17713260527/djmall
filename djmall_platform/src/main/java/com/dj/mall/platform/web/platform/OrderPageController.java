@@ -1,15 +1,23 @@
 package com.dj.mall.platform.web.platform;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.dj.mall.api.cmpt.RedisApi;
 import com.dj.mall.api.order.OrderApi;
+import com.dj.mall.model.base.RedisConstant;
+import com.dj.mall.model.dto.auth.user.UserDTOResp;
 import com.dj.mall.model.dto.order.OrderDTOReq;
 import com.dj.mall.model.dto.order.OrderDTOResp;
+import com.dj.mall.model.dto.order.OrderDetailDTOReq;
+import com.dj.mall.model.dto.order.OrderDetailDTOResp;
 import com.dj.mall.model.util.DozerUtil;
+import com.dj.mall.platform.vo.order.OrderDetailVOResp;
 import com.dj.mall.platform.vo.order.OrderVOReq;
 import com.dj.mall.platform.vo.order.OrderVOResp;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 
 /**
@@ -29,7 +37,30 @@ public class OrderPageController {
     @Reference
     private OrderApi orderApi;
 
+    @Reference
+    private RedisApi redisApi;
 
+    /**
+     * 订单评论展示
+     * @param childOrderNo
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("auth/findOrderComment")
+    public String findOrderComment(String childOrderNo, String TOKEN, Model model) throws Exception {
+        UserDTOResp user = redisApi.get(RedisConstant.USER_TOKEN + TOKEN);
+
+        OrderVOReq orderVOReq = new OrderVOReq();
+        orderVOReq.setChildOrderNo(childOrderNo);
+        orderVOReq.setBuyerId(user.getUserId());
+
+        List<OrderDetailDTOResp> list = orderApi.findOrderCommentList(DozerUtil.map(orderVOReq, OrderDetailDTOReq.class));
+        model.addAttribute("list", DozerUtil.mapList(list, OrderDetailVOResp.class));
+
+        model.addAttribute("orderNo", childOrderNo);
+        return "comment/comment_add";
+    }
 
 
     /**

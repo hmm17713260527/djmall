@@ -41,4 +41,19 @@ public interface OrderDetailApi {
      * @throws Exception
      */
     List<OrderDetailDTOResp> findOrderBychildOrderNoList(List<String> childOrderNoList) throws Exception;
+
+    /**
+     * 订单已完成时，查询是否完成评论
+     * @param childOrderNoList
+     * @return
+     * @throws Exception
+     */
+    List<OrderDetailDTOResp> findOrderCommentByChildOrderNoList(List<String> childOrderNoList) throws Exception;
+
+    /**
+     * 查询订单中商品应该评论的个数
+     * @param childOrderNoList
+     * @return
+     */
+    List<OrderDetailDTOResp> findOrderCommentCount(List<String> childOrderNoList) throws Exception;
 }

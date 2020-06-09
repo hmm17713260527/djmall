@@ -1,5 +1,6 @@
 package com.dj.mall.platform.vo.order;
 
+import com.dj.mall.platform.vo.product.CommentVOReq;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -149,5 +150,10 @@ public class OrderVOReq implements Serializable {
      * 订单字表
      */
     private List<OrderInfoVOReq> infoList;
+
+    /**
+     * 评论集合
+     */
+    private List<CommentVOReq> commentList;
 
 }

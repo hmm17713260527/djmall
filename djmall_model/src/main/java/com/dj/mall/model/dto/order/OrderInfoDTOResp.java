@@ -165,7 +165,10 @@ public class OrderInfoDTOResp implements Serializable {
      */
     private LocalDateTime updateTime;
 
-
+    /**
+     * 是否完成评论
+     */
+    private Boolean commentStatus;
 
 
 }

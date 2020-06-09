@@ -23,4 +23,8 @@ public interface OrderDetailMapper extends BaseMapper<OrderDetail> {
     List<OrderDetailBO> findOrderDetailList(@Param("order") OrderDetailBO order) throws DataAccessException;
 
     List<OrderDetailBO> findOrderBychildOrderNoList(@Param("childOrderNoList") List<String> childOrderNoList) throws DataAccessException;
+
+    List<OrderDetailBO> findOrderCommentByChildOrderNoList(@Param("childOrderNoList") List<String> childOrderNoList) throws DataAccessException;
+
+    List<OrderDetailBO> findOrderCommentCount(@Param("childOrderNoList") List<String> childOrderNoList) throws DataAccessException;
 }

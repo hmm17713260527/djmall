@@ -60,4 +60,29 @@ public class OrderDetailApiImpl extends ServiceImpl<OrderDetailMapper, OrderDeta
         List<OrderDetailBO> orderDetailList = this.baseMapper.findOrderBychildOrderNoList(childOrderNoList);
         return DozerUtil.mapList(orderDetailList, OrderDetailDTOResp.class);
     }
+
+    /**
+     * 订单已完成时，查询是否完成评论
+     * @param childOrderNoList
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<OrderDetailDTOResp> findOrderCommentByChildOrderNoList(List<String> childOrderNoList) throws Exception {
+        List<OrderDetailBO> orderDetailList = this.baseMapper.findOrderCommentByChildOrderNoList(childOrderNoList);
+        return DozerUtil.mapList(orderDetailList, OrderDetailDTOResp.class);
+    }
+
+    /**
+     * 查询订单中商品应该评论的个数
+     * @param childOrderNoList
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<OrderDetailDTOResp> findOrderCommentCount(List<String> childOrderNoList) throws Exception {
+        List<OrderDetailBO> orderDetailList = this.baseMapper.findOrderCommentCount(childOrderNoList);
+
+        return DozerUtil.mapList(orderDetailList, OrderDetailDTOResp.class);
+    }
 }

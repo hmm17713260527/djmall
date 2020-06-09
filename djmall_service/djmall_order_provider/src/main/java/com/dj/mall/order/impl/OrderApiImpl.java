@@ -4,6 +4,7 @@ import	java.util.ArrayList;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -113,6 +114,7 @@ public class OrderApiImpl extends ServiceImpl<OrderMapper, Order> implements Ord
 
         if (childOrderNoList != null && childOrderNoList.size() > 0) {
             List<OrderDetailDTOResp> orderList = orderDetailApi.findOrderBychildOrderNoList(childOrderNoList);
+
             pageInfo.getRecords().forEach(order -> {
                 String productName = "";
                 for (OrderDetailDTOResp o : orderList) {
@@ -122,8 +124,48 @@ public class OrderApiImpl extends ServiceImpl<OrderMapper, Order> implements Ord
                 }
                 order.setProductName(productName.substring(0, productName.length()-1));
             });
-        }
 
+            //订单已完成时，查询是否完成评论
+            if (map.getOrderStatus().equals("已完成")) {
+
+                //查询订单中商品应该评论的个数
+                List<OrderDetailDTOResp> orderCommentCountList = orderDetailApi.findOrderCommentCount(childOrderNoList);
+
+                //查询订单中已经评论的
+                List<OrderDetailDTOResp> orderCommentList = orderDetailApi.findOrderCommentByChildOrderNoList(childOrderNoList);
+
+                if (orderCommentList == null || orderCommentList.size() < 1) {
+                    return PageResult.builder().list(DozerUtil.mapList(pageInfo.getRecords(), OrderInfoDTOResp.class)).pages(pageInfo.getPages()).build();
+                }
+
+                orderCommentCountList.forEach(order -> {
+                    for (OrderDetailDTOResp orderComment : orderCommentList) {
+                        if (order.getChildOrderNo().equals(orderComment.getChildOrderNo())) {
+                            if (order.getCount() > orderComment.getCount()) {
+                                order.setCommentStatus(false);
+                                return;
+                            } else {
+                                order.setCommentStatus(true);
+                                return;
+                            }
+                        }
+                    }
+                    order.setCommentStatus(false);
+                });
+
+                pageInfo.getRecords().forEach(order -> {
+
+                    for (OrderDetailDTOResp orderComment : orderCommentCountList) {
+                        if (order.getOrderNo().equals(orderComment.getChildOrderNo())) {
+                            order.setCommentStatus(orderComment.getCommentStatus());
+                            return;
+                        }
+                    }
+                    //order.setCommentStatus(true);
+                });
+
+            }
+        }
 
         return PageResult.builder().list(DozerUtil.mapList(pageInfo.getRecords(), OrderInfoDTOResp.class)).pages(pageInfo.getPages()).build();
     }
@@ -456,5 +498,37 @@ public class OrderApiImpl extends ServiceImpl<OrderMapper, Order> implements Ord
         }
 
 
+    }
+
+    /**
+     * 订单评论展示
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<OrderDetailDTOResp> findOrderCommentList(OrderDetailDTOReq map) throws Exception {
+
+        List <OrderDetailBO> orderDetailList = this.baseMapper.findOrderDetailProductByChildOrderNo(map.getChildOrderNo());
+
+        List<OrderDetailBO> list = this.baseMapper.findOrderCommentList(DozerUtil.map(map, OrderDetailBO.class));
+
+        if (list == null || list.size() < 1) {
+            return DozerUtil.mapList(orderDetailList, OrderDetailDTOResp.class);
+        }
+
+        List<OrderDetailBO> orderCommentList = new ArrayList<>();
+
+        orderDetailList.forEach(order -> {
+
+            for (OrderDetailBO or : list) {
+                if (order.getProductId().equals(or.getProductId())) {
+                    return;
+                }
+            }
+            orderCommentList.add(order);
+
+        });
+        return DozerUtil.mapList(orderCommentList, OrderDetailDTOResp.class);
     }
 }

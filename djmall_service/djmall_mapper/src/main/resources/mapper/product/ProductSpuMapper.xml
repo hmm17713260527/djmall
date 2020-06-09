@@ -109,6 +109,7 @@
             dsk.sku_attr_names,
             dsk.sku_attr_value_names,
             dps.praise,
+            dps.product_order,
             dsk.sku_count
         FROM
             djmall_product_spu dps

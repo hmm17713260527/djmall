@@ -150,6 +150,7 @@
                         html += "<td>"+o.createTime+"</td>";
                         if (s == '已取消') {
                             html += "<td>"+o.updateTime+"</td>";
+                            html += "<td><a href = 'javascript:addUserShopping(&quot;"+o.orderNo+"&quot;)'>再次购买</a></td>"
                         } else {
                             html += "<td>"+o.payTime+"</td>";
                         }
@@ -166,10 +167,20 @@
                                 html += "<a href='javascript:updateOrderStatus(&quot;"+o.orderNo+"&quot;, &quot;"+'已完成'+"&quot;)'>确认收货</a>";
                                 html += "</td>";
                             }
-                        } else {
-                            html += "<td><a href = 'javascript:addUserShopping(&quot;"+o.orderNo+"&quot;)'>再次购买</a></td>"
                         }
+                        if (s == '已完成') {
 
+                            if (o.commentStatus == true) {
+                                html += "<td><a href = 'javascript:addUserShopping(&quot;"+o.orderNo+"&quot;)'>再次购买</a></td>"
+
+                            } else {
+                                html += "<td>";
+                                html += "<a href = 'javascript:findOrderComment(&quot;"+o.orderNo+"&quot;)'>评论晒单</a>|";
+                                html += "<a href = 'javascript:addUserShopping(&quot;"+o.orderNo+"&quot;)'>再次购买</a>";
+                                html += "</td>";
+
+                            }
+                        }
                         html += "</tr>";
                     }
                     $("#"+s).append(html);
@@ -179,6 +190,20 @@
                 }
             )
         }
+
+
+        function findOrderComment(childOrderNo) {
+            layer.open({
+                type: 2,
+                title: '评论页面',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['380px', '80%'],
+                content: '<%=request.getContextPath()%>/order/auth/findOrderComment?TOKEN='+getToken()+'&childOrderNo='+childOrderNo
+            });
+        }
+
+
 
         function toOrderDetailShow(childOrderNo) {
             layer.open({

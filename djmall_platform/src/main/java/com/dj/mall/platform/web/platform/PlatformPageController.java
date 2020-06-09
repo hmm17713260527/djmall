@@ -256,6 +256,8 @@ public class PlatformPageController {
         return "platform/product";
     }
 
+
+
     @GetMapping("auth/toIndex")
     public String toIndex(String TOKEN, Model model) {
         model.addAttribute("TOKEN", TOKEN);

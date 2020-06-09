@@ -67,6 +67,14 @@ public class ProductSpuVOReq implements Serializable {
      */
     private List<String> types;
 
+
+
+    /**
+     * 商品类型
+     */
+    private String type;
+
+
     /**
      * 是否默认[0默认,1不默认]
      */

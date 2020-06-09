@@ -248,4 +248,40 @@ public class ProductSpuApiImpl extends ServiceImpl<ProductSpuMapper, ProductSpu>
     }
 
 
+    /**
+     * 查询每个商品的点赞量及当前用户点赞状态
+     * @param productIds
+     * @param userLikeId
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<ProductSpuDTOResp> findProductUserLike(List<Integer> productIds, Integer userLikeId) throws Exception {
+
+        //赞
+        UserLikeDTOReq userLikeDTOReq = new UserLikeDTOReq();
+
+        userLikeDTOReq.setProductIds(productIds);
+        userLikeDTOReq.setUserId(userLikeId);
+        List<UserLikeDTOResp> userLikeList = userLikeApi.findLike(userLikeDTOReq);
+
+        List<ProductSpuDTOResp> productSpuDTOResps = DozerUtil.mapList(userLikeList, ProductSpuDTOResp.class);
+
+        //各个商品的点赞量
+        List<UserLikeDTOResp> userLikeCount = userLikeApi.findLikeCount(userLikeDTOReq);
+
+        productSpuDTOResps.forEach(product -> {
+            for (UserLikeDTOResp userLike : userLikeCount) {
+                if (product.getProductId().equals(userLike.getProductId())) {
+                    product.setCount(userLike.getCount());
+                    return;
+                }
+            }
+            product.setCount(0);
+        });
+        
+        return productSpuDTOResps;
+    }
+
+
 }

@@ -271,6 +271,11 @@ public interface SystemConstant {
     String FREIGHT_MANAGER = "FREIGHT_MANAGER";
 
     /**
+     * COMMENT_MANAGER
+     */
+    String COMMENT_MANAGER = "COMMENT_MANAGER";
+
+    /**
      * PRODUCT_MANAGER
      */
     String PRODUCT_MANAGER = "PRODUCT_MANAGER";

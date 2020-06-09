@@ -189,6 +189,9 @@ public class ProductSpuBO {
     private Integer count;
 
 
+
+
+
     /**
      * 登陆人id
      */
