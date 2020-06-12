@@ -73,7 +73,10 @@ public class OrderController {
 
         });
 
-        commentApi.adds(DozerUtil.mapList(commentList, CommentDTOReq.class));
+        if (commentList != null && commentList.size() > 0) {
+            commentApi.adds(DozerUtil.mapList(commentList, CommentDTOReq.class));
+
+        }
 
         return new ResultModel<>().success(SystemConstant.REQ_YES);
 

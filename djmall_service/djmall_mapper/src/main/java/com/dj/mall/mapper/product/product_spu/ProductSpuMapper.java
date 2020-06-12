@@ -28,4 +28,6 @@ public interface ProductSpuMapper extends BaseMapper<ProductSpu> {
     ProductSpuBO findProductById(@Param("id") Integer id) throws DataAccessException;
 
     ProductSpuBO findProById(@Param("product") ProductSpuBO productSpu) throws DataAccessException;
+
+    List<ProductSpuBO> findOrderCount(@Param("ids") List<Integer> ids) throws DataAccessException;
 }

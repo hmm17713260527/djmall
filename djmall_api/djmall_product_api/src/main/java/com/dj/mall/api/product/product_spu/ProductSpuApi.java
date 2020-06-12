@@ -78,4 +78,19 @@ public interface ProductSpuApi {
      * @throws Exception
      */
     List<ProductSpuDTOResp> findProductUserLike(List<Integer> productIds, Integer userLikeId) throws Exception;
+
+    /**
+     * 商品首页展示-solr
+     * @param map
+     * @return
+     * @throws Exception
+     */
+    PageResult findProductShow(ProductSpuDTOReq map) throws Exception;
+
+    /**
+     * 评论量
+     * @param productIds
+     * @throws Exception
+     */
+    void updateProductOrder(List<Integer> productIds) throws Exception;
 }

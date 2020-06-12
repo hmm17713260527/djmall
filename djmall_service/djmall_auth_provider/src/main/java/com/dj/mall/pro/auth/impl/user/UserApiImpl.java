@@ -2,6 +2,10 @@ package com.dj.mall.pro.auth.impl.user;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+
+import com.alibaba.fastjson.JSONObject;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -12,12 +16,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dj.mall.api.auth.user.UserApi;
 import com.dj.mall.api.cmpt.EMailApi;
 import com.dj.mall.api.cmpt.RedisApi;
-import com.dj.mall.entity.auth.resource.Resource;
 import com.dj.mall.entity.auth.role.Role;
 import com.dj.mall.entity.auth.user.User;
 import com.dj.mall.entity.auth.user.UserLoginEndTime;
 import com.dj.mall.entity.auth.user.UserRole;
-import com.dj.mall.entity.product.product_spu.ProductSpu;
 import com.dj.mall.mapper.auth.role.RoleMapper;
 import com.dj.mall.mapper.auth.user.UserLoginEndTimeMapper;
 import com.dj.mall.mapper.auth.user.UserMapper;
@@ -27,16 +29,13 @@ import com.dj.mall.model.base.BusinessException;
 import com.dj.mall.model.base.RedisConstant;
 import com.dj.mall.model.base.ResultModel;
 import com.dj.mall.model.base.SystemConstant;
-import com.dj.mall.model.dto.auth.resource.ResourceDTOResp;
 import com.dj.mall.model.dto.auth.role.RoleDTOResp;
 import com.dj.mall.model.dto.auth.user.UserDTOReq;
 import com.dj.mall.model.dto.auth.user.UserDTOResp;
 import com.dj.mall.model.dto.auth.user.UserTokenDTOResp;
 import com.dj.mall.model.util.*;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -66,6 +65,10 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
 
     @Reference
     private EMailApi eMailApi;
+
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
 
     /**
@@ -233,12 +236,19 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
     public void addUser(UserDTOReq userDTOReq) throws Exception {
         User user = DozerUtil.map(userDTOReq, User.class);
         user.setCreateTime(LocalDateTime.now());
-        if (!userDTOReq.getStatus().equals(SystemConstant.ACTIVE)) {
-            String content = "<a href='"+"http://127.0.0.1:8081/admin"+"/auth/user/toActivate/"+user.getEmail()+"'>"+SystemConstant.EMAIL_ADD_CODE+"</a>";
-            eMailApi.sendMail(user.getEmail(), SystemConstant.STRING_EMAIL, content);
-        }
+//        if (!userDTOReq.getStatus().equals(SystemConstant.ACTIVE)) {
+//            String content = "<a href='"+"http://127.0.0.1:8081/admin"+"/auth/user/toActivate/"+user.getEmail()+"'>"+SystemConstant.EMAIL_ADD_CODE+"</a>";
+//            eMailApi.sendMail(user.getEmail(), SystemConstant.STRING_EMAIL, content);
+//        }
         this.save(user);
         userRoleMapper.insert(UserRole.builder().userId(user.getId()).roleId(user.getType()).isDel(SystemConstant.IS_DEL).build());
+
+        if (!userDTOReq.getStatus().equals(SystemConstant.ACTIVE)) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("email", user.getEmail());
+            rabbitTemplate.convertAndSend("direct", "emailQueue", jsonObject.toJSONString());
+        }
+
     }
 
     /**

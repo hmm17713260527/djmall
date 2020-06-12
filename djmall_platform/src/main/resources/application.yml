@@ -6,9 +6,6 @@ server:
       init-parameters:
         development: true
 spring:
-  data:
-    solr:
-      host: http://127.0.0.1:8089/solr/test
   mvc:
     view:
       prefix: /WEB-INF/page/

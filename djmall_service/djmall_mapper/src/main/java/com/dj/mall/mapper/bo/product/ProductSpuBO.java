@@ -197,5 +197,10 @@ public class ProductSpuBO {
      */
     private Integer userLikeId;
 
+    /**
+     * 订单量
+     */
+    private Integer orderCount;
+
 
 }

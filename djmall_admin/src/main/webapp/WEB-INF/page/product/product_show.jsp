@@ -45,7 +45,7 @@
                     html += "</td>";
                     html += "<td>"+data.data.list[i].productDescribe+"</td>";
                     html += "<td>"+data.data.list[i].praise+"</td>";
-                    html += "<td>"+data.data.list[i].productOrder+"</td>";
+                    html += "<td>"+data.data.list[i].orderCount+"</td>";
                     html += "</tr>";
                 }
                 $("#tbd").html(html);

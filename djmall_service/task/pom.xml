@@ -9,45 +9,25 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>djmall_product_provider</artifactId>
+    <artifactId>task</artifactId>
     <packaging>jar</packaging>
 
 
     <dependencies>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-solr</artifactId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.dj.mall</groupId>
-            <artifactId>djmall_product_api</artifactId>
+            <artifactId>djmall_model</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-
         <dependency>
             <groupId>com.dj.mall</groupId>
-            <artifactId>djmall_pojo</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.dj.mall</groupId>
-            <artifactId>djmall_mapper</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-
-
-        <dependency>
-            <groupId>com.dj.mall</groupId>
-            <artifactId>djmall_cmpt_api</artifactId>
+            <artifactId>djmall_order_api</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-
     </dependencies>
-
-
 </project>

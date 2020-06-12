@@ -16,7 +16,6 @@ import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.user.*;
 import com.dj.mall.model.dto.dict.area.AreaDTOResp;
 import com.dj.mall.model.dto.product.like.UserLikeDTOReq;
-import com.dj.mall.model.dto.product.like.UserLikeDTOResp;
 import com.dj.mall.model.dto.product.product_spu.ProductSpuDTOReq;
 import com.dj.mall.model.dto.product.product_spu.ProductSpuDTOResp;
 import com.dj.mall.model.util.DozerUtil;
@@ -26,17 +25,12 @@ import com.dj.mall.platform.vo.dict.AreaVOResp;
 import com.dj.mall.platform.vo.product.*;
 import com.dj.mall.platform.vo.user.*;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.solr.client.solrj.SolrClient;
-import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.response.QueryResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
@@ -80,9 +74,6 @@ public class PlatformController {
     @Reference
     private UserLikeApi userLikeApi;
 
-
-    @Autowired
-    private SolrClient solrClient;
 
     /**
      * 点赞，取消赞
@@ -423,80 +414,11 @@ public class PlatformController {
     @GetMapping("show")
     public ResultModel show(ProductSpuVOReq productSpuVOReq) throws Exception {
 
-        try {
-            // 查询器
-            SolrQuery query = new SolrQuery();
-            // 主查询条件
-            if (!StringUtils.isEmpty(productSpuVOReq.getProductName())) {
-                query.setQuery("productKeyWorlds:" + productSpuVOReq.getProductName());
-            }
-            if (StringUtils.isEmpty(productSpuVOReq.getProductName())) {
-                query.setQuery("*:*");
-            }
+        PageResult pageResult = productSpuApi.findProductShow(DozerUtil.map(productSpuVOReq, ProductSpuDTOReq.class));
 
-            if (!StringUtils.isEmpty(productSpuVOReq.getType())) {
-                query.addFilterQuery("productCode:" + productSpuVOReq.getType());
-            }
+        PageResult.builder().list(DozerUtil.mapList(pageResult.getList(), ProductSpuSolrVOResp.class));
 
-            if (productSpuVOReq.getSkuPriceMin() != null && productSpuVOReq.getSkuPriceMax() == null) {
-                query.addFilterQuery("productSkuPrice:["+productSpuVOReq.getSkuPriceMin()+" TO *]");
-            }
-            if (productSpuVOReq.getSkuPriceMin() == null && productSpuVOReq.getSkuPriceMax() != null) {
-                query.addFilterQuery("productSkuPrice:[* TO "+productSpuVOReq.getSkuPriceMax()+"]");
-            }
-            if (productSpuVOReq.getSkuPriceMin() != null && productSpuVOReq.getSkuPriceMax() != null) {
-                query.addFilterQuery("productSkuPrice:["+productSpuVOReq.getSkuPriceMin()+" TO "+productSpuVOReq.getSkuPriceMax()+"]");
-            }
-            // 分页
-            query.setStart(productSpuVOReq.getPageNo() * SystemConstant.PAGE_SIZE);// 开始位置
-            query.setRows(SystemConstant.PAGE_SIZE);// 每页条数
-            // 查询
-            QueryResponse response = solrClient.query(query);
-            // 实体类映射
-            List<ProdcutSolr> productList = response.getBeans(ProdcutSolr.class);
-            productList.forEach(product -> {
-                String[] split = product.getProductDescribe().split("-");
-                product.setProductDescribe(split[0]);
-            });
-            List<ProductSpuSolrVOResp> productSpuSolrVOResps = DozerUtil.mapList(productList, ProductSpuSolrVOResp.class);
-
-            if (productSpuVOReq.getUserLikeId() != null) {
-
-                List<Integer> productIds = new ArrayList<>();
-                productSpuSolrVOResps.forEach(product -> {
-                    productIds.add(product.getProductId());
-                });
-
-                List<ProductSpuDTOResp> proList = productSpuApi.findProductUserLike(productIds, productSpuVOReq.getUserLikeId());
-
-                productSpuSolrVOResps.forEach(product -> {
-                    for (ProductSpuDTOResp pro : proList) {
-                        if (product.getProductId().equals(pro.getProductId())) {
-                            product.setCount(pro.getCount());
-                            product.setStatus(pro.getStatus());
-                            return;
-                        }
-                    }
-                });
-            }
-            // 总条数
-            Long pages = new BigDecimal(response.getResults().getNumFound()).divide(new BigDecimal(SystemConstant.PAGE_SIZE), 2, BigDecimal.ROUND_HALF_UP).setScale(0, BigDecimal.ROUND_UP).longValue();
-
-            PageResult build = PageResult.builder().list(productSpuSolrVOResps).pages(pages).build();
-            //PageResult build = PageResult.builder().list(DozerUtil.mapList(productList, ProductSpuSolrVOResp.class)).build();
-            return new ResultModel<>().success(build);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-
-
-
-  //      PageResult pageResult = productSpuApi.findProductList(DozerUtil.map(productSpuVOReq, ProductSpuDTOReq.class));
-//
-//        PageResult.builder().list(DozerUtil.mapList(pageResult.getList(), ProductSpuVOResp.class));
-//
-//        return new ResultModel<>().success(pageResult);
+        return new ResultModel<>().success(pageResult);
 
     }
 

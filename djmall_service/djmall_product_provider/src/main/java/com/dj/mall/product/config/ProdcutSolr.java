@@ -1,4 +1,4 @@
-package com.dj.mall.platform.vo.product;
+package com.dj.mall.product.config;
 
 import lombok.Data;
 import org.apache.solr.client.solrj.beans.Field;

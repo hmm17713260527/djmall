@@ -61,7 +61,7 @@
                         html += "<tr>";
                         html += "<td><a href = '/platform/toProductShow?productSpuId="+data.data.list[i].productId+"'>"+data.data.list[i].productName+"</a></td>"
                         html += "<td>"+data.data.list[i].skuPrice+"</td>";
-                        html += "<td>"+data.data.list[i].skuCount+"</td>";
+                        // html += "<td>"+data.data.list[i].skuCount+"</td>";
                         html += "<td>"+data.data.list[i].name+"</td>";
                         // html += "<td>"+data.data.list[i].skuRateShow+"</td>";
                         html += "<td>"+data.data.list[i].skuRate+"%</td>";
@@ -180,7 +180,7 @@
         <tr>
             <td>名称</td>
             <td>价格</td>
-            <td>库存</td>
+<%--            <td>库存</td>--%>
             <td>分类</td>
             <td>折扣</td>
             <td>邮费</td>

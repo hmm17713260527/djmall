@@ -130,4 +130,22 @@
 
 
     </select>
+    <select id="findOrderCount" resultType="com.dj.mall.mapper.bo.product.ProductSpuBO">
+
+        SELECT
+            dod.product_id,
+            SUM(dod.buy_count) as order_count
+        FROM
+            djmall_order_detail dod
+        LEFT JOIN djmall_order_info doi ON dod.child_order_no = doi.order_no
+        WHERE
+            doi.order_status != '已取消'
+        AND dod.product_id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        GROUP BY
+            dod.product_id
+
+    </select>
 </mapper>

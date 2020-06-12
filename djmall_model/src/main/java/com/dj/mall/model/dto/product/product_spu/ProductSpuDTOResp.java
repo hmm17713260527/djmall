@@ -183,4 +183,9 @@ public class ProductSpuDTOResp implements Serializable {
     private Integer count;
 
 
+    /**
+     * 订单量
+     */
+    private Integer orderCount;
+
 }

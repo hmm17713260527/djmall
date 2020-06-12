@@ -76,4 +76,11 @@ public interface OrderApi {
      * @throws Exception
      */
     List<OrderDetailDTOResp> findOrderCommentList(OrderDetailDTOReq map) throws Exception;
+
+    /**
+     * 订单死信
+     * @param orderNo
+     * @throws Exception
+     */
+    void mqDlx(String orderNo) throws Exception;
 }

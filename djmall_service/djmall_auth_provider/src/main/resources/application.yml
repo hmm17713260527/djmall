@@ -5,6 +5,13 @@ spring:
     username: root
     password: 123456
     url: jdbc:mysql://127.0.0.1:3306/djmall?characterEncoding=UTF-8&useOldAliasMetadataBehavior=true&useSSL=false
+  rabbitmq:
+    host: 192.168.88.128
+    port: 5672
+    username: admin
+    password: 123456
+    virtual-host: /
+    connection-timeout: 180000
 
 # Mybatis-plus
 mybatis-plus:

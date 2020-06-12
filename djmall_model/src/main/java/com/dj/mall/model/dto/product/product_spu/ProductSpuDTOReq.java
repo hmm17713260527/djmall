@@ -46,6 +46,8 @@ public class ProductSpuDTOReq implements Serializable {
      */
     private Integer pageNo;
 
+
+
     /**
      * 商品名
      */

@@ -149,6 +149,9 @@ public class ProductSpuVOResp implements Serializable {
      */
     private String freName;
 
-
+    /**
+     * 订单量
+     */
+    private Integer orderCount;
 
 }

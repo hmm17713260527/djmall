@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dj.mall.api.product.comment.CommentApi;
+import com.dj.mall.api.product.product_spu.ProductSpuApi;
 import com.dj.mall.entity.product.comment.Comment;
 import com.dj.mall.mapper.bo.auth.user.UserBo;
 import com.dj.mall.mapper.bo.product.CommentBO;
@@ -17,6 +18,7 @@ import com.dj.mall.model.dto.product.comment.CommentDTOReq;
 import com.dj.mall.model.dto.product.comment.CommentDTOResp;
 import com.dj.mall.model.util.DozerUtil;
 import com.dj.mall.model.util.PageResult;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -35,6 +37,9 @@ import java.util.List;
 public class CommentApiImpl extends ServiceImpl<CommentMapper, Comment> implements CommentApi {
 
 
+    @Autowired
+    private ProductSpuApi productSpuApi;
+
     /**
      * 批量新增
      * @param mapList
@@ -42,6 +47,11 @@ public class CommentApiImpl extends ServiceImpl<CommentMapper, Comment> implemen
      */
     @Override
     public void adds(List<CommentDTOReq> mapList) throws Exception {
+        List<Integer> productIds = new ArrayList<>();
+        mapList.forEach(comment -> {
+            productIds.add(comment.getProductId());
+        });
+        productSpuApi.updateProductOrder(productIds);
         this.saveBatch(DozerUtil.mapList(mapList, Comment.class));
     }
 
@@ -145,6 +155,10 @@ public class CommentApiImpl extends ServiceImpl<CommentMapper, Comment> implemen
         Integer count = this.baseMapper.findCommentCount(comment);
         Integer goodCount = this.baseMapper.findCommentGootCount(comment);
 
+        if (count == null || goodCount == null) {
+            return new BigDecimal(0);
+        }
+
         BigDecimal big = new BigDecimal(100);
         BigDecimal bigCount = new BigDecimal(count);
         BigDecimal bigGoodCount = new BigDecimal(goodCount);
@@ -165,6 +179,10 @@ public class CommentApiImpl extends ServiceImpl<CommentMapper, Comment> implemen
         CommentBO comment = DozerUtil.map(map, CommentBO.class);
         Integer count = this.baseMapper.findPlatCommentCount(comment);
         Integer goodCount = this.baseMapper.findPlatCommentGootCount(comment);
+
+        if (count == null || goodCount == null) {
+            return new BigDecimal(0);
+        }
 
         BigDecimal big = new BigDecimal(100);
         BigDecimal bigCount = new BigDecimal(count);

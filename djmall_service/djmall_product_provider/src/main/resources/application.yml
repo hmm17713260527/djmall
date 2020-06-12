@@ -1,5 +1,8 @@
 # 数据源
 spring:
+  data:
+    solr:
+      host: http://127.0.0.1:8089/solr/test
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     username: root

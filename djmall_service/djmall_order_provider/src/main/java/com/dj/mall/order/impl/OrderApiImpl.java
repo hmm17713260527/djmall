@@ -35,6 +35,9 @@ import com.dj.mall.model.dto.product.product_sku.ProductSkuDTOResp;
 import com.dj.mall.model.util.DozerUtil;
 import com.dj.mall.model.util.PageResult;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
@@ -76,6 +79,9 @@ public class OrderApiImpl extends ServiceImpl<OrderMapper, Order> implements Ord
 
     @Reference
     private ProductSkuApi productSkuApi;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     /**
      * 订单待付款展示
@@ -390,6 +396,13 @@ public class OrderApiImpl extends ServiceImpl<OrderMapper, Order> implements Ord
         orderInfoApi.addList(orderInfoList);
 
         orderDetailApi.addList(orderDetailList);
+
+        // 发送消息
+        MessageProperties messageProperties = new MessageProperties();
+        messageProperties.setDelay(20000);
+        Message message = new Message((orderNo + ":" + + System.currentTimeMillis()).getBytes(), messageProperties);
+        rabbitTemplate.convertAndSend("dlx-ex", "dlx", message);
+
 //        //总订单
 //        Order order = DozerUtil.map(map, Order.class);
 //        order.setOrderNo(SystemConstant.DJ_CODE + new SimpleDateFormat("yyyyMMddHHmmSSS").format(new Date()) + (int) ((Math.random() * 9 + 1) * 100));
@@ -530,5 +543,26 @@ public class OrderApiImpl extends ServiceImpl<OrderMapper, Order> implements Ord
 
         });
         return DozerUtil.mapList(orderCommentList, OrderDetailDTOResp.class);
+    }
+
+    /**
+     * 订单死信
+     * @param orderNo
+     * @throws Exception
+     */
+    @Override
+    public void mqDlx(String orderNo) throws Exception {
+        QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("order_no", orderNo);
+        Order order = this.getOne(queryWrapper);
+
+        if (order.getOrderStatus().equals("待支付")) {
+            OrderDTOReq orderDTOReq = new OrderDTOReq();
+            orderDTOReq.setOrderStatus("已取消");
+            orderDTOReq.setOrderNo(orderNo);
+            this.updateOrderStatus(orderDTOReq);
+        }
+
+
     }
 }

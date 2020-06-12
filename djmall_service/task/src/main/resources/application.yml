@@ -1,0 +1,28 @@
+spring:
+  rabbitmq:
+    host: 192.168.88.128
+    port: 5672
+    username: admin
+    password: 123456
+    virtual-host: /
+    connection-timeout: 180000
+
+# Dubbo
+dubbo:
+  application:
+    name: task # 应用名
+    qos-enable: false # 关闭在线调试
+  registry:
+    address: zookeeper://127.0.0.1:2181 # 注册中心地址
+  protocol:
+    name: dubbo # 协议名我不知道
+    port: 20884 # 服务端口
+  consumer:
+    timeout: 180000
+    check: false
+  provider:
+    timeout: 180000
+logging:
+  level:
+    com.dj.mall.mapper:
+      debug
