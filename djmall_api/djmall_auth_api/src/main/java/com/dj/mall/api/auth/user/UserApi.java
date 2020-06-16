@@ -9,6 +9,7 @@ import com.dj.mall.model.dto.auth.user.UserTokenDTOResp;
 import com.dj.mall.model.util.PageResult;
 
 import java.util.HashMap;
+import java.util.List;
 
 public interface UserApi {
 
@@ -173,4 +174,25 @@ public interface UserApi {
      * @throws Exception
      */
     void updatePlatUser(UserDTOReq map, byte[] bytes) throws Exception;
+
+    /**
+     * 每天登陆用户的-折线图
+     * @return
+     * @throws Exception
+     */
+    List<UserDTOResp> findUserLoginGroupByDay() throws Exception;
+
+    /**
+     * 每天成交的订单
+     * @return
+     * @throws Exception
+     */
+    List<UserDTOResp> findUserOrderGroupByDay() throws Exception;
+
+    /**
+     * 各商品订单比例
+     * @return
+     * @throws Exception
+     */
+    List<UserDTOResp> findProductOrder() throws Exception;
 }

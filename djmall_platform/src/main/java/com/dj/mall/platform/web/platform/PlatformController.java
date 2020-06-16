@@ -74,6 +74,46 @@ public class PlatformController {
     @Reference
     private UserLikeApi userLikeApi;
 
+    /**
+     * echars-饼图展示
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("auth/pieShow")
+    public ResultModel<Object> pieShow() throws Exception {
+        List<UserDTOResp> list = userApi.findProductOrder();
+        return new ResultModel<>().success(DozerUtil.mapList(list, UserVOResp.class));
+
+    }
+
+
+
+    /**
+     * echars-柱形图展示
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("auth/histogramShow")
+    public ResultModel<Object> histogramShow() throws Exception {
+        List<UserDTOResp> list = userApi.findUserOrderGroupByDay();
+        return new ResultModel<>().success(DozerUtil.mapList(list, UserVOResp.class));
+
+    }
+
+    /**
+     * echars-折线图展示
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("auth/lineShow")
+    public ResultModel<Object> lineShow() throws Exception {
+        List<UserDTOResp> list = userApi.findUserLoginGroupByDay();
+        return new ResultModel<>().success(DozerUtil.mapList(list, UserVOResp.class));
+
+    }
+
+
+
 
     /**
      * 点赞，取消赞

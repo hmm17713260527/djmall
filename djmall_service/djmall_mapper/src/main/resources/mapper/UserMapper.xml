@@ -65,4 +65,62 @@
         </if>
         GROUP BY dal.user_id
     </select>
+    <select id="findUserLoginGroupByDay" resultType="com.dj.mall.mapper.bo.auth.user.UserBo">
+
+
+        SELECT
+            login.ent_time AS echars_time,
+            COUNT(0) AS echars_count
+        FROM
+            (
+                SELECT
+                    dalet.user_id,
+                    MAX(dalet.end_time) AS ent_time
+                FROM
+                    djmall_auth_login_end_time dalet
+                LEFT JOIN djmall_auth_user_role daur ON daur.user_id = dalet.user_id
+                WHERE
+                    daur.role_id = 3
+                GROUP BY
+                    dalet.user_id,DATE_FORMAT(dalet.end_time, '%Y-%m-%d')
+            ) AS login
+        GROUP BY
+            DATE_FORMAT(login.ent_time, '%Y-%m-%d')
+
+
+
+
+
+    </select>
+    <select id="findUserOrderGroupByDay" resultType="com.dj.mall.mapper.bo.auth.user.UserBo">
+
+        SELECT
+            dor.pay_time AS echars_time,
+            COUNT(0) AS echars_count
+        FROM
+            djmall_order dor
+        WHERE
+            dor.order_status != '已取消'
+        AND dor.order_status != '待支付'
+        GROUP BY
+            DATE_FORMAT(dor.pay_time, '%Y-%m-%d')
+
+    </select>
+    <select id="findProductOrder" resultType="com.dj.mall.mapper.bo.auth.user.UserBo">
+
+        SELECT
+            dps.product_name,
+            SUM(dod.buy_count) AS echars_count
+        FROM
+            djmall_order_detail dod
+        LEFT JOIN djmall_order_info doi ON dod.child_order_no = doi.order_no
+        LEFT JOIN djmall_product_spu dps ON dod.product_id = dps.id
+        WHERE
+            doi.order_status != '已取消'
+        AND doi.order_status != '待支付'
+        GROUP BY
+            dod.product_id
+
+
+    </select>
 </mapper>

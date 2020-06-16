@@ -20,4 +20,9 @@ public interface UserMapper extends BaseMapper<User> {
 
     IPage<UserBo> findUserList(@Param("page") Page<UserBo> page, @Param("user") UserBo user) throws DataAccessException;
 
+    List<UserBo> findUserLoginGroupByDay() throws DataAccessException;
+
+    List<UserBo> findUserOrderGroupByDay() throws DataAccessException;
+
+    List<UserBo> findProductOrder() throws DataAccessException;
 }

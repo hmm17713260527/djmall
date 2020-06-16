@@ -129,4 +129,23 @@ public class UserBo implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")//返回前台格式
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")//接受前台时间格式
     private LocalDateTime endTime;
+
+
+
+    /**
+     * echars展示时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")//返回前台格式
+    private LocalDateTime echarsTime;
+
+
+    /**
+     * echars展示个数
+     */
+    private Integer echarsCount;
+
+    /**
+     * 商品名称
+     */
+    private String productName;
 }

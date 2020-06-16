@@ -501,5 +501,40 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         this.updateById(DozerUtil.map(map, User.class));
     }
 
+    /**
+     * 每天登陆用户的-折线图
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<UserDTOResp> findUserLoginGroupByDay() throws Exception {
+
+        List<UserBo> list = this.baseMapper.findUserLoginGroupByDay();
+        return DozerUtil.mapList(list, UserDTOResp.class);
+    }
+
+
+    /**
+     * 每天成交的订单
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<UserDTOResp> findUserOrderGroupByDay() throws Exception {
+        List<UserBo> list = this.baseMapper.findUserOrderGroupByDay();
+        return DozerUtil.mapList(list, UserDTOResp.class);
+    }
+
+    /**
+     * 各商品订单比例
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<UserDTOResp> findProductOrder() throws Exception {
+        List<UserBo> list = this.baseMapper.findProductOrder();
+        return DozerUtil.mapList(list, UserDTOResp.class);
+    }
+
 
 }

@@ -21,6 +21,12 @@ import java.util.List;
 @NoArgsConstructor
 public class UserVOResp implements Serializable {
 
+
+    /**
+     * 商品名称
+     */
+    private String productName;
+
     /**
      * 用户ID
      */
@@ -127,6 +133,19 @@ public class UserVOResp implements Serializable {
      * 性别展示
      */
     private String sexShow;
+
+
+    /**
+     * echars展示时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")//返回前台格式
+    private LocalDateTime echarsTime;
+
+
+    /**
+     * echars展示个数
+     */
+    private Integer echarsCount;
 
 
 }
