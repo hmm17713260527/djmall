@@ -69,35 +69,6 @@ public class PlatformPageController {
     private RedisApi redisApi;
 
 
-    /**
-     * 每天登陆用户的-折线图
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping("auth/echarsLineShow")
-    public String echarsLineShow() throws Exception {
-        return "echars/line_show";
-    }
-
-    /**
-     * 每天成交的订单-柱状图
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping("auth/echarsHistogramShow")
-    public String echarsHistogramShow() throws Exception {
-        return "echars/histogram_show";
-    }
-
-    /**
-     * 各商品订单比例-饼状图
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping("auth/echarsPieShow")
-    public String echarsPieShow() throws Exception {
-        return "echars/pie_show";
-    }
 
 
 

@@ -13,8 +13,6 @@
     <script type="text/javascript" src="<%=request.getContextPath()%>\static\js\jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>\static\layer-v3.1.1\layer\layer.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>\static\js\echarts.min.js"></script>
-    <script type="text/javascript" src="<%=request.getContextPath()%>\static\js\token.js"></script>
-    <script type="text/javascript" src="<%=request.getContextPath()%>\static\js\cookie.js"></script>
     <script type="text/javascript">
 
 
@@ -24,7 +22,7 @@
         })
 
         function show() {
-            token_post("<%=request.getContextPath() %>/platform/auth/histogramShow?TOKEN=" + getToken(),
+            $.get("<%=request.getContextPath() %>/auth/user/histogramShow",
                 {},
                 function(data){
                     layer.msg(data.msg);

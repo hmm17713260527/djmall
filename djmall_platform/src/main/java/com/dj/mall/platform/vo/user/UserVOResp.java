@@ -135,17 +135,7 @@ public class UserVOResp implements Serializable {
     private String sexShow;
 
 
-    /**
-     * echars展示时间
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")//返回前台格式
-    private LocalDateTime echarsTime;
 
-
-    /**
-     * echars展示个数
-     */
-    private Integer echarsCount;
 
 
 }

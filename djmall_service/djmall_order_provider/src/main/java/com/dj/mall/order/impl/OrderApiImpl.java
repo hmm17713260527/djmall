@@ -398,10 +398,10 @@ public class OrderApiImpl extends ServiceImpl<OrderMapper, Order> implements Ord
         orderDetailApi.addList(orderDetailList);
 
         // 发送消息
-        MessageProperties messageProperties = new MessageProperties();
-        messageProperties.setDelay(20000);
-        Message message = new Message((orderNo + ":" + + System.currentTimeMillis()).getBytes(), messageProperties);
-        rabbitTemplate.convertAndSend("dlx-ex", "dlx", message);
+//        MessageProperties messageProperties = new MessageProperties();
+//        messageProperties.setDelay(20000);
+//        Message message = new Message((orderNo + ":" + + System.currentTimeMillis()).getBytes(), messageProperties);
+//        rabbitTemplate.convertAndSend("dlx-ex", "dlx", message);
 
 //        //总订单
 //        Order order = DozerUtil.map(map, Order.class);

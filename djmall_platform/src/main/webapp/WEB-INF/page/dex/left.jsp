@@ -23,12 +23,6 @@
 
 <a href="<%=request.getContextPath()%>/platform/auth/toUserOrderShow?TOKEN=${TOKEN}" target="right">我的订单</a><br/>　
 
-<a href="<%=request.getContextPath()%>/platform/auth/echarsLineShow?TOKEN=${TOKEN}" target="right">折线图</a><br/>　
-
-<a href="<%=request.getContextPath()%>/platform/auth/echarsHistogramShow?TOKEN=${TOKEN}" target="right">柱状图</a><br/>　
-
-<a href="<%=request.getContextPath()%>/platform/auth/echarsPieShow?TOKEN=${TOKEN}" target="right">饼图</a>　
-
 
 </body>
 </html>

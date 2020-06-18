@@ -337,4 +337,20 @@ public interface SystemConstant {
      * 库存不足
      */
     String PRODUCT_COUNT_IS_NULL = "库存不足";
+
+
+    /**
+     * echars-折线图
+     */
+    String ECHARSLINE_MANAGER = "ECHARSLINE_MANAGER";
+
+    /**
+     * echars-柱状图
+     */
+    String ECHARSHISTOGRAM_MANAGER = "ECHARSHISTOGRAM_MANAGER";
+
+    /**
+     *  echars-饼状图
+     */
+    String ECHARSPIE_MANAGER = "ECHARSPIE_MANAGER";
 }

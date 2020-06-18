@@ -74,7 +74,13 @@
                         if (userId == null) {
                             html += "<td><a href='javascript:like("+2+","+data.data.list[i].productId+")'  style='color: #8D8D8D'>♥</a></td>";
                         } else {
-                            html += data.data.list[i].status == 2 ? "<td><a href='javascript:like("+1+","+data.data.list[i].productId+")'  style='color: #8D8D8D'>♥"+data.data.list[i].count+"</a></td>" : "<td><a href='javascript:like("+2+","+data.data.list[i].productId+")'  style='color: red'>♥"+data.data.list[i].count+"</a></td>";
+                            if (data.data.list[i].status == null) {
+                                html += "<td><a href='javascript:like("+1+","+data.data.list[i].productId+")'  style='color: #8D8D8D'>♥</a></td>";
+
+                            } else {
+                                html += data.data.list[i].status == 2 ? "<td><a href='javascript:like("+1+","+data.data.list[i].productId+")'  style='color: #8D8D8D'>♥"+data.data.list[i].count+"</a></td>" : "<td><a href='javascript:like("+2+","+data.data.list[i].productId+")'  style='color: red'>♥"+data.data.list[i].count+"</a></td>";
+
+                            }
                         }
                         // if (data.data.list[i].status == 1) {
                         //     html += "<td><a href='javascript:like("+userId+")'  style='color: #8D8D8D'>♥</a></td>";

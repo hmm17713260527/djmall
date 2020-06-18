@@ -69,23 +69,35 @@
 
 
         SELECT
-            login.ent_time AS echars_time,
-            COUNT(0) AS echars_count
+            COUNT(DISTINCT dalet.user_id) AS echars_count,
+            DATE_FORMAT(dalet.end_time, '%Y-%m-%d') AS echars_time
         FROM
-            (
-                SELECT
-                    dalet.user_id,
-                    MAX(dalet.end_time) AS ent_time
-                FROM
-                    djmall_auth_login_end_time dalet
-                LEFT JOIN djmall_auth_user_role daur ON daur.user_id = dalet.user_id
-                WHERE
-                    daur.role_id = 3
-                GROUP BY
-                    dalet.user_id,DATE_FORMAT(dalet.end_time, '%Y-%m-%d')
-            ) AS login
+            djmall_auth_login_end_time dalet
+        LEFT JOIN djmall_auth_user_role daur ON daur.user_id = dalet.user_id
+        WHERE
+            daur.role_id = 3
         GROUP BY
-            DATE_FORMAT(login.ent_time, '%Y-%m-%d')
+            DATE_FORMAT(dalet.end_time, '%Y-%m-%d')
+
+
+--         SELECT
+--             login.ent_time AS echars_time,
+--             COUNT(0) AS echars_count
+--         FROM
+--             (
+--                 SELECT
+--                     dalet.user_id,
+--                     MAX(dalet.end_time) AS ent_time
+--                 FROM
+--                     djmall_auth_login_end_time dalet
+--                 LEFT JOIN djmall_auth_user_role daur ON daur.user_id = dalet.user_id
+--                 WHERE
+--                     daur.role_id = 3
+--                 GROUP BY
+--                     dalet.user_id,DATE_FORMAT(dalet.end_time, '%Y-%m-%d')
+--             ) AS login
+--         GROUP BY
+--             DATE_FORMAT(login.ent_time, '%Y-%m-%d')
 
 
 

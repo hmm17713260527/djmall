@@ -18,6 +18,7 @@ import org.apache.shiro.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth/user/")
@@ -25,6 +26,48 @@ public class UserController {
 
     @Reference
     private UserApi userApi;
+
+
+
+    /**
+     * echars-饼图展示
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("pieShow")
+    public ResultModel<Object> pieShow() throws Exception {
+        List<UserDTOResp> list = userApi.findProductOrder();
+        return new ResultModel<>().success(DozerUtil.mapList(list, UserVOResp.class));
+
+    }
+
+
+
+    /**
+     * echars-柱形图展示
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("histogramShow")
+    public ResultModel<Object> histogramShow() throws Exception {
+        List<UserDTOResp> list = userApi.findUserOrderGroupByDay();
+        return new ResultModel<>().success(DozerUtil.mapList(list, UserVOResp.class));
+
+    }
+
+    /**
+     * echars-折线图展示
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("lineShow")
+    public ResultModel<Object> lineShow() throws Exception {
+        List<UserDTOResp> list = userApi.findUserLoginGroupByDay();
+        return new ResultModel<>().success(DozerUtil.mapList(list, UserVOResp.class));
+
+    }
+
+
 
     /**
      * 重置密码

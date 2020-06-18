@@ -37,6 +37,40 @@ public class UserPageController {
     private BaseDataApi baseDataApi;
 
 
+
+    /**
+     * 每天登陆用户的-折线图
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("echarsLineShow")
+    @RequiresPermissions(value = SystemConstant.ECHARSLINE_MANAGER)
+    public String echarsLineShow() throws Exception {
+        return "echars/line_show";
+    }
+
+    /**
+     * 每天成交的订单-柱状图
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("echarsHistogramShow")
+    @RequiresPermissions(value = SystemConstant.ECHARSHISTOGRAM_MANAGER)
+    public String echarsHistogramShow() throws Exception {
+        return "echars/histogram_show";
+    }
+
+    /**
+     * 各商品订单比例-饼状图
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("echarsPieShow")
+    @RequiresPermissions(value = SystemConstant.ECHARSPIE_MANAGER)
+    public String echarsPieShow() throws Exception {
+        return "echars/pie_show";
+    }
+
     /**
      * 去重置密码
      * @param model

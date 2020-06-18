@@ -13,8 +13,6 @@
     <script type="text/javascript" src="<%=request.getContextPath()%>\static\js\jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>\static\layer-v3.1.1\layer\layer.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>\static\js\echarts.min.js"></script>
-    <script type="text/javascript" src="<%=request.getContextPath()%>\static\js\token.js"></script>
-    <script type="text/javascript" src="<%=request.getContextPath()%>\static\js\cookie.js"></script>
     <script type="text/javascript">
 
 
@@ -23,7 +21,7 @@
         });
 
         function show() {
-            token_post("<%=request.getContextPath() %>/platform/auth/pieShow?TOKEN=" + getToken(),
+            $.get("<%=request.getContextPath() %>/auth/user/pieShow",
                 {},
                 function(data){
                     layer.msg(data.msg);
@@ -37,6 +35,7 @@
                         months.push(data.data[i].productName);
                         peopleNumbers.push(data.data[i].echarsCount);
                     }
+
                     var res=[];
                     $.each(data.data,function(key,v){
                         res.push({
@@ -44,6 +43,8 @@
                             name:v.productName
                         });
                     });
+
+
 
                     var myChart = echarts.init(document.getElementById('chartmain'));
                     myChart.clear();
@@ -69,16 +70,19 @@
                                 type: 'pie',
                                 radius: '55%',
                                 center: ['50%', '60%'],
-                                data:res
-                                /* data: [
-                                    {value: data.data[0].echarsCount, name: data.data[0].productName},
-                                    {value: data.data[1].echarsCount, name: data.data[1].productName},
-                                    {value: data.data[2].echarsCount, name: data.data[2].productName},
-                                    {value: data.data[3].echarsCount, name: data.data[3].productName},
-                                    {value: data.data[4].echarsCount, name: data.data[4].productName},
-                                    {value: data.data[5].echarsCount, name: data.data[5].productName}
-                                ]*/,
-                                emphasis: {
+                                data:res,
+                                //  data: [
+                                //     {value: data.data[0].echarsCount, name: data.data[0].productName},
+                                //     {value: data.data[1].echarsCount, name: data.data[1].productName},
+                                //     {value: data.data[2].echarsCount, name: data.data[2].productName},
+                                //     {value: data.data[3].echarsCount, name: data.data[3].productName},
+                                //     {value: data.data[4].echarsCount, name: data.data[4].productName}
+                                // ],
+
+
+
+
+                    emphasis: {
                                     itemStyle: {
                                         shadowBlur: 10,
                                         shadowOffsetX: 0,
