@@ -1,5 +1,6 @@
 package com.dj.mall.api.product.product_spu;
 
+import com.dj.mall.model.base.BusinessException;
 import com.dj.mall.model.dto.product.product_spu.ProductSpuDTOReq;
 import com.dj.mall.model.dto.product.product_spu.ProductSpuDTOResp;
 import com.dj.mall.model.util.PageResult;
@@ -93,4 +94,12 @@ public interface ProductSpuApi {
      * @throws Exception
      */
     void updateProductOrder(List<Integer> productIds) throws Exception;
+
+    /**
+     * poi导入
+     * @param productSpuDTOReq
+     * @throws Exception
+     * @throws BusinessException
+     */
+    void adds(ProductSpuDTOReq productSpuDTOReq) throws Exception, BusinessException;
 }

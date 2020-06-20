@@ -100,6 +100,22 @@
         function updateOrderCode(i) {
             $("#status_" + i).html("无消息处理");
         }
+
+
+        function poiExport() {
+            var index = layer.load(0, {shade:0.5});
+                $.get("<%=request.getContextPath() %>/auth/order/poiExport",
+                    $("#fm").serialize(),
+                    function(data){
+                        layer.close(index);
+                        if (data.code != 200) {
+                            layer.msg(data.msg);
+                            return;
+                        }
+                    });
+        }
+
+
     </script>
 </head>
 <body>
@@ -108,6 +124,10 @@
 
     <input type="hidden" name="userId" value="${user.userId}"/>
     <input type="hidden" name="roleId" value="${user.roleId}"/>
+
+    <shiro:hasPermission name="BTN_ORDER_EXPORT">
+        <input type="button" value="导出订单" onclick="poiExport()"/>
+    </shiro:hasPermission>
 
 </form>
 

@@ -40,4 +40,12 @@ public interface OrderInfoApi {
      */
     List<OrderInfoDTOResp> findOrderList(Integer userId, Integer roleId) throws Exception;
 
+    /**
+     * poi-订单导出
+     * @param userId
+     * @param roleId
+     * @return
+     * @throws Exception
+     */
+    List<OrderInfoDTOResp> findOrderExport(Integer userId, Integer roleId) throws Exception;
 }

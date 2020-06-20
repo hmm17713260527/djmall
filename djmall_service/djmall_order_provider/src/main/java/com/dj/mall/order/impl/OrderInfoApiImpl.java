@@ -102,4 +102,39 @@ public class OrderInfoApiImpl extends ServiceImpl<OrderInfoMapper, OrderInfo> im
         return DozerUtil.mapList(orderList, OrderInfoDTOResp.class);
     }
 
+
+    /**
+     * poi-订单导出
+     * @param userId
+     * @param roleId
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<OrderInfoDTOResp> findOrderExport(Integer userId, Integer roleId) throws Exception {
+        List<OrderInfoBO> orderList = this.baseMapper.findOrderExport(userId, roleId);
+        List<String> childOrderNoList = new ArrayList<>();
+        orderList.forEach(order -> {
+            childOrderNoList.add(order.getOrderNo());
+        });
+
+        if (childOrderNoList != null && childOrderNoList.size() > 0) {
+            List<OrderDetailDTOResp> orList = orderDetailApi.findOrderBychildOrderNoList(childOrderNoList);
+
+            orderList.forEach(order -> {
+                String productName = "";
+                for (OrderDetailDTOResp o : orList) {
+                    if (o.getChildOrderNo().equals(order.getOrderNo())) {
+                        productName += o.getProductName() + ",";
+                    }
+                }
+                order.setProductName(productName.substring(0, productName.length()-1));
+            });
+        }
+
+
+
+        return DozerUtil.mapList(orderList, OrderInfoDTOResp.class);
+    }
+
 }

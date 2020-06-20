@@ -353,4 +353,10 @@ public interface SystemConstant {
      *  echars-饼状图
      */
     String ECHARSPIE_MANAGER = "ECHARSPIE_MANAGER";
+
+
+    /**
+     * 该商品已存在，无需导入
+     */
+    String IMPORT_EXCEL_CODE = "该商品已存在，无需导入";
 }

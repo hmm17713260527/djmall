@@ -21,4 +21,6 @@ import java.util.List;
  */
 public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
     List<OrderInfoBO> findOrderList(@Param("userId") Integer userId, @Param("roleId") Integer roleId) throws DataAccessException;
+
+    List<OrderInfoBO> findOrderExport(@Param("userId") Integer userId, @Param("roleId") Integer roleId) throws DataAccessException;
 }

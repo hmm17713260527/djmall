@@ -133,6 +133,30 @@
     }
 
 
+    function poiExport() {
+        var index = layer.load(0, {shade:0.5});
+        $.get("<%=request.getContextPath() %>/auth/order/exportTemp",
+            {},
+            function(data){
+                layer.close(index);
+                if (data.code != 200) {
+                    layer.msg(data.msg);
+                    return;
+                }
+            });
+    }
+
+
+
+    function importExcel() {
+        var index = layer.load(0, {shade:0.5});
+        $.post("<%=request.getContextPath() %>/auth/order/importExcel",
+            {},
+            function(data){
+                layer.close(index);
+            });
+    }
+
 </script>
 </head>
 <body>
@@ -161,8 +185,14 @@
         <input type = "button" value = "上架/下架" onclick="updateStatus()"/>
     </shiro:hasPermission>
     <input type = "button" value = "查看评论"/>
-    <input type = "button" value = "下载导入模板"/>
-    <input type = "button" value = "导入"/><br/>
+
+    <shiro:hasPermission name="BTN_ORDER_EXPORT_TEMP">
+    <input type = "button" value = "下载导入模板" onclick="poiExport()"/>
+    </shiro:hasPermission>
+
+    <shiro:hasPermission name="BTN_ORDER_IMPORT">
+    <input type = "button" value = "导入" onclick="importExcel()"/>
+    </shiro:hasPermission><br/>
 
     <table cellpadding='12px' cellspacing='0px' border='1px'  bordercolor='gray' bgcolor='pink'>
         <tr>

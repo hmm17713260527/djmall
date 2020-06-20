@@ -12,6 +12,7 @@ import com.dj.mall.api.product.product_spu.ProductSpuApi;
 import com.dj.mall.entity.product.product_spu.ProductSpu;
 import com.dj.mall.mapper.bo.product.ProductSpuBO;
 import com.dj.mall.mapper.product.product_spu.ProductSpuMapper;
+import com.dj.mall.model.base.BusinessException;
 import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.product.like.UserLikeDTOReq;
 import com.dj.mall.model.dto.product.like.UserLikeDTOResp;
@@ -24,6 +25,7 @@ import com.dj.mall.model.util.DozerUtil;
 import com.dj.mall.model.util.PageResult;
 import com.dj.mall.model.util.QiniuUtils;
 import com.dj.mall.product.config.ProdcutSolr;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -427,6 +429,36 @@ public class ProductSpuApiImpl extends ServiceImpl<ProductSpuMapper, ProductSpu>
         });
 
         this.updateBatchById(list);
+
+    }
+
+    /**
+     * poi导入
+     * @param productSpuDTOReq
+     * @throws Exception
+     * @throws BusinessException
+     */
+    @Override
+    public void adds(ProductSpuDTOReq productSpuDTOReq) throws Exception, BusinessException {
+
+        QueryWrapper<ProductSpu> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("product_name", productSpuDTOReq.getProductName());
+        ProductSpu one = this.getOne(queryWrapper);
+        if (one != null) {
+            throw new BusinessException(SystemConstant.IMPORT_EXCEL_CODE);
+        }
+
+        ProductSpu productSpu = DozerUtil.map(productSpuDTOReq, ProductSpu.class);
+        this.save(productSpu);
+
+        List<ProductSkuDTOReq> productSkuList = productSpuDTOReq.getProductSkuList();
+
+        productSkuList.forEach(product -> {
+            product.setProductId(productSpu.getId());
+        });
+
+
+        productSkuApi.addProduct(productSkuList);
 
     }
 
