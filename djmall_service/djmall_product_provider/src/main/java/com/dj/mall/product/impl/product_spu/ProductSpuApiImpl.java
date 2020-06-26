@@ -305,7 +305,7 @@ public class ProductSpuApiImpl extends ServiceImpl<ProductSpuMapper, ProductSpu>
      * @throws Exception
      */
     @Override
-    public List<ProductSpuDTOResp> findProductUserLike(List<Integer> productIds, Integer userLikeId) throws Exception {
+    public List<UserLikeDTOResp> findProductUserLike(List<Integer> productIds, Integer userLikeId) throws Exception {
 
         //赞
         UserLikeDTOReq userLikeDTOReq = new UserLikeDTOReq();
@@ -319,17 +319,32 @@ public class ProductSpuApiImpl extends ServiceImpl<ProductSpuMapper, ProductSpu>
         //各个商品的点赞量
         List<UserLikeDTOResp> userLikeCount = userLikeApi.findLikeCount(userLikeDTOReq);
 
-        productSpuDTOResps.forEach(product -> {
-            for (UserLikeDTOResp userLike : userLikeCount) {
+
+        userLikeCount.forEach(product -> {
+
+            if (productSpuDTOResps == null || productSpuDTOResps.size() == 0) {
+                return;
+            }
+            for (ProductSpuDTOResp userLike : productSpuDTOResps) {
                 if (product.getProductId().equals(userLike.getProductId())) {
-                    product.setCount(userLike.getCount());
+                    product.setStatus(userLike.getStatus());
                     return;
                 }
             }
-            product.setCount(0);
+            product.setStatus(2);
         });
+
+//        productSpuDTOResps.forEach(product -> {
+//            for (UserLikeDTOResp userLike : userLikeCount) {
+//                if (product.getProductId().equals(userLike.getProductId())) {
+//                    product.setCount(userLike.getCount());
+//                    return;
+//                }
+//            }
+//            product.setCount(0);
+//        });
         
-        return productSpuDTOResps;
+        return userLikeCount;
     }
 
 
@@ -389,16 +404,20 @@ public class ProductSpuApiImpl extends ServiceImpl<ProductSpuMapper, ProductSpu>
 
                 if (productIds != null && productIds.size() > 0) {
 
-                    List<ProductSpuDTOResp> proList = this.findProductUserLike(productIds, productSpuDTOReq.getUserLikeId());
+                    List<UserLikeDTOResp> productUserLike = this.findProductUserLike(productIds, productSpuDTOReq.getUserLikeId());
 
                     productSpuSolrDTOResps.forEach(product -> {
-                        for (ProductSpuDTOResp pro : proList) {
+                        for (UserLikeDTOResp pro : productUserLike) {
                             if (product.getProductId().equals(pro.getProductId())) {
                                 product.setCount(pro.getCount());
                                 product.setStatus(pro.getStatus());
                                 return;
                             }
                         }
+
+                        product.setCount(0);
+                        product.setStatus(2);
+
                     });
 
                 }

@@ -301,7 +301,7 @@
 <%--    <input type="hidden" id="skuCount">--%>
     <input type="hidden" id="skuPrice" name="skuPrice" value="${product.skuPrice}">
     <input type="hidden" id = "rate" name="skuRate" value="${product.skuRate}">
-    <img src="http://qazo01v5q.bkt.clouddn.com/${product.img}" width="100px" height="100px"><br>
+    <img src="http://qbdozixhr.bkt.clouddn.com/${product.img}" width="100px" height="100px"><br>
     名称:${product.productName}&nbsp;
     原价:<span id="skuPrice">${product.skuPrice}</span><br>
     折扣:

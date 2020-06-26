@@ -67,20 +67,20 @@
                         html += "<td>"+data.data.list[i].skuRate+"%</td>";
                         html += "<td>"+data.data.list[i].freight+"</td>";
                         html += "<td>";
-                        html += "<img src=\"http://qazo01v5q.bkt.clouddn.com/"+data.data.list[i].img+"\" width=\"80px\" height=\"60px\">"
+                        html += "<img src=\"http://qbdozixhr.bkt.clouddn.com/"+data.data.list[i].img+"\" width=\"80px\" height=\"60px\">"
                         html += "</td>";
                         html += "<td>"+data.data.list[i].productDescribe+"</td>";
 
                         if (userId == null) {
                             html += "<td><a href='javascript:like("+2+","+data.data.list[i].productId+")'  style='color: #8D8D8D'>♥</a></td>";
                         } else {
-                            if (data.data.list[i].status == null) {
-                                html += "<td><a href='javascript:like("+1+","+data.data.list[i].productId+")'  style='color: #8D8D8D'>♥</a></td>";
-
-                            } else {
+                            // if (data.data.list[i].status == null) {
+                            //     html += "<td><a href='javascript:like("+1+","+data.data.list[i].productId+")'  style='color: #8D8D8D'>♥</a></td>";
+                            //
+                            // } else {
                                 html += data.data.list[i].status == 2 ? "<td><a href='javascript:like("+1+","+data.data.list[i].productId+")'  style='color: #8D8D8D'>♥"+data.data.list[i].count+"</a></td>" : "<td><a href='javascript:like("+2+","+data.data.list[i].productId+")'  style='color: red'>♥"+data.data.list[i].count+"</a></td>";
 
-                            }
+                            //}
                         }
                         // if (data.data.list[i].status == 1) {
                         //     html += "<td><a href='javascript:like("+userId+")'  style='color: #8D8D8D'>♥</a></td>";

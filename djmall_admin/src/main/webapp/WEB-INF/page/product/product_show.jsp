@@ -41,7 +41,7 @@
                     html += "<input type='hidden' id = '"+data.data.list[i].productId+"' value = '"+data.data.list[i].spuStatus+"'/>";
                     html += "<td>"+data.data.list[i].freight+"</td>";
                     html += "<td>";
-                    html += "<img src=\"http://qazo01v5q.bkt.clouddn.com/"+data.data.list[i].img+"\" width=\"80px\" height=\"60px\">"
+                    html += "<img src=\"http://qbdozixhr.bkt.clouddn.com/"+data.data.list[i].img+"\" width=\"80px\" height=\"60px\">"
                     html += "</td>";
                     html += "<td>"+data.data.list[i].productDescribe+"</td>";
                     html += "<td>"+data.data.list[i].praise+"</td>";

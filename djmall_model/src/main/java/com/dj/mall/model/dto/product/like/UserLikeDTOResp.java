@@ -41,7 +41,7 @@ public class UserLikeDTOResp implements Serializable {
     /**
      * 1赞，2无
      */
-    private Integer status;
+    private Integer status = 2;
 
     /**
      * 点赞个数

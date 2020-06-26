@@ -1,6 +1,7 @@
 package com.dj.mall.api.product.product_spu;
 
 import com.dj.mall.model.base.BusinessException;
+import com.dj.mall.model.dto.product.like.UserLikeDTOResp;
 import com.dj.mall.model.dto.product.product_spu.ProductSpuDTOReq;
 import com.dj.mall.model.dto.product.product_spu.ProductSpuDTOResp;
 import com.dj.mall.model.util.PageResult;
@@ -78,7 +79,7 @@ public interface ProductSpuApi {
      * @return
      * @throws Exception
      */
-    List<ProductSpuDTOResp> findProductUserLike(List<Integer> productIds, Integer userLikeId) throws Exception;
+    List<UserLikeDTOResp> findProductUserLike(List<Integer> productIds, Integer userLikeId) throws Exception;
 
     /**
      * 商品首页展示-solr

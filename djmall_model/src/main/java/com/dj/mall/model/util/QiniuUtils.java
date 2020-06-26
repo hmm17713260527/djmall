@@ -12,29 +12,50 @@ import java.io.InputStream;
 
 public class QiniuUtils {
 
+//    /**
+//     * 密钥AK
+//     */
+//    private static final String ACCESSKEY = "hMAwMGAZYIw0KzTyYNJA1wHU4kefk-j9G3Jhzp-d";
+//
+//    /**
+//     * 密钥SK
+//     */
+//    private static final String SECRETKEY = "UekV0k8ydkdlus9iLn3b3ecRDhDxsVs3Z4cAXr6j";
+//
+//    /**
+//     * 存储空间名称
+//     * 1975977946
+//     *
+//     */
+//    private static final String BUCKET = "zjq01";
+//
+//    /**
+//     * 下载链接
+//     * http://q9cgmldxi.bkt.clouddn.com/
+//     * http://qazo01v5q.bkt.clouddn.com/
+//     */
+//    public static final String URL = "http://qazo01v5q.bkt.clouddn.com/";
+
     /**
      * 密钥AK
      */
-    private static final String ACCESSKEY = "hMAwMGAZYIw0KzTyYNJA1wHU4kefk-j9G3Jhzp-d";
+    private static final String ACCESSKEY = "ZFQJWv71iFy0OiJDPVtF7FQ7qmMlyl4B__JqXa3R";
 
     /**
      * 密钥SK
      */
-    private static final String SECRETKEY = "UekV0k8ydkdlus9iLn3b3ecRDhDxsVs3Z4cAXr6j";
+    private static final String SECRETKEY = "9qnkG8AS1-p_LyHNTyueQ5RO2OSIJLWk3lmLvTWw";
 
     /**
      * 存储空间名称
-     * 1975977946
-     *
      */
-    private static final String BUCKET = "zjq01";
+    private static final String BUCKET = "wbbimg";
 
     /**
      * 下载链接
-     * http://q9cgmldxi.bkt.clouddn.com/
-     * http://qazo01v5q.bkt.clouddn.com/
      */
-    public static final String URL = "http://qazo01v5q.bkt.clouddn.com/";
+    public static final String URL = "http://qbdozixhr.bkt.clouddn.com/";
+
 
     /**
      * 构造一个带指定 Region 对象的配置类
