@@ -21,7 +21,7 @@ import com.dj.mall.model.base.SystemConstant;
 /**
  * 单播-消费者
  */
-@Component
+//@Component
 public class EmailConsumer {
 
 

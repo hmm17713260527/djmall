@@ -19,6 +19,12 @@
             return tel.test(value)
         }, "请正确填写您的手机号");
 
+    // 判断用户名昵称不同
+    jQuery.validator.addMethod("notEqu",
+        function(value, element) {
+            return value != $("#userName").val();
+        }, "用户名昵称需不同!");
+
     jQuery.validator.addMethod("email",
         function(value, element) {
             var tel = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
@@ -53,7 +59,8 @@
                 },
                 nickName:{
                     required:true,
-                    minlength:2
+                    minlength:2,
+                    notEqu:true
                 },
                 password:{
                     required:true,

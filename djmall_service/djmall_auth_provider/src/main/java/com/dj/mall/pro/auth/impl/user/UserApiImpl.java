@@ -243,11 +243,12 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         this.save(user);
         userRoleMapper.insert(UserRole.builder().userId(user.getId()).roleId(user.getType()).isDel(SystemConstant.IS_DEL).build());
 
-        if (!userDTOReq.getStatus().equals(SystemConstant.ACTIVE)) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("email", user.getEmail());
-            rabbitTemplate.convertAndSend("direct", "emailQueue", jsonObject.toJSONString());
-        }
+        //消息
+//        if (!userDTOReq.getStatus().equals(SystemConstant.ACTIVE)) {
+//            JSONObject jsonObject = new JSONObject();
+//            jsonObject.put("email", user.getEmail());
+//            rabbitTemplate.convertAndSend("direct", "emailQueue", jsonObject.toJSONString());
+//        }
 
     }
 

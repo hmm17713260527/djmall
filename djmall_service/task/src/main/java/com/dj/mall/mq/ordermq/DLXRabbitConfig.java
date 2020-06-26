@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * 死信-配置
  */
-@Configuration
+//@Configuration
 public class DLXRabbitConfig {
 
     /**

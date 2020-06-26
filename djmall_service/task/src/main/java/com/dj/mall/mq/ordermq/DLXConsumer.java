@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 /**
  * 死信-消费者
  */
-@Component
+//@Component
 public class DLXConsumer {
 
 

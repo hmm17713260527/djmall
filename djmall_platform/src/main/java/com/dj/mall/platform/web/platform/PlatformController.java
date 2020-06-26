@@ -182,7 +182,7 @@ public class PlatformController {
      * @return
      * @throws Exception
      */
-    @PostMapping("auth/platUpdateUser")
+    @PostMapping("platUpdateUser")
     public ResultModel<Object> update(UserVOReq userVOReq, MultipartFile file) throws Exception {
         if (!StringUtils.isEmpty(file.getOriginalFilename())) {
             String fileName = UUID.randomUUID().toString().replace(SystemConstant.PARENT_NAME, SystemConstant.EXCEPTION)

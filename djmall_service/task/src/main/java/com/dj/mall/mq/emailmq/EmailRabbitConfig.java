@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * 单播-配置
  */
-@Configuration
+//@Configuration
 public class EmailRabbitConfig {
 
 

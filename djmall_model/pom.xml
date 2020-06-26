@@ -12,6 +12,10 @@
     <artifactId>djmall_model</artifactId>
     <packaging>jar</packaging>
 
+    <properties>
+        <httpclient.version>4.5.6</httpclient.version>
+        <httpcore.version>4.4.10</httpcore.version>
+    </properties>
 
     <dependencies>
 
@@ -58,6 +62,25 @@
             <artifactId>jackson-annotations</artifactId>
             <version>2.10.2</version>
             <scope>compile</scope>
+        </dependency>
+
+        <!-- httpclient -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${httpclient.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>${httpclient.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>${httpcore.version}</version>
         </dependency>
 
     </dependencies>

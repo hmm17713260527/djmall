@@ -49,7 +49,7 @@
                 var formData = new FormData($("#fm")[0]);
                 var index = layer.load();
                 $.ajax({
-                    url:'<%=request.getContextPath()%>/platform/auth/platUpdateUser?TOKEN='+getToken(),
+                    url:'<%=request.getContextPath()%>/platform/platUpdateUser',
                     dataType:'json',
                     type:'POST',
                     data: formData,
@@ -61,7 +61,7 @@
                             if (data.code != 200) {
                                 return;
                             }
-                            window.location.href = "<%=request.getContextPath()%>/platform/auth/toIndex?TOKEN=" + getToken();
+                            parent.window.location.href = "<%=request.getContextPath()%>/platform/auth/toIndex?TOKEN=" + getToken();
                         })
                     }
                 });

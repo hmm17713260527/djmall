@@ -137,4 +137,36 @@ public class OrderInfoApiImpl extends ServiceImpl<OrderInfoMapper, OrderInfo> im
         return DozerUtil.mapList(orderList, OrderInfoDTOResp.class);
     }
 
+
+    /**
+     * 查询发货后，15天还没收货的
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public void findOrderInfoByTime() throws Exception {
+        QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("order_status", "确认收货");
+        List<OrderInfo> list = this.list(queryWrapper);
+        List<OrderInfo> list1 = new ArrayList<>();
+        list.forEach(order -> {
+            if (LocalDateTime.now().toLocalDate().toEpochDay() - order.getUpdateTime().toLocalDate().toEpochDay() > 15) {
+                list1.add(order);
+            }
+        });
+
+        if (list1 != null && list1.size() > 0) {
+
+            list1.forEach(order -> {
+                UpdateWrapper<OrderInfo> updateWrapper = new UpdateWrapper<>();
+                updateWrapper.set("order_status", "已完成").set("update_time", LocalDateTime.now()).eq("order_no", order.getOrderNo());
+                this.update(updateWrapper);
+                //order.setOrderStatus("已完成");
+            });
+
+        }
+
+
+    }
+
 }

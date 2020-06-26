@@ -48,4 +48,11 @@ public interface OrderInfoApi {
      * @throws Exception
      */
     List<OrderInfoDTOResp> findOrderExport(Integer userId, Integer roleId) throws Exception;
+
+    /**
+     * 查询发货后，15天还没收货的
+     * @return
+     * @throws Exception
+     */
+    void findOrderInfoByTime() throws Exception;
 }

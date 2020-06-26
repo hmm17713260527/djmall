@@ -1,4 +1,5 @@
 package com.dj.mall.product.impl.product_spu;
+import	java.time.LocalDateTime;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -79,11 +80,13 @@ public class ProductSpuApiImpl extends ServiceImpl<ProductSpuMapper, ProductSpu>
     public void addProduct(ProductSpuDTOReq productSpuDTOReq, byte[] bytes) throws Exception {
 
         ProductSpu productSpu = DozerUtil.map(productSpuDTOReq, ProductSpu.class);
+        productSpu.setCreateTime(LocalDateTime.now());
         this.save(productSpu);
 
         List<ProductSkuDTOReq> productSkuList = productSpuDTOReq.getProductSkuList();
 
         productSkuList.forEach(productSku -> {
+            productSku.setCreateTime(LocalDateTime.now());
             productSku.setProductId(productSpu.getId());
         });
 
