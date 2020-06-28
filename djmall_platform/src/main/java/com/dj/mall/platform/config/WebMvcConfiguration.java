@@ -27,5 +27,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         // 拦截请求
         interceptorRegistration.addPathPatterns("/platform/auth/**");
         interceptorRegistration.addPathPatterns("/order/**");
+
+        interceptorRegistration.excludePathPatterns("/order/aliPayCallBack");
+        interceptorRegistration.excludePathPatterns("/order/aliPaySuccess/**");
     }
 }

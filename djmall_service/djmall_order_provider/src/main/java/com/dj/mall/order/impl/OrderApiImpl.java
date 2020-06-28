@@ -32,6 +32,7 @@ import com.dj.mall.model.dto.auth.user.UserShoppingDTOResp;
 import com.dj.mall.model.dto.order.*;
 import com.dj.mall.model.dto.product.product_sku.ProductSkuDTOReq;
 import com.dj.mall.model.dto.product.product_sku.ProductSkuDTOResp;
+import com.dj.mall.model.util.AliPayUtils;
 import com.dj.mall.model.util.DozerUtil;
 import com.dj.mall.model.util.PageResult;
 import org.apache.commons.lang3.StringUtils;
@@ -267,7 +268,7 @@ public class OrderApiImpl extends ServiceImpl<OrderMapper, Order> implements Ord
      * @throws Exception
      */
     @Override
-    public void commitOrder(OrderDTOReq map) throws Exception, BusinessException {
+    public String commitOrder(OrderDTOReq map) throws Exception, BusinessException {
         //地址
         UserSiteBO userSiteBO = userSiteMapper.findSiteDetailById(map.getSiteId());
 
@@ -467,7 +468,15 @@ public class OrderApiImpl extends ServiceImpl<OrderMapper, Order> implements Ord
         //购物车删除
         userShoppingApi.delUserShoppingAll(map.getIds());
 
+
+        if (order.getPayType().equals("ALY_PAY")) {
+            return AliPayUtils.toAliPay(order.getOrderNo(), order.getTotalPayMoney().doubleValue(), order.getProductName(), map.getTOKEN());
+        }
+        return null;
+
     }
+
+
 
     /**
      * 再次购买
@@ -564,5 +573,25 @@ public class OrderApiImpl extends ServiceImpl<OrderMapper, Order> implements Ord
         }
 
 
+    }
+
+
+    /**
+     * aliuay支付
+     * @param map
+     * @throws Exception
+     */
+    @Override
+    public String alipayUpdateOrder(OrderDTOReq map) throws Exception {
+        QueryWrapper<Order> objectQueryWrapper = new QueryWrapper<>();
+        objectQueryWrapper.eq("order_no", map.getOrderNo());
+        Order one = this.getOne(objectQueryWrapper);
+
+        if (one.getPayType().equals("ALY_PAY")) {
+            return AliPayUtils.toAliPay("only-"+one.getOrderNo(), one.getTotalPayMoney().doubleValue(), one.getProductName(), map.getTOKEN());
+        }
+
+        this.updateOrderStatus(map);
+        return null;
     }
 }

@@ -221,7 +221,7 @@
         </c:forEach>
     </select><br/>
     描述:<input type="text" name="productDescribe" value="${product.productDescribe}"><br />
-    图片:<img src="http://qbdozixhr.bkt.clouddn.com/${product.img}" width="100px" height="100px">
+    图片:<img src="http://qck9lda56.bkt.clouddn.com/${product.img}" width="100px" height="100px">
     <input type = "file" name = "file"/><br/>
 </form>
 

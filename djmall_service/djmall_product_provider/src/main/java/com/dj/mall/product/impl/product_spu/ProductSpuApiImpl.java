@@ -117,53 +117,57 @@ public class ProductSpuApiImpl extends ServiceImpl<ProductSpuMapper, ProductSpu>
 
         List<ProductSpuBO> productList = pageInfo.getRecords();
 
-        productList.forEach(product -> {
-            String[] split = product.getSkuAttrNames().split(",");
-            String[] split1 = product.getSkuAttrValueNames().split(",");
-            for (int i = 0; i < split.length; i++) {
-                String s = split[i] + "1";
-                product.setProductDescribe(product.getProductDescribe().replace(s, split1[i]));
-            }
+        if (productList != null && productList.size() > 0) {
 
-            if (product.getSkuRate() == 0 || product.getSkuRate() == 100) {
-                product.setSkuRateShow("无");
+            productList.forEach(product -> {
+                String[] split = product.getSkuAttrNames().split(",");
+                String[] split1 = product.getSkuAttrValueNames().split(",");
+                for (int i = 0; i < split.length; i++) {
+                    String s = split[i] + "1";
+                    product.setProductDescribe(product.getProductDescribe().replace(s, split1[i]));
+                }
+
+                if (product.getSkuRate() == 0 || product.getSkuRate() == 100) {
+                    product.setSkuRateShow("无");
+                } else {
+                    product.setSkuRateShow(product.getSkuRate() + "%");
+                }
+
+            });
+
+
+            //订单量
+            List<Integer> Ids = new ArrayList<>();
+            productList.forEach(product -> {
+                Ids.add(product.getProductId());
+            });
+
+            List<ProductSpuBO> list = this.baseMapper.findOrderCount(Ids);
+
+            if (list == null || list.size() == 0) {
+
+                productList.forEach(product -> {
+                    product.setOrderCount(0);
+                });
+
             } else {
-                product.setSkuRateShow(product.getSkuRate() + "%");
+
+                productList.forEach(product -> {
+
+                    for (ProductSpuBO pro : list) {
+
+                        if (product.getProductId().equals(pro.getProductId())) {
+                            product.setOrderCount(pro.getOrderCount());
+                            return;
+                        }
+
+                    }
+                    product.setOrderCount(0);
+                });
+
             }
 
-        });
-
-
-        //订单量
-        List<Integer> Ids = new ArrayList<>();
-        productList.forEach(product -> {
-            Ids.add(product.getProductId());
-        });
-
-        List<ProductSpuBO> list = this.baseMapper.findOrderCount(Ids);
-
-         if (list == null || list.size() == 0) {
-
-             productList.forEach(product -> {
-                 product.setOrderCount(0);
-             });
-
-         } else {
-
-             productList.forEach(product -> {
-
-                 for (ProductSpuBO pro : list) {
-
-                     if (product.getProductId().equals(pro.getProductId())) {
-                         product.setOrderCount(pro.getOrderCount());
-                         return;
-                     }
-
-                 }
-                 product.setOrderCount(0);
-             });
-
-         }
+        }
 
 
 //        if (productSpuBO.getUserLikeId() != null) {

@@ -222,6 +222,10 @@
                 "<%=request.getContextPath()%>/order/auth/updateOrderStatus?TOKEN="+getToken(),
                 {"orderStatus": orderStatus, "orderNo": orderNo},
                 function (data) {
+                    if (data.data != null) {
+                        $("#aliPayDiv").append(data.data);
+                        return;
+                    }
                     window.location.reload();
                 }
             )
@@ -347,6 +351,6 @@
         </div>
     </div>
 </div>
-
+<div id="aliPayDiv"></div>
 </body>
 </html>

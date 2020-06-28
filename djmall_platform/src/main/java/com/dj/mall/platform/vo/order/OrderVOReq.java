@@ -38,6 +38,11 @@ public class OrderVOReq implements Serializable {
     private String orderNo;
 
     /**
+     * TOKEN
+     */
+    private String TOKEN;
+
+    /**
      * 子订单号
      */
     private String childOrderNo;

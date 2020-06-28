@@ -39,23 +39,22 @@ public class QiniuUtils {
     /**
      * 密钥AK
      */
-    private static final String ACCESSKEY = "ZFQJWv71iFy0OiJDPVtF7FQ7qmMlyl4B__JqXa3R";
+    private static final String ACCESSKEY = "E3VGC7XYI3oFvn8C8Z1y5WTWjE9fBEnqM_O0k20w";
 
     /**
      * 密钥SK
      */
-    private static final String SECRETKEY = "9qnkG8AS1-p_LyHNTyueQ5RO2OSIJLWk3lmLvTWw";
+    private static final String SECRETKEY = "EX86ALr2CMWUkWbGZOzEaKeRpSU7BrfVv2Lsglfx";
 
     /**
      * 存储空间名称
      */
-    private static final String BUCKET = "wbbimg";
+    private static final String BUCKET = "djmallimg";
 
     /**
      * 下载链接
      */
-    public static final String URL = "http://qbdozixhr.bkt.clouddn.com/";
-
+    public static final String URL = "http://qck9lda56.bkt.clouddn.com/";
 
     /**
      * 构造一个带指定 Region 对象的配置类

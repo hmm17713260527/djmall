@@ -100,12 +100,19 @@
             token_post("<%=request.getContextPath()%>/order/auth/commitOrder?TOKEN="+getToken(),
                 $("#fm").serialize(),
                 function(data){
-                    if(data.code == -1){
-                        layer.close(index);
-                        layer.msg(data.msg, {icon: 5});
-                        return
-                    }
+                if (data != null) {
+                    $("#aliPayDiv").append(data);
+                    return;
+                }
+
                     window.location.href = "<%=request.getContextPath()%>/platform/auth/toIndex?TOKEN=" + getToken()
+
+                    <%--if(data.code == -1){--%>
+                    <%--    layer.close(index);--%>
+                    <%--    layer.msg(data.msg, {icon: 5});--%>
+                    <%--    return--%>
+                    <%--}--%>
+                    <%--window.location.href = "<%=request.getContextPath()%>/platform/auth/toIndex?TOKEN=" + getToken()--%>
                 }
             )
         }
@@ -113,9 +120,22 @@
         function toFindUserShopping() {
             window.location.href = "<%=request.getContextPath()%>/platform/auth/toFindUserShopping?TOKEN=" + getToken();
         }
+
+        function toAdd() {
+            layer.open({
+                type: 2,
+                title: '新增地址页面',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['380px', '80%'],
+                content: '<%=request.getContextPath()%>/platform/auth/toAdd?TOKEN='+getToken()
+            });
+        }
+
     </script>
 </head>
 <body>
+<div id="aliPayDiv"></div>
 <form id = "fm">
 
     收货人信息
@@ -124,6 +144,7 @@
             <option value="${site.siteId}">${site.consignee}-${site.phone}-${site.provinceShow}${site.cityShow}${site.countyShow}${site.site}</option>
         </c:forEach>
     </select>
+    <a href="javascript:toAdd()">点我，收货地址+1</a><br>
     <div id = "tbd"></div>
     支付方式
     <select name="payType">

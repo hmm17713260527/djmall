@@ -61,7 +61,7 @@ public interface OrderApi {
      * @param map
      * @throws Exception
      */
-    void commitOrder(OrderDTOReq map) throws Exception, BusinessException;
+    String commitOrder(OrderDTOReq map) throws Exception, BusinessException;
 
     /**
      * 再次购买
@@ -83,4 +83,11 @@ public interface OrderApi {
      * @throws Exception
      */
     void mqDlx(String orderNo) throws Exception;
+
+    /**
+     * aliuay支付
+     * @param map
+     * @throws Exception
+     */
+    String alipayUpdateOrder(OrderDTOReq map) throws Exception;
 }

@@ -67,7 +67,7 @@
                         html += "<td>"+data.data.list[i].skuRate+"%</td>";
                         html += "<td>"+data.data.list[i].freight+"</td>";
                         html += "<td>";
-                        html += "<img src=\"http://qbdozixhr.bkt.clouddn.com/"+data.data.list[i].img+"\" width=\"80px\" height=\"60px\">"
+                        html += "<img src=\"http://qck9lda56.bkt.clouddn.com/"+data.data.list[i].img+"\" width=\"80px\" height=\"60px\">"
                         html += "</td>";
                         html += "<td>"+data.data.list[i].productDescribe+"</td>";
 

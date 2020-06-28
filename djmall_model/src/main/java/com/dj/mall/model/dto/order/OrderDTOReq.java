@@ -31,6 +31,11 @@ public class OrderDTOReq implements Serializable {
     private Integer pageNo;
 
     /**
+     * TOKEN
+     */
+    private String TOKEN;
+
+    /**
      * 订单号
      */
     private String orderNo;

@@ -40,6 +40,18 @@ public class OrderPageController {
     @Reference
     private RedisApi redisApi;
 
+
+    /**
+     * 支付宝同路url
+     * @return
+     */
+    @RequestMapping("aliPaySuccess")
+    public String aliPaySuccess(String TOKEN, Model model){
+
+        model.addAttribute("token", TOKEN);
+        return "aliPaySuccess";
+    }
+
     /**
      * 订单评论展示
      * @param childOrderNo
