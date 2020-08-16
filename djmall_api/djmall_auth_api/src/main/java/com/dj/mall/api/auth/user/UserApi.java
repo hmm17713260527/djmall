@@ -66,6 +66,7 @@ public interface UserApi {
      * @throws Exception
      */
     PageResult findUserList(UserDTOReq userDTOReq) throws Exception;
+    PageResult findUserListTest(Integer pageNo) throws Exception;
 
 
     /**
@@ -142,6 +143,7 @@ public interface UserApi {
      * @throws Exception
      */
     UserTokenDTOResp platformLogin(UserDTOReq userDTOReq) throws Exception, BusinessException;
+    String testformLogin(String userName, String password) throws Exception, BusinessException;
 
     /**
      * 手机短信验证登陆
@@ -195,4 +197,13 @@ public interface UserApi {
      * @throws Exception
      */
     List<UserDTOResp> findProductOrder() throws Exception;
+
+    /**
+     * test新增
+     * @param userDTOReq
+     * @throws Exception
+     */
+    ResultModel<Object> testAddUser(UserDTOReq userDTOReq) throws Exception;
+
+    void updateUserById(UserDTOReq map) throws Exception;
 }

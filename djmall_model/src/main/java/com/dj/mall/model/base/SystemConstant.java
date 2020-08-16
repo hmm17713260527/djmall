@@ -6,6 +6,16 @@ public interface SystemConstant {
 
 
     /**
+     * id不能为空
+     */
+    String ID_IS_NULL = "id不能为空";
+
+    /**
+     * 已存在
+     */
+    String USER_STATUS_NOT = "已存在";
+
+    /**
      * 请点击短信验证码发送
      */
     String SEND_LOAD = "请点击短信验证码发送";
@@ -84,7 +94,7 @@ public interface SystemConstant {
     /**
      * 页面大小
      */
-    Integer PAGE_SIZE = 5;
+    Integer PAGE_SIZE = 2;
 
     /**
      * 用户角色ID
@@ -180,7 +190,7 @@ public interface SystemConstant {
     /**
      * 登陆输入为null
      */
-    String LOGIN_NULL = "登陆输入为null";
+    String LOGIN_NULL = "输入不能为null";
 
 
     /**

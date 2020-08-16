@@ -1,0 +1,23 @@
+server:
+  port: 8085
+  servlet:
+    context-path: /
+
+
+# Dubbo
+dubbo:
+  application:
+    name: test # 应用名
+    qos-enable: false # 关闭在线调试
+  registry:
+    address: zookeeper://127.0.0.1:2181 # 注册中心地址
+  consumer:
+    check: false
+    timeout: 180000
+  provider:
+    timeout: 180000
+
+
+
+swagger:
+  enabled: true

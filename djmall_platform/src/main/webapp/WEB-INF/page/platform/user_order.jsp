@@ -100,12 +100,15 @@
             token_post("<%=request.getContextPath()%>/order/auth/commitOrder?TOKEN="+getToken(),
                 $("#fm").serialize(),
                 function(data){
-                if (data != null) {
+                if (data != "") {
                     $("#aliPayDiv").append(data);
                     return;
+                } else {
+                    window.location.href = "<%=request.getContextPath()%>/platform/toShow";
+
                 }
 
-                    window.location.href = "<%=request.getContextPath()%>/platform/auth/toIndex?TOKEN=" + getToken()
+                   // window.location.href = "<%=request.getContextPath()%>/platform/auth/toIndex?TOKEN=" + getToken()
 
                     <%--if(data.code == -1){--%>
                     <%--    layer.close(index);--%>

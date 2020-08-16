@@ -181,6 +181,17 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         return PageResult.builder().paramList(DozerUtil.mapList(roleList, RoleDTOResp.class)).list(DozerUtil.mapList(pageInfo.getRecords(), UserDTOResp.class)).pages(pageInfo.getPages()).build();
     }
 
+    @Override
+    public PageResult findUserListTest(Integer pageNo) throws Exception {
+        Page<UserBo> page = new Page();
+        page.setCurrent(pageNo);
+        page.setSize(SystemConstant.PAGE_SIZE);
+        UserBo userBO = new UserBo();
+        IPage<UserBo> pageInfo = getBaseMapper().findUserList(page, userBO);
+
+        return PageResult.builder().list(DozerUtil.mapList(pageInfo.getRecords(), UserDTOResp.class)).pages(pageInfo.getPages()).build();
+    }
+
 
     /**
      * 登陆查盐
@@ -427,6 +438,31 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
         return userTokenDTOResp;
     }
 
+    @Override
+    public String testformLogin(String userName, String password) throws Exception, BusinessException {
+
+        QueryWrapper<User> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("user_name", userName);
+        queryWrapper.or().eq("email", userName);
+        queryWrapper.or().eq("phone", userName);
+        User user = this.getOne(queryWrapper);
+        if (user == null) {
+            throw new BusinessException(-2, SystemConstant.USER_NOT_Z);
+        }
+        if (!password.equals(user.getPassword())) {
+            throw new BusinessException(-3, SystemConstant.IS_DEL_NOT);
+        }
+
+        userLoginEndTimeMapper.insert(UserLoginEndTime.builder().userId(user.getId()).endTime(LocalDateTime.now()).isDel(SystemConstant.IS_DEL).build());
+
+        //生成token
+        String token = UUID.randomUUID().toString().replace("-", "");
+
+        redisApi.set(RedisConstant.USER_TOKEN + token, DozerUtil.map(user, UserDTOResp.class), 22 * 24 * 60 * 60);
+        return token;
+
+    }
+
     /**
      * 手机短信验证登陆
      * @param phoneNumber
@@ -535,6 +571,29 @@ public class UserApiImpl extends ServiceImpl<UserMapper, User> implements UserAp
     public List<UserDTOResp> findProductOrder() throws Exception {
         List<UserBo> list = this.baseMapper.findProductOrder();
         return DozerUtil.mapList(list, UserDTOResp.class);
+    }
+
+    /**
+     * test新增
+     * @param userDTOReq
+     * @throws Exception
+     */
+    @Override
+    public ResultModel<Object> testAddUser(UserDTOReq userDTOReq) throws Exception {
+
+        QueryWrapper<User> objectQueryWrapper = new QueryWrapper<>();
+        objectQueryWrapper.eq("user_name", userDTOReq.getUserName());
+        if (this.getOne(objectQueryWrapper) != null) {
+            return new ResultModel<>().error(SystemConstant.USER_STATUS_NOT);
+        }
+        User user = DozerUtil.map(userDTOReq, User.class);
+        this.save(user);
+        return new ResultModel<>().success(SystemConstant.REQ_YES);
+    }
+
+    @Override
+    public void updateUserById(UserDTOReq map) throws Exception {
+        this.updateById(DozerUtil.map(map, User.class));
     }
 
 
