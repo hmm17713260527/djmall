@@ -28,6 +28,9 @@ public class UserController {
     private UserApi userApi;
 
 
+    public static void main(String[] args) {
+        System.out.println("aa");
+    }
 
     /**
      * echars-饼图展示
