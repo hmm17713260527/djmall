@@ -6,7 +6,6 @@ import com.dj.mall.admin.vo.auth.user.UserVOReq;
 import com.dj.mall.admin.vo.auth.user.UserVOResp;
 import com.dj.mall.api.auth.user.UserApi;
 import com.dj.mall.model.base.ResultModel;
-import com.dj.mall.model.base.SystemConstant;
 import com.dj.mall.model.dto.auth.user.UserDTOReq;
 import com.dj.mall.model.dto.auth.user.UserDTOResp;
 import com.dj.mall.model.util.DozerUtil;
@@ -29,7 +28,7 @@ public class UserController {
 
 
     public static void main(String[] args) {
-        System.out.println("aa");
+        System.out.println("abc");
     }
 
     /**
