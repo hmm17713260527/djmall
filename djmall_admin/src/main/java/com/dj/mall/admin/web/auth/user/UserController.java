@@ -27,9 +27,7 @@ public class UserController {
     private UserApi userApi;
 
 
-    public static void main(String[] args) {
-        System.out.println("xxxxxxxxxxxxx");
-    }
+
 
     /**
      * echars-饼图展示
@@ -38,6 +36,7 @@ public class UserController {
      */
     @GetMapping("pieShow")
     public ResultModel<Object> pieShow() throws Exception {
+        System.out.println("bbb");
         List<UserDTOResp> list = userApi.findProductOrder();
         return new ResultModel<>().success(DozerUtil.mapList(list, UserVOResp.class));
 
