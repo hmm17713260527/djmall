@@ -42,6 +42,7 @@ public class User implements Serializable {
      */
     private String userName;
 
+
     /**
      * 昵称
      */

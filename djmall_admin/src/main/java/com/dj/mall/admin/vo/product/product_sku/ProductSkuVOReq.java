@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @ProjectName: djmall
@@ -28,6 +29,8 @@ public class ProductSkuVOReq implements Serializable {
      */
     private Integer productSkuId;
 
+
+    private List<Object> a;
     /**
      * 商品spu_id
      */
